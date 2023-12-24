@@ -1,0 +1,19 @@
+name: cd
+on:
+  push:
+    branches:
+      - master
+jobs:
+  cd:
+    name: deploy to gh-pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout branch
+        uses: actions/checkout@v4
+      - name: build dist and deploy
+        shell: sh
+        env:
+            GITUSER: ${{secrets.GITUSER}}
+            EMAIL: ${{secrets.EMAIL}}
+        run: |
+          sh .devops/dist.sh && sh .devops/deploy.sh $GITUSER $EMAIL

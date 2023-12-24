@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta author="Cristian Gonzalez">
+    <title>FlowerEvolver-WASM Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body{
+			background-color: green;
+		}
+		button{
+			font-size: 20px;
+			border-radius: 315px 335px 155px 135px;
+			margin: 10px 10px 0 2px;
+			cursor: pointer;
+			border-color: #90ee90;
+			background-color: green;
+			color: #90ee90;
+		}
+		h1{
+			text-align: center;
+			color: #90ee90;
+		}
+		#title{
+			font-size: 120px;
+			padding: 0;
+			margin: 0;
+			color: #90ee90;		
+		}
+@media only screen and (max-width: 1280px){
+		#title{
+			font-size: 40px;
+			padding: 0;
+			margin: 0;
+			color: #90ee90;
+		}
+}
+		.grid{
+			display: grid;
+			grid-template-columns: repeat(auto-fill,minmax(230px,1fr)); 
+			grid-gap: 10px;
+			background-color: #000;
+			border: 10px solid black;
+		}
+		#tabs{
+			position: relative;
+			top: 12px;
+			font-size: xx-large;
+			margin-bottom: 10px;
+		}
+		#tab-flowers{
+			text-decoration: none;
+			text-indent: 10px;
+			padding: 2px 10px 10px 10px;
+			margin: 10px 0 0;
+			color: #90ee90;
+			border-radius: 12px 12px 0 0;
+			cursor: pointer;
+		}
+		.tab:hover{
+			background-color: #252729;
+			cursor: pointer;
+		}
+		.active{
+			background-color: #252729;
+		}
+		#original, #parents{
+			display: grid;
+			grid-template-columns: auto auto;
+			grid-gap: 10px;
+			justify-content: center;
+		}
+		#mutated{
+			display: grid;
+			grid-template-columns: repeat(auto-fill,minmax(230px,1fr));
+			grid-gap: 10px;
+			background-color: #000;
+		}
+		#header-mutations, #header-descendants{
+			text-align: center;
+			color: #90ee90;
+			background-color: green;
+		}
+		.footer{
+			background-color: #252729;
+			color: #fff;
+			display: grid;
+			grid-template-columns: auto auto;
+			justify-items: stretch;
+		}
+		.github{
+			float: right;
+			position: relative;
+			top: 20px;
+			right: 20px;
+		}
+		#buttons{
+			text-align: right;
+		}
+		.flower{
+			text-align: center; 
+			padding: 10px; 
+			background-color: #252729;
+		}
+		.close{
+			color: #90ee90;
+			cursor: pointer;
+			margin-right: 5px;
+			float: right;
+			font-size: 38px;
+			font-weight: 700;
+		}
+		#modal, #modalYesNo{
+			border: 2px solid lightgreen;
+			width: 20%;
+			height: 20%;
+			background-color: green;
+			color: #90ee90;
+			position: fixed;
+			border-color: #90ee90;
+			border-radius: 5px;
+			top: 40%;
+			left: 40%;
+			box-shadow: 0 16px 32px #0000004d;
+			overflow: auto;
+			z-index: 1;
+		}
+	</style>
+</head>
+<body>
+    <div>
+      <a href="/" style="text-decoration: none;"><h1 id="title">FlowerEvolver-WASM</h1></a>
+    </div>
+    <canvas id="canvas" hidden width="128" height="192"></canvas>
+	<script crossorigin src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <script type='text/javascript'>
+        var Module = {};
+        fetch('public/FlowerEvolver.wasm')
+			.then(response => response.arrayBuffer())
+            .then(buffer => {
+                Module.wasmBinary = buffer;
+                let script = document.createElement('script');
+                script.src = 'public/FlowerEvolver.js';
+                document.body.appendChild(script);
+			});
+		let selected = new Array(2);
+		let selectedIndex = 0;
+		let db = new Dexie("Flowers");
+		db.version(1).stores({
+		  flowers: '++id',
+		  mutations:'id, original',
+		  descendants: 'id, father, mother'
+		});
+		const showFlowers = async () => {
+			db.open().then(() => {
+				const flTab = document.getElementById("flowers");
+				flTab.replaceChildren();
+				flTab.removeAttribute("hidden");
+				flTab.setAttribute("class", "grid");
+				document.getElementById('tab-flowers').removeAttribute("class");
+				const desc = document.getElementById("descendants");
+				desc.setAttribute("hidden", "hidden");
+				desc.removeAttribute("class");
+				document.getElementById("mutations").setAttribute("hidden", "hidden");
+				document.getElementById("original").replaceChildren();
+				document.getElementById("mutated").replaceChildren();
+				document.getElementById('flowers').replaceChildren();
+				document.getElementById('tab-flowers').setAttribute("class", "active");
+				db.flowers.toArray().then((flowers) => {
+					for(f of flowers){
+						addFlowerTo(f, 'flowers');
+					}
+				});
+			}).catch((e) => {
+				createModal(e);
+			});
+		};
+		window.addEventListener("load", () => {
+			showFlowers();
+		});
+		class Flower{
+			constructor(genome, image){
+				this.genome = genome;
+				this.image = image;
+			}
+		};
+		class Mutations{
+			constructor(ID, orig){
+				this.id = ID;
+				this.original = orig;
+			}
+		};
+		class Descendants{
+			constructor(ID, father, mother){
+				this.id = ID;
+				this.father = father;
+				this.mother = mother;
+			}
+		};
+		const createModal = (msg) => {
+			const modal = document.createElement("div");
+			modal.setAttribute("id", "modal");
+			const x = document.createElement("span");
+			x.setAttribute("class", "close");
+			x.onclick = () => {
+				const modal = document.getElementById("modal");
+				document.body.removeChild(modal);				
+			};
+			x.appendChild(document.createTextNode("X"));
+			modal.appendChild(x);
+			const modalContent = document.createElement("div");
+			modalContent.appendChild(document.createTextNode(msg));
+			modal.appendChild(modalContent);
+			const btn = document.createElement("button");
+			btn.appendChild(document.createTextNode("Ok."));
+			btn.onclick = () => {
+				const modal = document.getElementById("modal");
+				document.body.removeChild(modal);
+			};
+			modal.appendChild(btn);
+			document.body.appendChild(modal);
+		};
+		const createModalYesNo = (msg, Fn) => {
+			const modal = document.createElement("div");
+			modal.setAttribute("id", "modalYesNo");
+			const x = document.createElement("span");
+			x.onclick = () => {
+				const modal = document.getElementById("modal");
+				document.body.removeChild(modal);				
+			};
+			x.setAttribute("class", "close");
+			x.appendChild(document.createTextNode("X"));
+			modal.appendChild(x);
+			const modalContent = document.createElement("div");
+			modalContent.appendChild(document.createTextNode(msg));
+			modal.appendChild(modalContent);
+			const noBtn = document.createElement("button");
+			noBtn.appendChild(document.createTextNode("No."));
+			noBtn.onclick = () => {
+				const modal = document.getElementById("modalYesNo");
+				document.body.removeChild(modal);
+			};
+			modal.appendChild(noBtn);
+			const yesBtn = document.createElement("button");
+			yesBtn.appendChild(document.createTextNode("Yes"));
+			yesBtn.onclick = () => {
+				Fn();
+				const modal = document.getElementById("modalYesNo");
+				document.body.removeChild(modal);
+			};
+			modal.appendChild(yesBtn);
+			document.body.appendChild(modal);		
+		};
+		const getBufferDataURL = () => {
+			return document.getElementById("canvas").toDataURL();
+		};
+		const makeFlower = async () => {
+			try{
+				if(!db.isOpen()){
+					db.open();
+				}
+				let genome = Module.makeFlower(64, 3, 6.0, 1.0);
+				let id = await db.flowers.add(new Flower(genome, getBufferDataURL()));
+				let f = await db.flowers.get(id);
+				return f;
+			}catch(e){
+				createModal(e);
+			}
+			return null;
+		};
+		const reproduce = async (f1, f2) => {
+			try{
+				let genome = Module.reproduce(f1.genome, f2.genome, 64, 3, 6.0, 1.0)
+				let id = await db.flowers.add(new Flower(genome, getBufferDataURL()));
+				db.descendants.add(new Descendants(id, f1.id, f2.id))
+					.catch(e => createModal(e));
+				let f = await db.flowers.get(id);
+				return f;
+			}catch(e){
+				createModal(e);
+			}
+			return null;
+		}; 
+		const reproduceSelected = async () => {
+			if(selected[0] && selected[1]){
+				let f1 = await db.flowers.get(selected[0]);
+				let f2 = await db.flowers.get(selected[1]);
+				return await reproduce(f1, f2);
+			}else{
+				createModal("not enough flowers selected");
+			}
+			return null;
+		};
+		const mutate = async (original) => {
+			try{
+				let genome = Module.mutate(original.genome, 64, 3, 6.0, 1.0, 0.2, 0.3, 0.2, 0.6, 0.35, 0.3, 0.4);
+				let id = await db.flowers.add(new Flower(genome, getBufferDataURL()));
+				db.mutations.add(new Mutations(id, original.id))
+					.catch(e => createModal(e));
+				let f = await db.flowers.get(id);
+				return f;
+			}catch(e){
+				createModal(e);
+			}
+			return null;
+		};
+		const addFlowerTo = (flower, element) => {
+			if(flower === null || flower === undefined){
+				return;
+			}
+			const grid = document.getElementById(element);
+			const flowerRoot = document.createElement("div");
+			flowerRoot.setAttribute("id", element + "-f" + flower.id);
+			flowerRoot.setAttribute("class", "flower");
+			const FlowerTitle = document.createElement("h1");
+			const title = document.createTextNode(flower.id);
+			FlowerTitle.appendChild(title);
+			const FlowerImg = document.createElement("img");
+			FlowerImg.setAttribute("style", "width: auto; height: auto;");
+			FlowerImg.setAttribute("src", flower.image);
+			flowerRoot.appendChild(FlowerImg);
+			flowerRoot.appendChild(FlowerTitle);
+			const reprButton = document.createElement("button");
+			reprButton.appendChild(document.createTextNode("select"));
+			reprButton.onclick = () => {
+				selected[selectedIndex++] = flower.id;
+				for(const child of document.getElementById(element).children){
+					child.setAttribute("style", "");
+				}
+				const flr0 = document.getElementById(element + "-f" + selected[0]);
+				flr0.setAttribute("style", "border: 2px solid red;");
+				const flr1 = document.getElementById(element + "-f" + selected[1]);
+				flr1.setAttribute("style", "border: 2px solid red;");
+				if(selectedIndex > 1){
+					selectedIndex = 0;
+				}
+			};
+			flowerRoot.appendChild(reprButton);
+			const downGenButton = document.createElement("button");
+			downGenButton.appendChild(document.createTextNode("download Genome"));
+			downGenButton.onclick = () => {
+				const a = document.createElement("a");
+				a.href = 'data:text/json;charset=utf-8,' + flower.genome;
+				a.download = "flower " + flower.id + ".json";
+				a.click();
+			}
+			flowerRoot.appendChild(downGenButton);
+			const downImgButton = document.createElement("button");
+			downImgButton.appendChild(document.createTextNode("download Image"));
+			downImgButton.onclick = () =>{
+				const a = document.createElement("a");
+				a.href = flower.image;
+				a.download = "flower " + flower.id + ".png";
+				a.click();
+			}
+			flowerRoot.appendChild(downImgButton);
+			const mutateButton = document.createElement("button");
+			mutateButton.appendChild(document.createTextNode("mutate"));
+			mutateButton.onclick = () => {
+				mutate(flower).then(f => addFlowerTo(f, element));
+			};
+			flowerRoot.appendChild(mutateButton);
+			const delButton = document.createElement("button");
+			delButton.appendChild(document.createTextNode("delete"));
+			delButton.onclick = () => {
+				createModalYesNo("Are you sure?", () => {
+					const grid = document.getElementById(element);
+					const f = document.getElementById(element + "-f" + flower.id);
+					grid.removeChild(f);
+					db.flowers.delete(flower.id)
+					.catch((e) => {
+						createModal(e);
+					});
+					db.mutations.where("original").equals(flower.id)
+						.or("id").equals(flower.id)
+						.delete().catch(e => createModal(e));
+					db.descendants.where("id").equals(flower.id)
+						.delete().catch(e => createModal(e));
+				});
+			};
+			flowerRoot.appendChild(delButton);
+			const showMutBtn = document.createElement("button");
+			showMutBtn.appendChild(document.createTextNode("show Mutations"));
+			showMutBtn.onclick = () => {
+				showMutations(flower.id);
+			};
+			flowerRoot.appendChild(showMutBtn);
+			const showChildrenBtn = document.createElement("button");
+			showChildrenBtn.appendChild(document.createTextNode("show Descendants"));
+			showChildrenBtn.onclick = () => {
+				showDescendants(flower.id, null);
+			};
+			flowerRoot.appendChild(showChildrenBtn);
+			grid.insertBefore(flowerRoot, grid.firstChild);
+		};
+		const showMutations = async (orig) => {
+			const flTab = document.getElementById("flowers");
+			flTab.replaceChildren();
+			flTab.setAttribute("hidden", "hidden");
+			flTab.removeAttribute("class");
+			document.getElementById('tab-flowers').removeAttribute("class");
+			document.getElementById("descendants").setAttribute("hidden", "hidden");
+			document.getElementById("descendants").removeAttribute("class");
+			document.getElementById("mutations").removeAttribute("hidden");
+			document.getElementById("original").replaceChildren();
+			document.getElementById("mutated").replaceChildren();
+			const headerText = document.createElement("p");
+			headerText.appendChild(document.createTextNode("mutations of " + orig));
+			document.getElementById("header-mutations").replaceChildren(headerText);
+			db.flowers.get(orig)
+				.then((f) => {
+					addFlowerTo(f, 'original');
+					db.mutations.where("original").equals(orig).toArray()
+					.then((mutations) => {
+						for(m of mutations){
+							db.flowers.get(m.id).then(f => addFlowerTo(f, 'mutated'));
+						}
+					}).catch(e => createModal(e));
+			}).catch(e => createModal(e));
+		};
+		const showDescendants = async (father, mother) => {
+			const flTab = document.getElementById("flowers");
+			flTab.replaceChildren();
+			flTab.setAttribute("hidden", "hidden");
+			flTab.removeAttribute("class");
+			document.getElementById('tab-flowers').removeAttribute("class");
+			document.getElementById("mutations").setAttribute("hidden", "hidden");
+			document.getElementById("descendants").removeAttribute("hidden");
+			document.getElementById("parents").replaceChildren();
+			document.getElementById("children").replaceChildren();
+			const headerText = document.createElement("p");
+			if(father == null && mother != null){
+				headerText.appendChild(document.createTextNode("descendants of " + mother));
+				document.getElementById("header-descendants").replaceChildren(headerText);
+				db.flowers.get(mother)
+					.then((f) => {
+						addFlowerTo(f, 'parents');
+					}).catch(e => createModal(e));
+				db.descendants.where("mother").equals(mother).or("father").equals(mother).toArray()
+					.then((children) => {
+						for(c of children){
+							db.flowers.get(c.id).then(f => addFlowerTo(f, 'children'));
+						}
+					}).catch(e => createModal(e));
+			}else if(mother == null && father != null){
+				headerText.appendChild(document.createTextNode("descendants of " + father));
+				document.getElementById("header-descendants").replaceChildren(headerText);
+				db.flowers.get(father)
+					.then((f) => {
+						addFlowerTo(f, 'parents');
+					}).catch(e => createModal(e));
+				db.descendants.where("mother").equals(father).or("father").equals(father).toArray()
+					.then((children) => {
+						for(c of children){
+							db.flowers.get(c.id).then(f => addFlowerTo(f, 'children'));
+						}
+					}).catch(e => createModal(e));
+			}else{
+				headerText.appendChild(document.createTextNode("descendants of " + father + " and " + mother));
+				document.getElementById("header-descendants").replaceChildren(headerText);
+				db.flowers.get(mother)
+					.then((f) => {
+						addFlowerTo(f, 'parents');
+					}).catch(e => createModal(e));
+				db.flowers.get(father)
+					.then((f) => {
+						addFlowerTo(f, 'parents');
+					}).catch(e => createModal(e));
+				db.descendants.where("father").equals(father).and(d => d.mother == mother).toArray()
+					.then((children) => {
+						for(c of children){
+							db.flowers.get(c.id).then(f => addFlowerTo(f, 'children'));
+						}
+					}).catch(e => createModal(e));
+			}
+		};
+		const showDescSelected = async () => {
+			if(selected[0] && selected[1]){
+				showDescendants(selected[0], selected[1]);
+			}else{
+				createModal("Not enough selected.");
+			}
+		};
+		const clearFlowers = (element) => {
+			createModalYesNo("are You Sure?(this will remove all data)", () => {
+				const el = document.getElementById(element);
+				el.replaceChildren();
+				db.delete()
+				.catch((e) => {
+					createModal(e);
+				});
+			});
+		};
+    </script>
+	<noscript>
+		<strong>We're sorry but Flower Evolver WASM doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+	<div id="buttons">
+		<button onclick="makeFlower().then(f => addFlowerTo(f, 'flowers'));"> Make Flower</button>
+		<button onclick="reproduceSelected().then(f => addFlowerTo(f, 'flowers'));"> reproduce selected </button>
+		<button onclick="showDescSelected()">show Descendants from selected</button>
+		<button onclick="clearFlowers('flowers');"> clear all flowers</button>
+	</div>
+	<div>
+		<nav id="tabs">
+			<ul style="margin: 0px; padding: 0px;">
+				<a id="tab-flowers" onclick="showFlowers()">Flowers</a>
+			</ul>
+		</nav>
+	</div>
+	<div id="flowers" class="grid"></div>
+	<div id="mutations" hidden>
+		<div id="original"></div>
+		<div id="header-mutations"></div>
+		<div id="mutated" class="grid"></div>
+	</div>
+	<div id="descendants" hidden>
+		<div id="parents"></div>
+		<div id="header-descendants"></div>
+		<div id="children" class="grid"></div>
+	</div>
+	<div id="footer">
+		<p style="margin-left: 20px; float: left; position: relative; bottom: 20px; padding: 40px 40px 0 0; color: lightgreen;">Copyright© 2023 FlowerEvolver-WASM</p>
+		<a class="github" href="https://github.com/cristianglezm/FlowerEvolver-WASM">
+			<img src="data:image/png;base64,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">
+		</a>
+	</div>
+</body>
+</html>
