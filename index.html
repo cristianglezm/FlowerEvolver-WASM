@@ -130,7 +130,7 @@
 </head>
 <body>
     <div>
-      <a href="/" style="text-decoration: none;"><h1 id="title">FlowerEvolver-WASM</h1></a>
+      <a href="/FlowerEvolver-WASM" style="text-decoration: none;"><h1 id="title">FlowerEvolver-WASM</h1></a>
     </div>
     <canvas id="canvas" hidden width="128" height="192"></canvas>
 	<script crossorigin src="https://unpkg.com/dexie/dist/dexie.js"></script>
@@ -479,7 +479,7 @@
 			if(selected[0] && selected[1]){
 				showDescendants(selected[0], selected[1]);
 			}else{
-				createModal("Not enough selected.");
+				createModal("Not enough flowers selected.");
 			}
 		};
 		const clearFlowers = (element) => {
@@ -499,7 +499,7 @@
 	<div id="buttons">
 		<button onclick="makeFlower().then(f => addFlowerTo(f, 'flowers'));"> Make Flower</button>
 		<button onclick="reproduceSelected().then(f => addFlowerTo(f, 'flowers'));"> reproduce selected </button>
-		<button onclick="showDescSelected()">show Descendants from selected</button>
+		<button onclick="showDescSelected()">show selected Descendants</button>
 		<button onclick="clearFlowers('flowers');"> clear all flowers</button>
 	</div>
 	<div>

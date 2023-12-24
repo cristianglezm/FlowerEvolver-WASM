@@ -11,9 +11,10 @@ jobs:
       - name: checkout branch
         uses: actions/checkout@v4
       - name: build dist and deploy
-        shell: sh
+        shell: bash
         env:
             GITUSER: ${{secrets.GITUSER}}
             EMAIL: ${{secrets.EMAIL}}
+            PRIVATE_SSH_KEY: ${{secrets.PRIVATE_SSH_KEY}}
         run: |
-          sh .devops/dist.sh && sh .devops/deploy.sh $GITUSER $EMAIL
+          bash .devops/dist.sh && sh .devops/deploy.sh $GITUSER $EMAIL
