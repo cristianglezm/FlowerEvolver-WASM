@@ -142,6 +142,7 @@
                 Module.wasmBinary = buffer;
                 let script = document.createElement('script');
                 script.src = 'public/FlowerEvolver.js';
+				script.setAttribute("type", "text/javascript");
                 document.body.appendChild(script);
 			});
 		let selected = new Array(2);
