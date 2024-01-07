@@ -142,7 +142,7 @@
                 Module.wasmBinary = buffer;
                 let script = document.createElement('script');
                 script.src = 'public/FlowerEvolver.js';
-				script.setAttribute("type", "text/javascript");
+                script.setAttribute("type", "text/javascript");
                 document.body.appendChild(script);
 			});
 		let selected = new Array(2);
@@ -440,7 +440,7 @@
 					}).catch(e => createModal(e));
 				db.descendants.where("mother").equals(mother).or("father").equals(mother).toArray()
 					.then((children) => {
-						for(c of children){
+						for(const c of children){
 							db.flowers.get(c.id).then(f => addFlowerTo(f, 'children'));
 						}
 					}).catch(e => createModal(e));
