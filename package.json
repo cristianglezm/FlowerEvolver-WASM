@@ -1,6 +1,6 @@
 {
   "name": "@cristianglezm/flower-evolver-wasm",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "wasm module to make flowers that evolve using NEAT",
   "main": "index.js",
   "scripts": {
