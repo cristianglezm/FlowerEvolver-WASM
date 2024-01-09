@@ -1,0 +1,28 @@
+{
+  "name": "@cristianglezm/flower-evolver-wasm",
+  "version": "1.0.1",
+  "description": "wasm module to make flowers that evolve using NEAT",
+  "main": "index.js",
+  "scripts": {
+    "build:emscripten": "bash .devops/dist.sh FALSE",
+    "build": "npm run build:emscripten",
+    "serve": "cp index.html build/index.html && cd build && emrun index.html"
+  },
+  "typings": "./public/FlowerEvolver.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristianglezm/FlowerEvolver-WASM.git"
+  },
+  "keywords": [
+    "genetic-algorithms",
+    "FlowerEvolver",
+    "NEAT",
+    "EvoAI"
+  ],
+  "author": "Cristian Gonzalez",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/cristianglezm/FlowerEvolver-WASM/issues"
+  },
+  "homepage": "https://github.com/cristianglezm/FlowerEvolver-WASM#readme"
+}
