@@ -33,6 +33,16 @@ void copyToCanvas(std::uint8_t* ptr, int w, int h);
  */
 std::string makeFlower(int radius, int numLayers, float P, float bias) noexcept;
 /**
+ * @brief it will paint the given flower into the canvas, is up to you to get the image from it.
+ * 
+ * @param flower const std::string& stringified Flower.json
+ * @param radius int radius for the flower
+ * @param numLayers int how many layers it will have
+ * @param P float P parameter it controls how many petals the flower can have.
+ * @param bias float bias
+ */
+void drawFlower(const std::string& flower, int radius, int numLayers, float P, float bias);
+/**
  * @brief make flower, it will paint into the canvas, is up to you to get the image from it.
  * 
  * @param flower1 const std::string& stringified Flower.json
@@ -47,8 +57,7 @@ std::string reproduce(const std::string& flower1, const std::string& flower2, in
 /**
  * @brief make flower, it will paint into the canvas, is up to you to get the image from it.
  * 
- * @param flower1 const std::string& stringified Flower.json
- * @param flower2 const std::string& stringified Flower.json
+ * @param original const std::string& stringified Flower.json to mutate
  * @param radius int radius for the flower
  * @param numLayers int how many layers it will have
  * @param P float P parameter it controls how many petals the flower can have.
@@ -60,7 +69,7 @@ std::string reproduce(const std::string& flower1, const std::string& flower2, in
  * @param enableRate float rate to determine what it mutates
  * @param disableRate float rate to determine what it mutates
  * @param actTypeRate float rate to determine what it mutates
- * @return it will return a stringified Flower.json needed to do reproduce or mutate.
+ * @return it will return a stringified Flower.json needed to do reproduce, mutate or drawFlower.
  */
 std::string mutate(const std::string& original, int radius, int numLayers, float P, float bias, 
 					float addNodeRate, float addConnRate, float removeConnRate, float perturbWeightsRate, 
@@ -68,6 +77,9 @@ std::string mutate(const std::string& original, int radius, int numLayers, float
 
 EMSCRIPTEN_BINDINGS(makeFlower){
     emscripten::function("makeFlower", &makeFlower);
+}
+EMSCRIPTEN_BINDINGS(drawFlower){
+    emscripten::function("drawFlower", &drawFlower);
 }
 EMSCRIPTEN_BINDINGS(reproduce){
     emscripten::function("reproduce", &reproduce);
