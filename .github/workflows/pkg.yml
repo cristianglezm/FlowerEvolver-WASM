@@ -1,0 +1,27 @@
+name: pkg
+on:
+  release:
+    types: [created]
+
+jobs:
+  npm:
+    name: publish to npm and ghp
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: checkout branch
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: build dist and publish for npm and github packages
+        shell: bash
+        env:
+            FE_EXPORT: TRUE
+            PRIVATE_SSH_KEY: ${{secrets.PRIVATE_SSH_KEY}}
+            NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+            GH_TOKEN: ${{secrets.GIThUB_TOKEN}}
+        run: |
+          bash .devops/dist.sh $FE_EXPORT && .devops/publish.sh $NPM_TOKEN $GH_TOKEN

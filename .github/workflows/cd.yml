@@ -4,7 +4,7 @@ on:
     branches:
       - master
 jobs:
-  cd:
+  ghp:
     name: deploy to gh-pages
     runs-on: ubuntu-latest
     steps:
@@ -15,6 +15,7 @@ jobs:
         env:
             GITUSER: ${{secrets.GITUSER}}
             EMAIL: ${{secrets.EMAIL}}
+            FE_EXPORT: FALSE
             PRIVATE_SSH_KEY: ${{secrets.PRIVATE_SSH_KEY}}
         run: |
-          bash .devops/dist.sh && sh .devops/deploy.sh $GITUSER $EMAIL
+          bash .devops/dist.sh $FE_EXPORT && sh .devops/deploy.sh $GITUSER $EMAIL

@@ -9,6 +9,7 @@ void copyToCanvas(std::uint8_t* ptr, int w, int h){
 		context.putImageData(imageData, 0, 0);
     }, ptr, w, h);
 }
+
 std::string makeFlower(int radius, int numLayers, float P, float bias) noexcept{
 	EvoAI::randomGen().setSeed(std::chrono::steady_clock::now().time_since_epoch().count());
 	fe::Flower flower({0.f, 0.f}, radius, numLayers, P, bias);
@@ -21,6 +22,18 @@ std::string makeFlower(int radius, int numLayers, float P, float bias) noexcept{
 	return ss.str();
 }
 
+void drawFlower(const std::string& flower, int radius, int numLayers, float P, float bias){
+	EvoAI::randomGen().setSeed(std::chrono::steady_clock::now().time_since_epoch().count());
+	JsonBox::Value v1;
+	v1.loadFromString(flower);
+	if(v1["Flower"]["dna"].isNull()){
+		throw std::invalid_argument("error, invalid flower, could not parse data.");
+	}
+	fe::DNA dna(fe::DNA(v1["Flower"]["dna"].getObject()));
+	auto paintedFlower = fe::Flower({0.0, 0.0}, radius, numLayers, P, bias, std::move(dna));
+	auto size = paintedFlower.petals.image.getSize();
+	copyToCanvas(paintedFlower.petals.image.imageData.data(), size.x, size.y);
+}
 
 std::string reproduce(const std::string& flower1, const std::string& flower2, int radius, int numLayers, float P, float bias){
 	EvoAI::randomGen().setSeed(std::chrono::steady_clock::now().time_since_epoch().count());

@@ -137,14 +137,14 @@
     <script type='text/javascript'>
         var Module = {};
         fetch('public/FlowerEvolver.wasm')
-			.then(response => response.arrayBuffer())
+            .then(response => response.arrayBuffer())
             .then(buffer => {
                 Module.wasmBinary = buffer;
                 let script = document.createElement('script');
                 script.src = 'public/FlowerEvolver.js';
                 script.setAttribute("type", "text/javascript");
                 document.body.appendChild(script);
-			});
+            });
 		let selected = new Array(2);
 		let selectedIndex = 0;
 		let db = new Dexie("Flowers");
@@ -522,7 +522,7 @@
 		<div id="children" class="grid"></div>
 	</div>
 	<div id="footer">
-		<p style="margin-left: 20px; float: left; position: relative; bottom: 20px; padding: 40px 40px 0 0; color: lightgreen;">Copyright© 2023 FlowerEvolver-WASM</p>
+		<p style="margin-left: 20px; float: left; position: relative; bottom: 20px; padding: 40px 40px 0 0; color: lightgreen;">Copyright© 2023-2024 FlowerEvolver-WASM</p>
 		<a class="github" href="https://github.com/cristianglezm/FlowerEvolver-WASM">
 			<img src="data:image/png;base64,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">
 		</a>
