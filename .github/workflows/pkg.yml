@@ -1,5 +1,6 @@
 name: pkg
 on:
+  workflow_dispatch:
   release:
     types: [created]
 
@@ -22,6 +23,6 @@ jobs:
             FE_EXPORT: TRUE
             PRIVATE_SSH_KEY: ${{secrets.PRIVATE_SSH_KEY}}
             NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-            GH_TOKEN: ${{secrets.GIThUB_TOKEN}}
+            GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           bash .devops/dist.sh $FE_EXPORT && .devops/publish.sh $NPM_TOKEN $GH_TOKEN
