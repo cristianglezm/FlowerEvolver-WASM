@@ -2,6 +2,8 @@
 
 [![cd](https://github.com/cristianglezm/FlowerEvolver-WASM/actions/workflows/cd.yml/badge.svg?branch=master)](https://github.com/cristianglezm/FlowerEvolver-WASM/actions/workflows/cd.yml)
 [![pkg](https://github.com/cristianglezm/FlowerEvolver-WASM/actions/workflows/pkg.yml/badge.svg?branch=master)](https://github.com/cristianglezm/FlowerEvolver-WASM/actions/workflows/pkg.yml)
+[![NPM Version](https://img.shields.io/npm/v/%40cristianglezm%2Fflower-evolver-wasm?logo=npm)](https://www.npmjs.com/package/@cristianglezm/flower-evolver-wasm)
+[![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/cristianglezm/flowerEvolver-wasm/master?logo=github)](https://github.com/cristianglezm/FlowerEvolver-WASM/pkgs/npm/flower-evolver-wasm)
 
 Adapted Flower Evolver code from [EcoSystem](https://github.com/cristianglezm/EcoSystem.git) to use it in the browser without needing a backend.
 
