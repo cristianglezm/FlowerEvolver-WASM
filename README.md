@@ -8,7 +8,9 @@ Adapted Flower Evolver code from [EcoSystem](https://github.com/cristianglezm/Ec
 check the website [here](https://cristianglezm.github.io/FlowerEvolver-WASM/)
 
 > [!IMPORTANT]
-> You will need to have a canvas object with id="canvas" to use the wasm functions.
+> You will need to have a canvas object with id="canvas" to use the wasm functions
+> or if you're running the wasm module inside a web worker you will need 
+> to initialize at the start: self.canvas = e.data.canvas
 
 ## Building
 
@@ -81,6 +83,19 @@ const store = useFlowersStore(pinia);
 store.loadFE();
 //...
 ````
+
+## worker usage
+
+```javascript 
+import fe from '@cristianglezm/flower-evolver-wasm';
+
+self.onmessage = async (e) => {
+    self.canvas = e.data.canvas;
+    let FE = fe();
+    // use functions from FE module.
+}
+
+```
 
 ## License
 

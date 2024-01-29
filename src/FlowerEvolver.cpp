@@ -2,11 +2,18 @@
 
 void copyToCanvas(std::uint8_t* ptr, int w, int h){
 	EM_ASM_({
-		let data = Module.HEAPU8.slice($0, $0 + $1 * $2 * 4);
-		let context = document.getElementById("canvas").getContext('2d');
-		let imageData = context.getImageData(0, 0, $1, $2);
-		imageData.data.set(data);
-		context.putImageData(imageData, 0, 0);
+                let data = Module.HEAPU8.slice($0, $0 + $1 * $2 * 4);
+                if(typeof importScripts === 'function'){
+                    let context = self.canvas.getContext('2d', { willReadFrequently: true });
+                    let imageData = context.getImageData(0, 0, $1, $2);
+                    imageData.data.set(data);
+                    context.putImageData(imageData, 0, 0);
+                }else{
+                    let context = document.getElementById("canvas").getContext('2d', { willReadFrequently: true });
+                    let imageData = context.getImageData(0, 0, $1, $2);
+                    imageData.data.set(data);
+                    context.putImageData(imageData, 0, 0);
+                }
     }, ptr, w, h);
 }
 

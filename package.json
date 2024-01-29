@@ -1,12 +1,12 @@
 {
   "name": "@cristianglezm/flower-evolver-wasm",
-  "version": "1.0.3",
-  "description": "wasm module to make flowers that evolve using NEAT",
+  "version": "1.0.4",
+  "description": "wasm module to make flowers that evolve using EvoAI library",
   "main": "index.js",
   "scripts": {
     "build:emscripten": "bash .devops/dist.sh FALSE",
     "build": "npm run build:emscripten",
-    "serve": "cp index.html build/index.html && cd build && emrun index.html"
+    "serve": "emrun --serve_root build index.html"
   },
   "typings": "./public/FlowerEvolver.d.ts",
   "repository": {
