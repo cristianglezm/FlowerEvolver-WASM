@@ -88,12 +88,28 @@ store.loadFE();
 
 ## worker usage
 
+app
+
+```javascript 
+let worker = new Worker('worker.js');
+worker.onmessage = () => {
+    // do stuff
+};
+// ...
+const fn = () => {
+    let canvas = document.createElement("canvas").transferControlToOffscreen();
+    worker.postMessage({canvas: canvas}, [canvas]);
+}
+```
+
+worker.js
+
 ```javascript 
 import fe from '@cristianglezm/flower-evolver-wasm';
 
 self.onmessage = async (e) => {
     self.canvas = e.data.canvas;
-    let FE = fe();
+    let FE = await fe();
     // use functions from FE module.
 }
 
