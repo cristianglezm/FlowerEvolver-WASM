@@ -6,6 +6,10 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 option(FE_EXPORT "ES6 module export for (vue, react, angular, etc)" OFF)
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
+endif()
+
 if(EMSCRIPTEN)
     add_executable(FlowerEvolver)
     target_include_directories(FlowerEvolver PUBLIC "include")
@@ -19,7 +23,7 @@ if(EMSCRIPTEN)
             "include/DNA.hpp"
             "include/Flower.hpp"
             "include/FlowerEvolver.hpp"
-	    "include/MathUtils.hpp"
+	        "include/MathUtils.hpp"
             "include/Petals.hpp"
         PRIVATE
             "src/SFML/Graphics/Color.cpp"
@@ -43,9 +47,6 @@ if(EMSCRIPTEN)
     if(EvoAI_FOUND)
         target_include_directories(FlowerEvolver PRIVATE ${EvoAI_INCLUDE_DIR})
         target_link_libraries(FlowerEvolver PRIVATE ${EvoAI_LIBRARIES})
-    endif()
-    if(NOT CMAKE_BUILD_TYPE)
-        set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
     endif()
     SET(CMAKE_CXX_STANDARD 17)
     SET(CMAKE_CXX_STANDARD_REQUIRED ON)

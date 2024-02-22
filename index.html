@@ -261,7 +261,13 @@
 				if(!db.isOpen()){
 					db.open();
 				}
-				let genome = Module.makeFlower(64, 3, 6.0, 1.0);
+				let genome;
+				try{
+					genome = Module.makeFlower(64, 3, 6.0, 1.0);
+				}catch(e){
+					createModal(Module.getExceptionMessage(e));
+					return;
+				}
 				let id = await db.flowers.add(new Flower(genome, getBufferDataURL()));
 				let f = await db.flowers.get(id);
 				return f;
@@ -271,15 +277,21 @@
 			return null;
 		};
 		const reproduce = async (f1, f2) => {
+			let genome;
 			try{
-				let genome = Module.reproduce(f1.genome, f2.genome, 64, 3, 6.0, 1.0)
+				genome = Module.reproduce(f1.genome, f2.genome, 64, 3, 6.0, 1.0)
+			}catch(e){
+				createModal(Module.getExceptionMessage(e));
+				return;
+			}
+			try{
 				let id = await db.flowers.add(new Flower(genome, getBufferDataURL()));
 				db.descendants.add(new Descendants(id, f1.id, f2.id))
 					.catch(e => createModal(e));
 				let f = await db.flowers.get(id);
 				return f;
 			}catch(e){
-				createModal(e);
+				createModal(Module.getExceptionMessage(e));
 			}
 			return null;
 		}; 
@@ -294,15 +306,21 @@
 			return null;
 		};
 		const mutate = async (original) => {
+			let genome;
 			try{
-				let genome = Module.mutate(original.genome, 64, 3, 6.0, 1.0, 0.2, 0.3, 0.2, 0.6, 0.35, 0.3, 0.4);
+				genome = Module.mutate(original.genome, 64, 3, 6.0, 1.0, 0.2, 0.3, 0.2, 0.6, 0.35, 0.3, 0.4);
+			}catch(e){
+				createModal(Module.getExceptionMessage(e));
+				return;
+			}
+			try{
 				let id = await db.flowers.add(new Flower(genome, getBufferDataURL()));
 				db.mutations.add(new Mutations(id, original.id))
 					.catch(e => createModal(e));
 				let f = await db.flowers.get(id);
 				return f;
 			}catch(e){
-				createModal(e);
+				createModal(Module.getExceptionMessage(e));
 			}
 			return null;
 		};

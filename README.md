@@ -5,18 +5,20 @@
 [![NPM Version](https://img.shields.io/npm/v/%40cristianglezm%2Fflower-evolver-wasm?logo=npm)](https://www.npmjs.com/package/@cristianglezm/flower-evolver-wasm)
 [![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/cristianglezm/flowerEvolver-wasm/master?logo=github)](https://github.com/cristianglezm/FlowerEvolver-WASM/pkgs/npm/flower-evolver-wasm)
 
-Adapted Flower Evolver code from [EcoSystem](https://github.com/cristianglezm/EcoSystem.git) to use it in the browser without needing a backend.
+Adapted Flower Evolver code from [EcoSystem](https://github.com/cristianglezm/EcoSystem.git) to be able to make, mutate, reproduce flowers in the browser without needing a backend.
 
 check the website [here](https://cristianglezm.github.io/FlowerEvolver-WASM/)
 
 > [!IMPORTANT]
 > You will need to have a canvas object with id="canvas" to use the wasm functions
 > or if you're running the wasm module inside a web worker you will need 
-> to initialize at the start: self.canvas = e.data.canvas
+> to initialize at the start: self.canvas = new OffscreenCanvas(radius * 2, radius * 3);
 
 ## Building
 
 You will need [emsdk](https://github.com/emscripten-core/emsdk) to build [JsonBox](https://github.com/cristianglezm/JsonBox) and [EvoAI](https://github.com/cristianglezm/EvoAI)
+
+set FE_EXPORT=TRUE if using modules.
 
 ```bash
 	git clone https://github.com/emscripten-core/emsdk.git
@@ -107,10 +109,27 @@ worker.js
 ```javascript 
 import fe from '@cristianglezm/flower-evolver-wasm';
 
+let FE;
 self.onmessage = async (e) => {
     self.canvas = e.data.canvas;
-    let FE = await fe();
+    // or use its own canvas
+    // self.canvas = new OffscreenCanvas(128, 192);
+    // the canvas width must be radius * 2 and the height radius * 3
+    if(!FE){
+        FE = await fe();
+    }
     // use functions from FE module.
+    let f = {};
+    try{
+        f.genome = FE.makeFlower(64, 3, 6.0, 1.0);
+    }catch(e){
+        // handle error
+        let msg = FE.getExceptionMessage(e);
+    }
+    // convert image data to send, store, etc
+    let blob = await self.canvas.convertToBlob();
+    let frs = await new FileReaderSync();
+    f.image = await frs.readAsDataURL(blob);
 }
 
 ```

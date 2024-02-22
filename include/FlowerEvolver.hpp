@@ -74,6 +74,11 @@ std::string reproduce(const std::string& flower1, const std::string& flower2, in
 std::string mutate(const std::string& original, int radius, int numLayers, float P, float bias, 
 					float addNodeRate, float addConnRate, float removeConnRate, float perturbWeightsRate, 
 					float enableRate, float disableRate, float actTypeRate);
+/**
+ * @brief gets the exception message
+ * @param exceptionPtr std::exception*
+ */
+std::string getExceptionMessage(int exceptionPtr);
 
 EMSCRIPTEN_BINDINGS(makeFlower){
     emscripten::function("makeFlower", &makeFlower);
@@ -87,4 +92,7 @@ EMSCRIPTEN_BINDINGS(reproduce){
 EMSCRIPTEN_BINDINGS(mutate){
     emscripten::function("mutate", &mutate);
 }
+EMSCRIPTEN_BINDINGS(getExceptionMessage) {
+    emscripten::function("getExceptionMessage", &getExceptionMessage);
+};
 #endif // FLOWER_EVOLVER_HPP

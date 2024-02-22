@@ -86,3 +86,7 @@ std::string mutate(const std::string& original, int radius, int numLayers, float
 	v.writeToStream(ss, false, true);
 	return ss.str();
 }
+
+std::string getExceptionMessage(int exceptionPtr){
+    return std::string(reinterpret_cast<std::exception *>(exceptionPtr)->what());
+}

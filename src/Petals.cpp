@@ -12,19 +12,19 @@ namespace fe{
 	: image()
 	, bias(bias)
 	, P(P)
-	, radius(r)
-	, numLayers(nLayers)
+	, radius(std::clamp(r, 4, 256))
+	, numLayers(std::max(1, nLayers))
 	, hasBloom(false){
-		image.create(radius*2,radius*3,sf::Color::Transparent);
+		image.create(radius * 2, radius * 3, sf::Color::Transparent);
 	}
 	Petals::Petals(JsonBox::Object o)
 	: image()
-	, bias(o["bias"].getFloat())
-	, P(o["P"].getFloat())
-	, radius(o["radius"].getInteger())
-	, numLayers(o["numLayers"].getInteger())
+	, bias(o["bias"].tryGetFloat(1.0))
+	, P(o["P"].tryGetFloat(6.0))
+	, radius(std::clamp(o["radius"].tryGetInteger(4), 4, 256))
+	, numLayers(std::max(1, o["numLayers"].tryGetInteger(1)))
 	, hasBloom(false){
-		image.create(radius*2,radius*3,sf::Color::Transparent);
+		image.create(radius * 2, radius * 3, sf::Color::Transparent);
 	}
 	Petals::Petals(const Petals& rhs) noexcept
 	: image(rhs.image)

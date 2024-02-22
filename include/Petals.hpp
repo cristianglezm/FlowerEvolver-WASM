@@ -60,13 +60,11 @@ namespace fe{
 	 *  @brief Petals component
 	 *  @code
 	 *      Petals p(64,3,6.0,1.0);
-	 *      //use draw before calling loadImageAndSetTexture
-	 *      // genome is CPPN and has 4 inputs and 4 outputs
+	 *      // genome is a CPPN and has 4 inputs and 4 outputs
 	 *      draw(Petals::Type::TrunkAndPetals, p, genomes[index]);
-	 *      p.loadImageAndSetTexture();
 	 *  @endcode
 	 */
-	struct Petals{
+	struct Petals final{
 		/**
 		 *  @brief Type enum for draw function
 		 */
