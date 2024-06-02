@@ -16,6 +16,5 @@ jobs:
             GITUSER: ${{secrets.GITUSER}}
             EMAIL: ${{secrets.EMAIL}}
             FE_EXPORT: FALSE
-            PRIVATE_SSH_KEY: ${{secrets.PRIVATE_SSH_KEY}}
         run: |
           bash .devops/dist.sh $FE_EXPORT && sh .devops/deploy.sh $GITUSER $EMAIL

@@ -14,10 +14,8 @@ cd JsonBox && mkdir build && cd build
 emcmake cmake -DCMAKE_INSTALL_PREFIX="$(pwd)/install" ..
 make -j4 install
 cd ../..
-eval `ssh-agent -s`
-ssh-add - <<< "$PRIVATE_SSH_KEY"
-git clone git@github.com:cristianglezm/EvoAI.git
-cd EvoAI && git checkout refactor-activations
+git clone https://github.com/cristianglezm/EvoAI.git
+cd EvoAI
 mkdir build && cd build
 emcmake cmake -DEvoAI_BUILD_STATIC=TRUE -DJsonBox_ROOT=../../JsonBox/build/install -DCMAKE_INSTALL_PREFIX="$(pwd)/install" ..
 make -j4 install
