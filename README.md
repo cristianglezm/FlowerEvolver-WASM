@@ -30,9 +30,8 @@ set FE_EXPORT=TRUE if using modules.
 	emcmake cmake -DCMAKE_INSTALL_PREFIX="$(pwd)/install" ..
 	make -j4 install
 	cd ..
-	# you will need permision for EvoAI (it will soon be open sourced)
 	git clone https://github.com/cristianglezm/EvoAI.git
-	cd EvoAI && git checkout refactor-activations
+	cd EvoAI
 	mkdir build && cd build
 	emcmake cmake -DEvoAI_BUILD_STATIC=TRUE -DJsonBox_ROOT=../JsonBox/build/install -DCMAKE_INSTALL_PREFIX="$(pwd)/install" ..
 	make -j4 install
