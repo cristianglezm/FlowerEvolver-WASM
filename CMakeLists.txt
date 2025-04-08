@@ -53,7 +53,7 @@ if(EMSCRIPTEN)
     SET(CMAKE_CXX_EXTENSIONS OFF)
 	if(FE_EXPORT)
 		target_compile_options(FlowerEvolver PRIVATE -std=c++17 -Wall -Wextra -Wshadow -pthread -fexceptions)
-		target_link_options(FlowerEvolver PRIVATE -lembind -sPTHREAD_POOL_SIZE=4 -fexceptions --embind-emit-tsd FlowerEvolver.d.ts -sMODULARIZE=1 -sEXPORT_ES6=1 -sSINGLE_FILE=1 -sEXPORT_NAME='fe' -sTOTAL_MEMORY=2MB)
+		target_link_options(FlowerEvolver PRIVATE -lembind -sPTHREAD_POOL_SIZE=4 -fexceptions --emit-tsd FlowerEvolver.d.ts -sMODULARIZE=1 -sEXPORT_ES6=1 -sSINGLE_FILE=1 -sEXPORT_NAME='fe' -sTOTAL_MEMORY=2MB)
 	else()
 		target_compile_options(FlowerEvolver PRIVATE -std=c++17 -Wall -Wextra -Wshadow -pthread -fexceptions -sSTRICT=1)
 		target_link_options(FlowerEvolver PRIVATE -lembind -sPTHREAD_POOL_SIZE=4 -fexceptions -sTOTAL_MEMORY=2MB)
@@ -87,7 +87,8 @@ if(EMSCRIPTEN)
 			COMMENT "built dist dir..."
 			DEPENDS FlowerEvolver)
     endif()
-
+    
+    cmake_policy(SET CMP0177 NEW)
     install(FILES index.html DESTINATION ./public/index.html)
     install(DIRECTORY ${CMAKE_BINARY_DIR}/public DESTINATION .)
 else()
