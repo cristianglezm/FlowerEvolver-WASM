@@ -36,7 +36,7 @@ void drawFlower(const std::string& flower, int radius, int numLayers, float P, f
 	if(v1["Flower"]["dna"].isNull()){
 		throw std::invalid_argument("error, invalid flower, could not parse data.");
 	}
-	fe::DNA dna(fe::DNA(v1["Flower"]["dna"].getObject()));
+	fe::DNA dna(v1["Flower"]["dna"].getObject());
 	auto paintedFlower = fe::Flower({0.0, 0.0}, radius, numLayers, P, bias, std::move(dna));
 	auto size = paintedFlower.petals.image.getSize();
 	copyToCanvas(paintedFlower.petals.image.imageData.data(), size.x, size.y);
