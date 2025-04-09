@@ -135,6 +135,14 @@ namespace fe{
 			}
 		}
 	}//priv/
+	void drawLayer(Petals& petals, EvoAI::Genome& g, int layer) noexcept{
+		auto nn = EvoAI::Genome::makePhenotype(g);
+		auto r = petals.radius;
+		for(auto i = petals.numLayers;i>layer;--i){
+			r /= 2;
+		}
+		priv::drawPetals(petals, nn, r, layer);
+	}
 	void draw(Petals::Type t, Petals& petals, EvoAI::Genome& g) noexcept{
 		switch(t){
 			case Petals::Type::Trunk:
