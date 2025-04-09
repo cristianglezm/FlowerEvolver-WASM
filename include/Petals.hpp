@@ -164,6 +164,14 @@ namespace fe{
 		void drawTrunk(Petals& petals) noexcept;
 	} // namespace priv/
 	/**
+	 *  @brief will draw the layer of petals what Petals::Type is
+	 *  
+	 *  @param [in] petals Petals
+	 *  @param [in] g      a cppn EvoAI::Genome with 4 inputs 4 outputs
+	 *  @param [in] layer  the layer to draw
+	 */
+	void drawLayer(Petals& petals, EvoAI::Genome& g, int layer) noexcept;
+	/**
 	 *  @brief will draw what Petals::Type is
 	 *  
 	 *  @param [in] t      Petals::Type

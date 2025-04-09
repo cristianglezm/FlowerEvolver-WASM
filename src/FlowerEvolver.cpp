@@ -29,6 +29,49 @@ std::string makeFlower(int radius, int numLayers, float P, float bias) noexcept{
 	return ss.str();
 }
 
+std::string makePetals(int radius, int numLayers, float P, float bias) noexcept{
+	EvoAI::randomGen().setSeed(std::chrono::steady_clock::now().time_since_epoch().count());
+	fe::Flower flower({0.f, 0.f}, radius, numLayers, P, bias, fe::Petals::Type::Petals);
+	auto size = flower.petals.image.getSize();
+	copyToCanvas(flower.petals.image.imageData.data(), size.x, size.y);
+	std::stringstream ss;
+	JsonBox::Value v;
+	v["Flower"] = flower.toJson();
+	v.writeToStream(ss, false, true);
+	return ss.str();
+}
+
+std::string makePetalLayer(int radius, int numLayers, float P, float bias, int layer) noexcept{
+	EvoAI::randomGen().setSeed(std::chrono::steady_clock::now().time_since_epoch().count());
+	auto petals = fe::Petals(radius, numLayers, P, bias);
+	auto dna = fe::DNA();
+	dna.add(EvoAI::Genome(4,14,false,true));
+	dna.add(EvoAI::Genome(4,4,false,true));
+	fe::drawLayer(petals, dna[1], layer);
+	auto size = petals.image.getSize();
+	copyToCanvas(petals.image.imageData.data(), size.x, size.y);
+	std::stringstream ss;
+	JsonBox::Object o;
+	o["dna"] = dna.toJson();
+	o["petals"] = petals.toJson();
+	JsonBox::Value v;
+	v["Flower"] = JsonBox::Value(o);
+	v.writeToStream(ss, false, true);
+	return ss.str();
+}
+
+std::string makeStem(int radius, int numLayers, float P, float bias) noexcept{
+	EvoAI::randomGen().setSeed(std::chrono::steady_clock::now().time_since_epoch().count());
+	fe::Flower flower({0.f, 0.f}, radius, numLayers, P, bias, fe::Petals::Type::Trunk);
+	auto size = flower.petals.image.getSize();
+	copyToCanvas(flower.petals.image.imageData.data(), size.x, size.y);
+	std::stringstream ss;
+	JsonBox::Value v;
+	v["Flower"] = flower.toJson();
+	v.writeToStream(ss, false, true);
+	return ss.str();
+}
+
 void drawFlower(const std::string& flower, int radius, int numLayers, float P, float bias){
 	EvoAI::randomGen().setSeed(std::chrono::steady_clock::now().time_since_epoch().count());
 	JsonBox::Value v1;
@@ -40,6 +83,36 @@ void drawFlower(const std::string& flower, int radius, int numLayers, float P, f
 	auto paintedFlower = fe::Flower({0.0, 0.0}, radius, numLayers, P, bias, std::move(dna));
 	auto size = paintedFlower.petals.image.getSize();
 	copyToCanvas(paintedFlower.petals.image.imageData.data(), size.x, size.y);
+}
+
+void drawPetals(const std::string& flower, int radius, int numLayers, float P, float bias){
+	EvoAI::randomGen().setSeed(std::chrono::steady_clock::now().time_since_epoch().count());
+	JsonBox::Value v1;
+	v1.loadFromString(flower);
+	if(v1["Flower"]["dna"].isNull()){
+		throw std::invalid_argument("error, invalid flower, could not parse data.");
+	}
+	fe::DNA dna(v1["Flower"]["dna"].getObject());
+	auto paintedFlower = fe::Flower({0.0, 0.0}, radius, numLayers, P, bias, std::move(dna), fe::Petals::Type::Petals);
+	auto size = paintedFlower.petals.image.getSize();
+	copyToCanvas(paintedFlower.petals.image.imageData.data(), size.x, size.y);
+}
+
+void drawPetalLayer(const std::string& flower, int radius, int numLayers, float P, float bias, int layer){
+	EvoAI::randomGen().setSeed(std::chrono::steady_clock::now().time_since_epoch().count());
+	auto petals = fe::Petals(radius, numLayers, P, bias);
+	JsonBox::Value v1;
+	v1.loadFromString(flower);
+	if(v1["Flower"]["dna"].isNull()){
+		throw std::invalid_argument("error, invalid flower, could not parse data.");
+	}
+	fe::DNA dna(v1["Flower"]["dna"].getObject());
+	if(dna.size() < 2){
+		throw std::invalid_argument("invalid DNA, it should have 2 genomes");
+	}
+	fe::drawLayer(petals, dna[1], layer);
+	auto size = petals.image.getSize();
+	copyToCanvas(petals.image.imageData.data(), size.x, size.y);
 }
 
 std::string reproduce(const std::string& flower1, const std::string& flower2, int radius, int numLayers, float P, float bias){

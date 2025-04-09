@@ -1,20 +1,27 @@
 {
   "name": "@cristianglezm/flower-evolver-wasm",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "wasm module to make flowers that evolve using EvoAI library",
   "main": "index.js",
+  "typings": "./public/FlowerEvolver.d.ts",
+  "files":[
+    "./public/*",
+    "./SFML-LICENSE.md",
+    "./index.*",
+    "./*.md"
+  ],
   "scripts": {
     "build:emscripten": "bash .devops/dist.sh FALSE",
     "build": "npm run build:emscripten",
     "serve": "emrun --serve_root build index.html"
   },
-  "typings": "./public/FlowerEvolver.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cristianglezm/FlowerEvolver-WASM.git"
   },
   "keywords": [
     "genetic-algorithms",
+    "evolution",
     "FlowerEvolver",
     "NEAT",
     "EvoAI"

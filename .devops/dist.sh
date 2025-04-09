@@ -7,6 +7,9 @@ FE_EXPORT=$1
 mkdir build && cd build
 git clone https://github.com/emscripten-core/emsdk.git
 cd emsdk && ./emsdk install latest && ./emsdk activate latest
+# we need to install tsc for FE_EXPORT=TRUE
+cd upstream/emscripten && npm i tsc
+cd ../../
 source emsdk_env.sh
 cd ..
 git clone https://github.com/cristianglezm/JsonBox.git

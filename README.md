@@ -23,6 +23,9 @@ set FE_EXPORT=TRUE if using modules.
 ```bash
 	git clone https://github.com/emscripten-core/emsdk.git
 	cd emsdk && ./emsdk install latest && ./emsdk activate latest
+# we need to install tsc for FE_EXPORT=TRUE
+	cd upstream/emscripten && npm i tsc
+	cd ../../
 	source ./emsdk_env.sh
 	cd ..
 	git clone https://github.com/cristianglezm/JsonBox.git
@@ -42,6 +45,8 @@ set FE_EXPORT=TRUE if using modules.
 ```
 
 ## Browser usage
+
+Refer to include/FlowerEvolver.hpp to see all available functions.
 
 ```javascript
     var Module = {};
@@ -63,7 +68,9 @@ set FE_EXPORT=TRUE if using modules.
 
 install it
 
+```bash
 npm install @cristianglezm/flower-evolver-wasm
+```
 
 ```javascript
 import fe from '@cristianglezm/flower-evolver-wasm';
@@ -82,7 +89,7 @@ export const useFlowersStore = defineStore('FlowersStore', {
             },
         });
 //then when using the store you will need to call
-const store = useFlowersStore(pinia);
+const store = useFlowersStore();
 store.loadFE();
 //...
 ````
@@ -140,7 +147,7 @@ SFML parts in include/SFML and src/SFML are under its own [license](include/SFML
 the rest of the code is licensed under apache 2.0
 
 ```
-   Copyright 2023 Cristian Gonzalez cristian.glez.m@gmail.com
+   Copyright 2023-2025 Cristian Gonzalez cristian.glez.m@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

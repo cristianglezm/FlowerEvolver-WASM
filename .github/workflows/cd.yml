@@ -17,4 +17,4 @@ jobs:
             EMAIL: ${{secrets.EMAIL}}
             FE_EXPORT: FALSE
         run: |
-          bash .devops/dist.sh $FE_EXPORT && sh .devops/deploy.sh $GITUSER $EMAIL
+          bash .devops/dist.sh $FE_EXPORT && sh .devops/deploy.sh "$GITUSER" "$EMAIL"

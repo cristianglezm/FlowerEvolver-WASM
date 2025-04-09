@@ -29,7 +29,18 @@ namespace fe{
 		 *  @param [in] P         P
 		 *  @param [in] bias      bias
 		 */
-		Flower(const sf::Vector2f& pos, int radius, int numLayers, float P, float bias);
+        Flower(const sf::Vector2f& pos, int radius, int numLayers, float P, float bias);
+		/**
+		 *  @brief constructor to use when creating a random flower.
+		 *  
+		 *  @param [in] pos       position
+		 *  @param [in] radius    radius
+		 *  @param [in] numLayers number of layers
+		 *  @param [in] P         P
+		 *  @param [in] bias      bias
+		 *  @param [in] type      Petals::Type
+		 */
+        Flower(const sf::Vector2f& pos, int radius, int numLayers, float P, float bias, const Petals::Type& type);
 		/**
 		 *  @brief constructor to use when creating a child flower.
 		 *  
@@ -41,6 +52,18 @@ namespace fe{
 		 *  @param [in] dna       fe::DNA to use to make this flower
 		 */
 		Flower(const sf::Vector2f& pos, int radius, int numLayers, float P, float bias, DNA&& dna);
+		/**
+		 *  @brief constructor to use when creating a child flower.
+		 *  
+		 *  @param [in] pos       position
+		 *  @param [in] radius    radius
+		 *  @param [in] numLayers number of layers
+		 *  @param [in] P         P
+		 *  @param [in] bias      bias
+		 *  @param [in] dna       fe::DNA to use to make this flower
+		 *  @param [in] type      Petals::Type
+		 */
+		Flower(const sf::Vector2f& pos, int radius, int numLayers, float P, float bias, DNA&& dna, const Petals::Type& type);
 		/**
 		 *  @brief copy constructor
 		 */
