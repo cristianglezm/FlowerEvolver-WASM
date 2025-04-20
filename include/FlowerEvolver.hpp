@@ -94,7 +94,7 @@ void drawPetals(const std::string& flower, int radius, int numLayers, float P, f
  */
 void drawPetalLayer(const std::string& flower, int radius, int numLayers, float P, float bias, int layer);
 /**
- * @brief make flower, it will paint into the canvas, is up to you to get the image from it.
+ * @brief it makes a child from two flower genomes, it will paint into the canvas, is up to you to get the image from it.
  * 
  * @param flower1 const std::string& stringified Flower.json
  * @param flower2 const std::string& stringified Flower.json
@@ -106,7 +106,7 @@ void drawPetalLayer(const std::string& flower, int radius, int numLayers, float 
  */
 std::string reproduce(const std::string& flower1, const std::string& flower2, int radius, int numLayers, float P, float bias);
 /**
- * @brief make flower, it will paint into the canvas, is up to you to get the image from it.
+ * @brief it makes flower from original (mutating it), it will paint into the canvas, is up to you to get the image from it.
  * 
  * @param original const std::string& stringified Flower.json to mutate
  * @param radius int radius for the flower
