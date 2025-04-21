@@ -36,7 +36,7 @@ cd emsdk
 
 # If using modules, install TypeScript Compiler
 cd upstream/emscripten
-npm install tsc
+npm install typescript
 cd ../../
 
 # Set up Emscripten environment
