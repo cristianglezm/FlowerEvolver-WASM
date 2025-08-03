@@ -1,0 +1,35 @@
+{
+  "name": "@cristianglezm/flower-evolver-wasm",
+  "version": "3.0.0",
+  "description": "wasm module to make 2D / 3D flowers that evolve using EvoAI library",
+  "main": "index.js",
+  "typings": "./public/FlowerEvolver.d.ts",
+  "files":[
+    "./public/*",
+    "./SFML-LICENSE.md",
+    "./index.*",
+    "./*.md"
+  ],
+  "scripts": {
+    "build:emscripten": "bash .devops/dist.sh FALSE",
+    "build": "npm run build:emscripten",
+    "serve": "emrun --serve_root build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristianglezm/FlowerEvolver-WASM.git"
+  },
+  "keywords": [
+    "genetic-algorithms",
+    "evolution",
+    "FlowerEvolver",
+    "NEAT",
+    "EvoAI"
+  ],
+  "author": "Cristian Gonzalez",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/cristianglezm/FlowerEvolver-WASM/issues"
+  },
+  "homepage": "https://github.com/cristianglezm/FlowerEvolver-WASM#readme"
+}

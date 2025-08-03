@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Cristian Gonzalez">
+    <title>FlowerEvolver-WASM Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body{
+			background-color: green;
+		}
+		button{
+			font-size: 20px;
+			border-radius: 315px 335px 155px 135px;
+			margin: 10px 10px 0 2px;
+			cursor: pointer;
+			border-color: #90ee90;
+			background-color: green;
+			color: #90ee90;
+		}
+		button:disabled {
+			cursor: not-allowed;
+			background-color: #556b2f;
+			color: #aaa;
+		}
+		h1{
+			text-align: center;
+			color: #90ee90;
+		}
+		#title{
+			font-size: 120px;
+			padding: 0;
+			margin: 0;
+			color: #90ee90;
+		}
+	@media only screen and (max-width: 1280px){
+		#title{
+			font-size: 40px;
+			padding: 0;
+			margin: 0;
+			color: #90ee90;
+		}
+	}
+		.grid{
+			display: grid;
+			grid-template-columns: repeat(auto-fill,minmax(230px,1fr));
+			grid-gap: 10px;
+			background-color: #000;
+			border: 10px solid black;
+		}
+		#tabs{
+			position: relative;
+			top: 12px;
+			font-size: xx-large;
+			margin-bottom: 10px;
+		}
+		#tab-flowers{
+			text-decoration: none;
+			text-indent: 10px;
+			padding: 2px 10px 10px 10px;
+			margin: 10px 0 0;
+			color: #90ee90;
+			border-radius: 12px 12px 0 0;
+			cursor: pointer;
+		}
+		.tab:hover{
+			background-color: #252729;
+			cursor: pointer;
+		}
+		.active{
+			background-color: #252729;
+		}
+		#original, #parents{
+			display: grid;
+			grid-template-columns: auto auto;
+			grid-gap: 10px;
+			justify-content: center;
+		}
+		#mutated, #children{
+			display: grid;
+			grid-template-columns: repeat(auto-fill,minmax(230px,1fr));
+			grid-gap: 10px;
+			background-color: #000;
+		}
+		#header-mutations, #header-descendants{
+			text-align: center;
+			color: #90ee90;
+			background-color: green;
+		}
+		.footer{
+			background-color: #252729;
+			color: #fff;
+			display: grid;
+			grid-template-columns: auto auto;
+			justify-items: stretch;
+		}
+		.github{
+			float: right;
+			position: relative;
+			top: 20px;
+			right: 20px;
+		}
+		#buttons{
+			text-align: right;
+		}
+		.flower{
+			text-align: center;
+			padding: 10px;
+			background-color: #252729;
+            display: flex;
+            flex-direction: column;
+		}
+        .flower-visual{
+            width: 230px;
+            height: 192px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #252729;
+        }
+        .flower-visual img, .flower-visual canvas{
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+            width: auto;
+        }
+		.close{
+			color: #90ee90;
+			cursor: pointer;
+			margin-right: 5px;
+			float: right;
+			font-size: 38px;
+			font-weight: 700;
+		}
+		.modal-overlay {
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  background-color: rgba(0, 0, 0, 0.8);
+		  color: lightgreen;
+		  z-index: 10000;
+		  
+		}
+		.modal-box {
+		  position: relative;
+		  background-color: green;
+		  padding: 50px;
+		  border-radius: 6px;
+		  min-width: 300px;
+		  text-align: center;
+		  display: flex;
+		  flex-flow: column nowrap;
+		}
+		#modalYesNo .modal-box {
+		  background-color: rgba(0, 128, 0, 0.8);
+		  min-width: 320px;
+		}
+		.modal-close {
+		  position: absolute;
+		  top: 10px;
+		  right: 10px;
+		  cursor: pointer;
+		  font-size: xx-large;
+		}
+		#modalYesNo .modal-close {
+		  top: 8px;
+		  right: 12px;
+		}
+		.modal-message {
+		  margin: 0 0 20px;
+		}
+		.modal-buttons {
+		  display: flex;
+		  justify-content: center;
+		  gap: 10px;
+		}
+		#modalYesNo .modal-buttons {
+		  gap: 12px;
+		}
+	</style>
+</head>
+<body>
+    <div>
+      <a href="/FlowerEvolver-WASM" style="text-decoration: none;"><h1 id="title">FlowerEvolver-WASM</h1></a>
+    </div>
+    <canvas id="canvas" hidden width="128" height="192"></canvas>
+	<script crossorigin src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <script type="importmap">
+	{
+	  "imports": {
+		"three": "https://unpkg.com/three@0.178.0/build/three.module.js",
+		"three/examples/jsm/controls/OrbitControls.js": "https://unpkg.com/three@0.178.0/examples/jsm/controls/OrbitControls.js",
+		"three/examples/jsm/loaders/GLTFLoader.js": "https://unpkg.com/three@0.178.0/examples/jsm/loaders/GLTFLoader.js",
+		"three/examples/jsm/postprocessing/EffectComposer.js": "https://unpkg.com/three@0.178.0/examples/jsm/postprocessing/EffectComposer.js",
+		"three/examples/jsm/postprocessing/RenderPass.js": "https://unpkg.com/three@0.178.0/examples/jsm/postprocessing/RenderPass.js",
+		"three/examples/jsm/postprocessing/UnrealBloomPass.js": "https://unpkg.com/three@0.178.0/examples/jsm/postprocessing/UnrealBloomPass.js"
+	  }
+	}
+    </script>
+    <script type='module'>
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+		import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+		import { RenderPass      } from 'three/examples/jsm/postprocessing/RenderPass.js';
+		import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+
+        const wasmReadyPromise = new Promise(resolve => {
+            window.Module = {};
+            fetch('public/FlowerEvolver.wasm')
+                .then(response => response.arrayBuffer())
+                .then(buffer => {
+                    window.Module.wasmBinary = buffer;
+                    const script = document.createElement('script');
+                    script.src = 'public/FlowerEvolver.js';
+                    script.onload = () => {
+                        const interval = setInterval(() => {
+                            if (window.Module.makeFlower) {
+                                clearInterval(interval);
+                                resolve();
+                            }
+                        }, 50);
+                    };
+                    document.body.appendChild(script);
+                });
+        });
+
+        const App = {
+            db: null,
+            renderers: new Map(),
+            selected: [null, null],
+            selectedIndex: 0,
+
+            async init() {
+                this.setupDOM();
+                this.disableWasmButtons(true, "Loading WASM...");
+                await wasmReadyPromise;
+                this.disableWasmButtons(false);
+                await this.initDb();
+                this.showAllFlowers();
+            },
+
+            setupDOM() {
+                document.getElementById('btn-make').onclick = () => this.makeFlower();
+                document.getElementById('btn-reproduce').onclick = () => this.reproduceSelected();
+                document.getElementById('btn-show-desc').onclick = () => this.showDescSelected();
+                document.getElementById('btn-clear').onclick = () => this.clearAllFlowers();
+                document.getElementById('tab-flowers').onclick = () => this.showAllFlowers();
+            },
+
+            disableWasmButtons(disabled, text = "Make Flower") {
+                document.getElementById('btn-make').disabled = disabled;
+                document.getElementById('btn-make').textContent = text;
+                document.getElementById('btn-reproduce').disabled = disabled;
+                document.querySelectorAll('.wasm-dependent').forEach(btn => btn.disabled = disabled);
+            },
+
+            async initDb() {
+                this.db = new Dexie("Flowers");
+                this.db.version(1).stores({
+                    flowers: '++id',
+                    mutations:'id, original',
+                    descendants: 'id, father, mother, [father+mother]'
+                });
+                await this.db.open();
+            },
+
+            async makeFlower() {
+                try {
+                    const genome = Module.makeFlower(64, 3, 6.0, 1.0);
+                    const image = document.getElementById("canvas").toDataURL();
+                    const id = await this.db.flowers.add({ genome, image });
+                    const newFlower = await this.db.flowers.get(id);
+                    UI.addFlowerToGrid('flowers', newFlower);
+                } catch(e) { UI.createModal(e.message || e); }
+            },
+
+            async reproduceSelected() {
+                if(!this.selected[0] || !this.selected[1]) return UI.createModal("Please select two flowers to reproduce.");
+                const f1 = await this.db.flowers.get(this.selected[0]);
+                const f2 = await this.db.flowers.get(this.selected[1]);
+                try {
+                    const genome = Module.reproduce(f1.genome, f2.genome, 64, 3, 6.0, 1.0);
+                    const image = document.getElementById("canvas").toDataURL();
+                    const id = await this.db.flowers.add({ genome, image });
+                    await this.db.descendants.add({ id, father: f1.id, mother: f2.id });
+                    const newFlower = await this.db.flowers.get(id);
+                    UI.addFlowerToGrid('flowers', newFlower);
+                } catch(e) { UI.createModal(Module.getExceptionMessage(e)); }
+            },
+
+            async mutateFlower(originalFlower) {
+                 try {
+                    const genome = Module.mutate(originalFlower.genome, 64, 3, 6.0, 1.0, 0.2, 0.3, 0.2, 0.6, 0.35, 0.3, 0.4);
+                    const image = document.getElementById("canvas").toDataURL();
+                    const id = await this.db.flowers.add({ genome, image });
+                    await this.db.mutations.add({ id, original: originalFlower.id });
+                    const newFlower = await this.db.flowers.get(id);
+                    UI.addFlowerToGrid(UI.getActiveGridId(), newFlower);
+                } catch(e) { UI.createModal(Module.getExceptionMessage(e)); }
+            },
+
+            deleteFlower(flower, elementId) {
+                UI.createModalYesNo("Are you sure you want to delete this flower?", async () => {
+                    this.cleanupRenderer(flower.id);
+                    document.getElementById(`${elementId}-f-${flower.id}`)?.remove();
+                    await this.db.flowers.delete(flower.id);
+                    await this.db.mutations.where({ original: flower.id }).or('id').equals(flower.id).delete();
+                    await this.db.descendants.where({ id: flower.id }).or('father').equals(flower.id).or('mother').equals(flower.id).delete();
+                });
+            },
+
+            selectFlower(flowerId) {
+                const oldId = this.selected[this.selectedIndex];
+                if (oldId !== null) {
+                    document.querySelectorAll(`.flower`).forEach(el => {
+                        if (el.id.endsWith(`-f-${oldId}`)) el.style.border = '';
+                    });
+                }
+                this.selected[this.selectedIndex] = flowerId;
+                document.querySelectorAll(`.flower`).forEach(el => {
+                    if (el.id.endsWith(`-f-${flowerId}`)) el.style.border = '2px solid red';
+                });
+                this.selectedIndex = (this.selectedIndex + 1) % 2;
+            },
+
+            async showAllFlowers() {
+                UI.switchTab('flowers');
+                const allFlowers = await this.db.flowers.toArray();
+                UI.populateGrid('flowers', allFlowers);
+            },
+
+            async showMutations(originalId) {
+                UI.switchTab('mutations');
+                const originalFlower = await this.db.flowers.get(originalId);
+                const mutationRecords = await this.db.mutations.where({original: originalId}).toArray();
+                const mutationIds = mutationRecords.map(m => m.id);
+                const mutatedFlowers = mutationIds.length > 0 ? await this.db.flowers.where('id').anyOf(mutationIds).toArray() : [];
+                UI.populateGrid('original', originalFlower ? [originalFlower] : []);
+                UI.populateGrid('mutated', mutatedFlowers);
+                document.getElementById('header-mutations').textContent = `Mutations of ${originalId}`;
+            },
+
+            async showDescendants(parentId) {
+                 UI.switchTab('descendants');
+                 const parentFlower = await this.db.flowers.get(parentId);
+                 const childRecords = await this.db.descendants.where("father").equals(parentId).or("mother").equals(parentId).toArray();
+                 const childIds = childRecords.map(c => c.id);
+                 const childFlowers = childIds.length > 0 ? await this.db.flowers.where('id').anyOf(childIds).toArray() : [];
+                 UI.populateGrid('parents', parentFlower ? [parentFlower] : []);
+                 UI.populateGrid('children', childFlowers);
+                 document.getElementById('header-descendants').textContent = `Descendants of ${parentId}`;
+            },
+
+             async showDescSelected() {
+                if (!this.selected[0] || !this.selected[1]) return UI.createModal("Please select two parents.");
+                UI.switchTab('descendants');
+                const [p1, p2] = await Promise.all([
+                    this.db.flowers.get(this.selected[0]),
+                    this.db.flowers.get(this.selected[1])
+                ]);
+                const childRecords = await this.db.descendants.where('[father+mother]')
+                    .equals([p1.id, p2.id])
+                    .or('[father+mother]').equals([p2.id, p1.id])
+                    .toArray();
+                const childIds = childRecords.map(c => c.id);
+                const childFlowers = childIds.length ? await this.db.flowers.where('id').anyOf(childIds).toArray() : [];
+                UI.populateGrid('parents', [p1, p2]);
+                UI.populateGrid('children', childFlowers);
+                document.getElementById('header-descendants').textContent = `Descendants of ${p1.id} & ${p2.id}`;
+            },
+
+            async clearAllFlowers() {
+                UI.createModalYesNo("This will delete all data permanently. Are you sure?", async () => {
+                    this.renderers.forEach((_, key) => this.cleanupRenderer(key));
+                    this.renderers.clear();
+                    this.db.close();
+                    await Dexie.delete("Flowers");
+                    await this.initDb();
+                    this.showAllFlowers();
+                });
+            },
+			
+			cleanupRenderer(flowerId) {
+			  const entry = this.renderers.get(flowerId);
+			  if (!entry) return;
+			  const {
+				renderer,
+				controls,
+				animationFrameId,
+				scene,
+				composer,
+				canvas,
+				resizeHandler
+			  } = entry;
+
+			  if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+			  scene.traverse(obj => {
+				if (obj.geometry) {
+				  obj.geometry.dispose();
+				}
+				if (obj.material) {
+				  const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+				  mats.forEach(mat => {
+					for (const key in mat) {
+					  const prop = mat[key];
+					  if (prop && typeof prop.dispose === 'function') {
+						prop.dispose();
+					  }
+					}
+					mat.dispose();
+				  });
+				}
+			  });
+			  if (composer) {
+				composer.passes.forEach(pass => {
+				  if (pass.dispose) pass.dispose();
+				});
+			  }
+
+			  controls.dispose();
+			  renderer.dispose();
+
+			  if (canvas) {
+				const gl = renderer.getContext();
+				const ext = gl.getExtension('WEBGL_lose_context');
+				if (ext) ext.loseContext();
+				canvas.parentNode?.removeChild(canvas);
+			  }
+			  this.renderers.delete(flowerId);
+			}
+        };
+
+        const UI = {
+            addFlowerToGrid(gridId, flower) {
+                const grid = document.getElementById(gridId);
+                if (!grid) return;
+                const flowerCard = this.createFlowerCard(flower, gridId);
+                grid.insertBefore(flowerCard, grid.firstChild);
+            },
+            
+            populateGrid(gridId, flowers) {
+                const grid = document.getElementById(gridId);
+                grid.innerHTML = '';
+                flowers.forEach(f => this.addFlowerToGrid(gridId, f));
+            },
+
+            createFlowerCard(flower, elementId) {
+                const flowerRoot = document.createElement("div");
+                flowerRoot.id = `${elementId}-f-${flower.id}`;
+                flowerRoot.className = "flower";
+                flowerRoot.dataset.viewState = '2d';
+
+                const visualContainer = document.createElement('div');
+                visualContainer.className = 'flower-visual';
+                visualContainer.innerHTML = `<img src="${flower.image}" alt="Flower ${flower.id}">`;
+                const title = document.createElement("h1");
+                title.textContent = flower.id;
+                flowerRoot.appendChild(visualContainer);
+                flowerRoot.appendChild(title);
+
+                const createBtn = (text, onClick, isWasm = false) => {
+                    const btn = document.createElement("button");
+                    btn.textContent = text;
+                    btn.onclick = onClick;
+                    if (isWasm) btn.classList.add('wasm-dependent');
+                    return btn;
+                };
+
+                const toggleBtn = createBtn("Show 3D", () => this.toggleFlowerView(toggleBtn, flowerRoot, visualContainer, flower), true);
+                flowerRoot.appendChild(createBtn("Select", () => App.selectFlower(flower.id)));
+                flowerRoot.appendChild(toggleBtn);
+                flowerRoot.appendChild(createBtn("Mutate", () => App.mutateFlower(flower), true));
+                flowerRoot.appendChild(createBtn("Download Genome", () => this.downloadFile(flower.genome, `flower_${flower.id}.json`, 'application/json')));
+                flowerRoot.appendChild(createBtn("Download Image", () => this.downloadFile(flower.image, `flower_${flower.id}.png`, 'image/png')));
+                flowerRoot.appendChild(createBtn("Download 3D", () => {
+                     const gltfData = Module.make3DFlower(flower.genome, 64, 3, 6.0, 1.0, flower.id.toString(), '{}');
+                     this.downloadFile(gltfData, `flower_${flower.id}.gltf`, 'model/gltf+json');
+                }, true));
+                flowerRoot.appendChild(createBtn("Show Mutations", () => App.showMutations(flower.id)));
+                flowerRoot.appendChild(createBtn("Show Descendants", () => App.showDescendants(flower.id)));
+                flowerRoot.appendChild(createBtn("Delete", () => App.deleteFlower(flower, elementId)));
+
+                return flowerRoot;
+            },
+
+            toggleFlowerView(button, root, container, flower) {
+                const currentState = root.dataset.viewState;
+                let nextState;
+                if (currentState === '2d')      { nextState = '3d';  button.textContent = 'Show E3D'; }
+                else if (currentState === '3d') { nextState = 'e3d'; button.textContent = 'Show 2D';  }
+                else                            { nextState = '2d';  button.textContent = 'Show 3D';  }
+                root.dataset.viewState = nextState;
+                this.renderFlowerVisual(container, flower, nextState);
+            },
+
+            renderFlowerVisual(container, flower, state) {
+                App.cleanupRenderer(flower.id);
+                container.innerHTML = '';
+                if (state === '2d') {
+                    container.innerHTML = `<img src="${flower.image}" alt="Flower ${flower.id}">`;
+                    return;
+                }
+                const isEmissive = (state === 'e3d');
+                const canvas = document.createElement('canvas');
+                container.appendChild(canvas);
+
+                const scene = new THREE.Scene();
+                const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+								
+                renderer.setClearColor(0x252729);
+                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.001, 1000);
+				
+				let composer, bloomPass;
+				if (isEmissive) {
+				  composer = new EffectComposer(renderer);
+				  const renderPass = new RenderPass(scene, camera);
+				  composer.addPass(renderPass);
+				  const size = renderer.getSize(new THREE.Vector2());
+				  bloomPass = new UnrealBloomPass(
+					size,      // resolution
+					1.2,       // strength
+					0.4,       // radius
+					0.85       // threshold
+				  );
+				  composer.addPass(bloomPass);
+				}
+				
+                const controls = new OrbitControls(camera, renderer.domElement);
+                controls.enabled = false;
+                controls.enableDamping = true;
+
+				const addPetalLights = (root) => {
+				  root.traverse((petal) => {
+					if (!petal.isMesh || !Array.isArray(petal.userData.lights)) return;
+					petal.userData.lights.forEach(def => {
+					  const pivot = new THREE.Object3D();
+					  pivot.position.fromArray(def.position);
+					  const light = new THREE.PointLight(def.color, def.intensity, def.radius, def.decay);
+					  light.castShadow = false;
+					  pivot.add(light);
+					  //const helper = new THREE.PointLightHelper(light, def.radius);
+					  //pivot.add(helper);
+					  petal.add(pivot);
+					});
+				  });
+				};
+
+                const flowerParams = isEmissive ? '{ "sex": 2, "useNormals": true, "useEmissive": true }' : '{ "sex": 2, "useNormals": true }';
+                const gltfData = Module.make3DFlower(flower.genome, 64, 3, 6.0, 1.0, flower.id.toString(), flowerParams);
+                new GLTFLoader().parse(gltfData, '', (gltf) => {
+                    const model = gltf.scene;
+
+                    const box = new THREE.Box3().setFromObject(model);
+                    const size = box.getSize(new THREE.Vector3());
+                    const center = box.getCenter(new THREE.Vector3());
+                    model.position.y = -size.y / 2;
+                    model.scale.y = 0.01;	
+                    scene.add(model);
+					
+                    if (isEmissive) {
+						addPetalLights(model);
+                    } else {
+                        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+                        const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+                        dirLight.position.set(5, 10, 7.5);
+                        scene.add(dirLight);
+                    }
+					
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const fov = camera.fov * (Math.PI / 180);
+                    const initialCamZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 1.2;
+                    camera.position.set(center.x, center.y, center.z + initialCamZ);
+                    camera.lookAt(center);
+
+                    const sproutDuration = 800;
+                    const cameraMoveDuration = 1200;
+                    const startTime = Date.now();
+                    let animationFrameId;
+					const clock           = new THREE.Clock();
+					let cameraDone        = false;
+					const startPos        = new THREE.Vector3(center.x, center.y, center.z + initialCamZ);
+					const endPos          = new THREE.Vector3(center.x, center.y + initialCamZ, center.z);
+					const easeOutQuad     = t => t * (2 - t);
+					function animate() {
+					  requestAnimationFrame(animate);
+					  const elapsed = clock.getElapsedTime() * 1000;
+					  const tSprout = Math.min(elapsed / sproutDuration, 1);
+					  model.scale.y = easeOutQuad(tSprout);
+					  if (elapsed > sproutDuration && !cameraDone) {
+						const raw   = (elapsed - sproutDuration) / cameraMoveDuration;
+						const tCam  = THREE.MathUtils.clamp(raw, 0, 1);
+						const eased = easeOutQuad(tCam);
+						camera.position.lerpVectors(startPos, endPos, eased);
+						camera.lookAt(center);
+						if (tCam === 1) {
+						  controls.enabled = true;
+						  cameraDone      = true;
+						}
+					  }
+					  controls.update();
+					  if (isEmissive) {
+						composer.render();
+					  } else {
+					    renderer.render(scene, camera);
+					  }
+					}
+					clock.start();
+					animate();
+					App.renderers.set(flower.id, {
+					  renderer,
+					  controls,
+					  animationFrameId,
+					  scene,
+					  composer,
+					  canvas: renderer.domElement
+					});
+
+                });
+            },
+
+            getActiveGridId() {
+                if (document.getElementById('flowers').style.display !== 'none') return 'flowers';
+                if (document.getElementById('mutations').style.display !== 'none') return 'mutated';
+                return 'flowers';
+            },
+
+            downloadFile(content, fileName, mimeType) {
+                const a = document.createElement('a');
+                let blob;
+                if (content.startsWith('data:')) {
+                    const byteString = atob(content.split(',')[1]);
+                    const ab = new ArrayBuffer(byteString.length);
+                    const ia = new Uint8Array(ab);
+                    for (let i = 0; i < byteString.length; i++) {
+                        ia[i] = byteString.charCodeAt(i);
+                    }
+                    blob = new Blob([ab], { type: mimeType });
+                } else {
+                    blob = new Blob([content], {type: mimeType});
+                }
+                a.href = URL.createObjectURL(blob);
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            },
+
+            switchTab(tabName) {
+                const navLinks = {'flowers': document.getElementById('tab-flowers')};
+                const contentDivs = {'flowers': 'grid', 'mutations': 'block', 'descendants': 'block'};
+
+                Object.keys(contentDivs).forEach(id => {
+                    document.getElementById(id).style.display = 'none';
+                    if (navLinks[id]) navLinks[id].classList.remove('active');
+                });
+                
+                document.getElementById(tabName).style.display = contentDivs[tabName];
+                if (navLinks[tabName]) navLinks[tabName].classList.add('active');
+            },
+
+			createModal(msg) {
+			  const existing = document.getElementById("modal");
+			  if (existing) document.body.removeChild(existing);
+
+			  const modal = document.createElement("div");
+			  modal.id = "modal";
+			  modal.className = "modal-overlay";
+
+			  const box = document.createElement("div");
+			  box.className = "modal-box";
+
+			  const closeSpan = document.createElement("span");
+			  closeSpan.className = "modal-close";
+			  closeSpan.textContent = "×";
+			  closeSpan.onclick = () => modal.remove();
+
+			  const msgP = document.createElement("p");
+			  msgP.className = "modal-message";
+			  msgP.textContent = msg;
+
+			  const buttonContainer = document.createElement("div");
+			  buttonContainer.className = "modal-buttons";
+
+			  const okBtn = document.createElement("button");
+			  okBtn.textContent = "Ok";
+			  okBtn.onclick = () => modal.remove();
+			  buttonContainer.appendChild(okBtn);
+
+			  box.append(closeSpan, msgP, buttonContainer);
+			  modal.appendChild(box);
+			  document.body.appendChild(modal);
+			},
+
+			createModalYesNo(msg, callback) {
+			  const existing = document.getElementById("modalYesNo");
+			  if (existing) document.body.removeChild(existing);
+
+			  const modal = document.createElement("div");
+			  modal.id = "modalYesNo";
+			  modal.className = "modal-overlay";
+
+			  const box = document.createElement("div");
+			  box.className = "modal-box";
+
+			  const closeSpan = document.createElement("span");
+			  closeSpan.className = "modal-close";
+			  closeSpan.textContent = "×";
+			  closeSpan.onclick = () => modal.remove();
+			  const msgP = document.createElement("p");
+			  msgP.className = "modal-message";
+			  msgP.textContent = msg;
+			  const buttonContainer = document.createElement("div");
+			  buttonContainer.className = "modal-buttons";
+			  const noBtn = document.createElement("button");
+			  noBtn.textContent = "No";
+			  noBtn.onclick = () => modal.remove();
+			  const yesBtn = document.createElement("button");
+			  yesBtn.textContent = "Yes";
+			  yesBtn.onclick = () => {
+				callback();
+				modal.remove();
+			  };
+
+			  buttonContainer.append(noBtn, yesBtn);
+			  box.append(closeSpan, msgP, buttonContainer);
+			  modal.appendChild(box);
+			  document.body.appendChild(modal);
+			},
+        };
+
+        App.init();
+
+    </script>
+	<noscript>
+		<strong>We're sorry but Flower Evolver WASM doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+	<div id="buttons">
+		<button id="btn-make">Make Flower</button>
+		<button id="btn-reproduce">reproduce selected</button>
+		<button id="btn-show-desc">show selected Descendants</button>
+		<button id="btn-clear">clear all flowers</button>
+	</div>
+	<div>
+		<nav id="tabs">
+			<ul style="margin: 0px; padding: 0px;">
+				<a id="tab-flowers" class="tab active">Flowers</a>
+			</ul>
+		</nav>
+	</div>
+	<div id="flowers" class="grid"></div>
+	<div id="mutations" style="display:none;">
+		<div id="original" class="grid"></div>
+		<h2 id="header-mutations"></h2>
+		<div id="mutated" class="grid"></div>
+	</div>
+	<div id="descendants" style="display:none;">
+		<div id="parents" class="grid"></div>
+		<h2 id="header-descendants"></h2>
+		<div id="children" class="grid"></div>
+	</div>
+	<div id="footer">
+		<p style="margin-left: 20px; float: left; position: relative; bottom: 20px; padding: 40px 40px 0 0; color: lightgreen;">Copyright© 2023-2025 FlowerEvolver-WASM</p>
+		<a class="github" href="https://github.com/cristianglezm/FlowerEvolver-WASM">
+			<img src="data:image/png;base64,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">
+		</a>
+	</div>
+</body>
+</html>
