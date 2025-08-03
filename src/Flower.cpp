@@ -1,10 +1,11 @@
-#include "Flower.hpp"
+#include <EvoAI/Utils/MathUtils.hpp>
+#include <Flower.hpp>
 
 namespace fe{
 	Flower::Flower()
 	: dna()
 	, petals(){}
-	Flower::Flower(const sf::Vector2f& pos, int radius, int numLayers, float P, float bias)
+	Flower::Flower([[maybe_unused]] const sf::Vector2f& pos, int radius, int numLayers, float P, float bias)
 	: dna()
 	, petals(radius, numLayers, P, bias){
 		//add stats genome so is compatible with EcoSystem Flowers
@@ -12,7 +13,7 @@ namespace fe{
 		dna.add(EvoAI::Genome(4,4,false,true));
 		draw(Petals::Type::TrunkAndPetals, petals, dna[1]);
 	}
-	Flower::Flower(const sf::Vector2f& pos, int radius, int numLayers, float P, float bias, const Petals::Type& type)
+	Flower::Flower([[maybe_unused]] const sf::Vector2f& pos, int radius, int numLayers, float P, float bias, const Petals::Type& type)
 	: dna()
 	, petals(radius, numLayers, P, bias){
 		//add stats genome so is compatible with EcoSystem Flowers
@@ -20,7 +21,7 @@ namespace fe{
 		dna.add(EvoAI::Genome(4,4,false,true));
 		draw(type, petals, dna[1]);
 	}
-	Flower::Flower(const sf::Vector2f& pos, int radius, int numLayers, float P, float bias, DNA&& dna, const Petals::Type& type)
+	Flower::Flower([[maybe_unused]] const sf::Vector2f& pos, int radius, int numLayers, float P, float bias, DNA&& dna, const Petals::Type& type)
 	: dna(std::forward<DNA>(dna))
 	, petals(radius, numLayers, P, bias){
 		if(this->dna.size() < 2){
@@ -28,7 +29,7 @@ namespace fe{
 		}
 		draw(type, petals, this->dna[1]);
 	}
-	Flower::Flower(const sf::Vector2f& pos, int radius, int numLayers, float P, float bias, DNA&& dna)
+	Flower::Flower([[maybe_unused]] const sf::Vector2f& pos, int radius, int numLayers, float P, float bias, DNA&& dna)
 	: dna(std::forward<DNA>(dna))
 	, petals(radius, numLayers, P, bias){
 		if(this->dna.size() < 2){
@@ -68,4 +69,4 @@ namespace fe{
 		}
 		petals = rhs.petals;
 	}
-}
+} // namespace fe

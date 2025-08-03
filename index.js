@@ -37,6 +37,33 @@ export const getDataUrl = async (canvas) => {
     return canvas.toDataURL();
 };
 /**
+ * @brief Utility function to get the blob data from a canvas.
+ * @param {HTMLCanvasElement | OffscreenCanvas} canvas 
+ * @param {Object} options for canvas.toBlob | canvas.convertToBlob
+ * @returns Promise
+ */
+export const getCanvasBlob = async(canvas, options) => {
+    if(canvas instanceof OffscreenCanvas){
+        return await canvas.convertToBlob(options);
+    }
+    return await new Promise((resolve, reject) => {
+        try{
+            canvas.toBlob(
+                (blob) => {
+                    if (blob) {
+                        resolve(blob);
+                    } else {
+                        reject(new Error("getCanvasBlob - Canvas toBlob returned null"));
+                    }
+                },
+                options
+            );
+        }catch(error){
+            reject(error);
+        }
+    });
+};
+/**
  * @brief A simple Flower
  */
 export class Flower{
@@ -138,6 +165,124 @@ export class FEService{
         }catch(e){
             throw Error(this.fe.getExceptionMessage(e));
         }
+    }
+    /**
+     * @brief returns a GLTF string of the flower.
+     * 
+     * @param {String} genome 
+     * @param {String} flowerID 
+     * @param {Object} flowerParams - for the complete list of options consult include/3D/FlowerParameters.hpp
+     * @returns {Promise<String>} - GLTF file string
+     */
+    async _make3DFlower(genome, flowerID, flowerParams){
+        if(!this.fe){
+            throw Error("call FEService.init() before using it");
+        }
+        let model;
+        try{
+            model = this.fe.make3DFlower(genome, this.params.radius, this.params.numLayers, this.params.P, this.params.bias, flowerID, JSON.stringify(flowerParams));
+        }catch(e){
+            throw Error(this.fe.getExceptionMessage(e));
+        }
+        return model;
+    }
+    /**
+     * @brief returns a GLTF string of the flower.
+     * 
+     * @param {String} genome 
+     * @param {String} flowerID 
+     * @param {string} sex - "male", "female", "both"
+     * @returns {Promise<String>} - GLTF file string
+     */
+    async make3DFlower(genome, flowerID, sex){
+        if(!this.fe){
+            throw Error("call FEService.init() before using it");
+        }
+        let flowerParams = {
+            sex: 2,
+            useNormals: true,
+            useEmissive: false
+        };
+        if(sex === "male"){
+            flowerParams.sex = 0;
+        }else if(sex === "female"){
+            flowerParams.sex = 1;
+        }
+        let model;
+        try{
+            model = await this._make3DFlower(genome, flowerID, flowerParams);
+        }catch(e){
+            throw Error(this.fe.getExceptionMessage(e));
+        }
+        return model;
+    }
+    /**
+     * @brief returns a GLTF string of the flower (with normals and emissive textures).
+     * 
+     * @param {String} genome 
+     * @param {String} flowerID 
+     * @param {string} sex - "male", "female", "both"
+     * @returns {Promise<String>} - GLTF file string
+     */
+    async makeEmissive3DFlower(genome, flowerID, sex){
+        if(!this.fe){
+            throw Error("call FEService.init() before using it");
+        }
+        let flowerParams = {
+            sex: 2,
+            useNormals: true,
+            useEmissive: true
+        };
+        if(sex === "male"){
+            flowerParams.sex = 0;
+        }else if(sex === "female"){
+            flowerParams.sex = 1;
+        }
+        let model;
+        try{
+            model = await this._make3DFlower(genome, flowerID, flowerParams);
+        }catch(e){
+            throw Error(this.fe.getExceptionMessage(e));
+        }
+        return model;
+    }
+    /**
+     * @brief returns a GLTF string of the flower, it uses the params inside genome.
+     * @param {string} genome 
+     * @param {string} flowerID 
+     * @param {string} sex - "male", "female", "both"
+     * @returns {Object}
+     */
+    async draw3DFlower(genome, flowerID, sex){
+        if(!this.fe){
+            throw Error("call FEService.init() before using it");
+        }
+        let genJson = JSON.parse(genome);
+        let oldParams = {...this.params};
+        let params = genJson.Flower.petals;
+        this.setParams(new FEParams(params.radius, params.numLayers, params.P, params.bias));
+        let flower = await this.make3DFlower(genome, flowerID, sex);
+        this.setParams(oldParams);
+        return flower;
+    }
+    /**
+     * @brief returns a GLTF string of the flower (with normals and emissive textures), it uses the params inside genome.
+     * @param {string} genome 
+     * @param {string} flowerID 
+     * @param {string} sex - "male", "female", "both"
+     * @returns {Object}
+     */
+    async drawEmissive3DFlower(genome, flowerID, sex){
+        if(!this.fe){
+            throw Error("call FEService.init() before using it");
+        }
+        let genJson = JSON.parse(genome);
+        let oldParams = {...this.params};
+        let params = genJson.Flower.petals;
+        this.setParams(new FEParams(params.radius, params.numLayers, params.P, params.bias));
+        let flower = await this.makeEmissive3DFlower(genome, flowerID, sex);
+        this.setParams(oldParams);
+        return flower;
     }
     /**
      * @brief it makes a flower with no stem.
@@ -289,5 +434,25 @@ export class FEService{
             }catch(e){
                 throw Error(this.fe.getExceptionMessage(e));
             }
+    }
+    /**
+     * @brief gets the flower stats.
+     * @param {string} genome
+     * @param {number} humidity float 0.0 to 1.0
+     * @param {number} temperature int temperature
+     * @param {number} altitude int meters above sea
+     * @param {number} terrainType int terrain type
+     * @returns {Map} map for stats.
+     */
+    getFlowerStats(genome, humidity = 0.5, temperature = 20, altitude = 0, terrainType = 0){
+        if(!this.fe){
+            throw Error("call FEService.init() before using it");
+        }
+        try{
+            let json = this.fe.getFlowerStats(genome, humidity, temperature, altitude, terrainType);
+            return JSON.parse(json).stats;
+        }catch(e){
+            throw Error(this.fe.getExceptionMessage(e));
+        }
     }
 };

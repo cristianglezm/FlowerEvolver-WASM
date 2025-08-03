@@ -13,7 +13,7 @@ namespace fe{
 	, bias(bias)
 	, P(P)
 	, radius(std::clamp(r, 4, 256))
-	, numLayers(std::max(1, nLayers))
+	, numLayers(std::clamp(nLayers, 1, getTimesDivisibleBy(radius, 2)))
 	, hasBloom(false){
 		image.create(radius * 2, radius * 3, sf::Color::Transparent);
 	}
@@ -21,8 +21,8 @@ namespace fe{
 	: image()
 	, bias(o["bias"].tryGetFloat(1.0))
 	, P(o["P"].tryGetFloat(6.0))
-	, radius(std::clamp(o["radius"].tryGetInteger(4), 4, 256))
-	, numLayers(std::max(1, o["numLayers"].tryGetInteger(1)))
+	, radius(std::clamp(o["radius"].tryGetInteger(64), 4, 256))
+	, numLayers(std::clamp(o["numLayers"].tryGetInteger(3), 1, getTimesDivisibleBy(radius, 2)))
 	, hasBloom(false){
 		image.create(radius * 2, radius * 3, sf::Color::Transparent);
 	}
@@ -126,20 +126,32 @@ namespace fe{
 		void drawTrunk(Petals& petals) noexcept{
 			const auto& origin = sf::Vector2f(petals.radius,petals.radius);
 			const auto& size = petals.image.getSize();
-			auto mask = sf::Color::Black;
-			mask.a = 128;
 			for(auto y=origin.y;y<size.y;++y){
-				petals.image.setPixel(origin.x-1,y,sf::Color::Green + mask);
-				petals.image.setPixel(origin.x,y,sf::Color::Green + mask);
-				petals.image.setPixel(origin.x+1,y,sf::Color::Green + mask);
+				petals.image.setPixel(origin.x-1,y,sf::Color::Green);
+				petals.image.setPixel(origin.x,y,sf::Color::Green);
+				petals.image.setPixel(origin.x+1,y,sf::Color::Green);
 			}
 		}
 	}//priv/
-	void drawLayer(Petals& petals, EvoAI::Genome& g, int layer) noexcept{
+	int getTimesDivisibleBy(int val, int divisor) noexcept{
+		int count = 0;
+		if(divisor <= 1){
+			return 1;
+		}
+		val = std::abs(val);
+		while(val > 1){
+			++count;
+			val /= divisor;
+		}
+		return count;
+	}
+	void drawLayer(Petals& petals, EvoAI::Genome& g, int layer, bool applyLayeredRadiusScaling) noexcept{
 		auto nn = EvoAI::Genome::makePhenotype(g);
 		auto r = petals.radius;
-		for(auto i = petals.numLayers;i>layer;--i){
-			r /= 2;
+		if(applyLayeredRadiusScaling){
+			for(auto i = petals.numLayers;i>layer;--i){
+				r /= 2;
+			}
 		}
 		priv::drawPetals(petals, nn, r, layer);
 	}

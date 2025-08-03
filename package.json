@@ -1,7 +1,7 @@
 {
   "name": "@cristianglezm/flower-evolver-wasm",
-  "version": "2.0.1",
-  "description": "wasm module to make flowers that evolve using EvoAI library",
+  "version": "3.0.0",
+  "description": "wasm module to make 2D / 3D flowers that evolve using EvoAI library",
   "main": "index.js",
   "typings": "./public/FlowerEvolver.d.ts",
   "files":[
