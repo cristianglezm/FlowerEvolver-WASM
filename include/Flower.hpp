@@ -1,11 +1,7 @@
 #ifndef FLOWER_HPP
 #define FLOWER_HPP
 
-#include <functional>
-#include <vector>
-
 #include <SFML/System/Vector2.hpp>
-
 #include <JsonBox.h>
 
 #include <DNA.hpp>
@@ -15,7 +11,7 @@ namespace fe{
 	/**
 	 *  @brief Flower struct
 	 */
-	struct Flower{
+	struct Flower final{
 		/**
 		 *  @brief default constructor
 		 */

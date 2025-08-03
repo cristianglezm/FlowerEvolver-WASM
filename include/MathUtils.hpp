@@ -8,10 +8,11 @@ namespace fe::Math{
 	/**
 	 *  @brief PI
 	 */
-	constexpr float PI = 3.14159265359;
+	constexpr double PI = 3.14159265358979323846;
 	/**
-	 * @brief
-	 * @param 
+	 * @brief calculates the magnitude of v
+	 * @param v const sf::Vector2f&
+	 * @return float magnitude of v
 	 */
 	float magnitude(const sf::Vector2f& v) noexcept;
 	/**
@@ -35,7 +36,7 @@ namespace fe::Math{
 	 *  @param [in] origin sf::Vector2f Origin which of sf::Vector2f v
 	 *  @return float angle in radians
 	 */
-	float angle(const sf::Vector2f& v, const sf::Vector2f& origin = sf::Vector2f(0.f,0.f)) noexcept;
+	float angle(const sf::Vector2f& v, const sf::Vector2f& origin = sf::Vector2f(0.f, 0.f)) noexcept;
 	/**
 	 *  @brief get the difference from v1 and v2 with origin in radians
 	 *  clockwise direction and -y is 0º degrees
@@ -49,10 +50,10 @@ namespace fe::Math{
 	 *  @endcode
 	 *  @param [in] v1 const sf::Vector2f&
 	 *  @param [in] v2 const sf::Vector2f&
-	 *  @param [in] o  const sf::Vector2f&
+	 *  @param [in] origin  const sf::Vector2f&
 	 *  @return float angles in radians
 	 */
-	float directedAngle(const sf::Vector2f& v1, const sf::Vector2f& v2, const sf::Vector2f& origin = sf::Vector2f(0,0)) noexcept;
+	float directedAngle(const sf::Vector2f& v1, const sf::Vector2f& v2, const sf::Vector2f& origin = sf::Vector2f(0.f, 0.f)) noexcept;
 	/**
 	 *  @brief converts to radians
 	 *  

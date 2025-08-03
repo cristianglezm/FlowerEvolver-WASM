@@ -22,16 +22,49 @@ if(EMSCRIPTEN)
             "include/SFML/System/Vector2.inl"
             "include/DNA.hpp"
             "include/Flower.hpp"
+            "include/Stats.hpp"
             "include/FlowerEvolver.hpp"
 	        "include/MathUtils.hpp"
+            "include/Image.hpp"
             "include/Petals.hpp"
+            "include/3D/GLTF/Vertex.hpp"
+            "include/3D/GLTF/TextureInfo.hpp"
+            "include/3D/GLTF/Material.hpp"
+            "include/3D/GLTF/Mesh.hpp"
+            "include/3D/GLTF/Node.hpp"
+            "include/3D/GLTF/Scene.hpp"
+            "include/3D/GLTF/JsonWriter.hpp"
+            "include/3D/GLTF.hpp"
+            "include/3D/Resources.hpp"
+            "include/3D/Vec.hpp"
+            "include/3D/Vec.inl"
+            "include/3D/FlowerParameters.hpp"
+            "include/3D/utils.hpp"
+            "include/3D/contourFinder.hpp"
+            "include/3D/contourSimplifier.hpp"
+            "include/3D/meshGenerator.hpp"
+            "include/3D.hpp"
         PRIVATE
             "src/SFML/Graphics/Color.cpp"
             "src/DNA.cpp"
             "src/Flower.cpp"
+            "src/Stats.cpp"
             "src/FlowerEvolver.cpp"
             "src/MathUtils.cpp"
+            "src/Image.cpp"
             "src/Petals.cpp"
+            "src/3D/GLTF/Vertex.cpp"
+            "src/3D/GLTF/TextureInfo.cpp"
+            "src/3D/GLTF/Material.cpp"
+            "src/3D/GLTF/Mesh.cpp"
+            "src/3D/GLTF/Node.cpp"
+            "src/3D/GLTF/Scene.cpp"
+            "src/3D/GLTF/JsonWriter.cpp"
+            "src/3D/FlowerParameters.cpp"
+            "src/3D/utils.cpp"
+            "src/3D/contourFinder.cpp"
+            "src/3D/contourSimplifier.cpp"
+            "src/3D/meshGenerator.cpp"
     )
     set(LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/public")
     set(EXECUTABLE_OUTPUT_PATH "${PROJECT_BINARY_DIR}/public")
@@ -53,10 +86,10 @@ if(EMSCRIPTEN)
     SET(CMAKE_CXX_EXTENSIONS OFF)
 	if(FE_EXPORT)
 		target_compile_options(FlowerEvolver PRIVATE -std=c++17 -Wall -Wextra -Wshadow -pthread -fexceptions)
-		target_link_options(FlowerEvolver PRIVATE -lembind -sPTHREAD_POOL_SIZE=4 -fexceptions --emit-tsd FlowerEvolver.d.ts -sMODULARIZE=1 -sEXPORT_ES6=1 -sSINGLE_FILE=1 -sEXPORT_NAME='fe' -sTOTAL_MEMORY=2MB -sEXPORTED_RUNTIME_METHODS=['HEAPU8'])
+		target_link_options(FlowerEvolver PRIVATE -lembind -sPTHREAD_POOL_SIZE=4 -fexceptions --emit-tsd FlowerEvolver.d.ts -sMODULARIZE=1 -sEXPORT_ES6=1 -sSINGLE_FILE=1 -sEXPORT_NAME='fe' -sTOTAL_MEMORY=20MB -sEXPORTED_RUNTIME_METHODS=['HEAPU8'])
 	else()
 		target_compile_options(FlowerEvolver PRIVATE -std=c++17 -Wall -Wextra -Wshadow -pthread -fexceptions -sSTRICT=1)
-		target_link_options(FlowerEvolver PRIVATE -lembind -sPTHREAD_POOL_SIZE=4 -fexceptions -sTOTAL_MEMORY=2MB -sEXPORTED_RUNTIME_METHODS=['HEAPU8'])
+		target_link_options(FlowerEvolver PRIVATE -lembind -sPTHREAD_POOL_SIZE=4 -fexceptions -sTOTAL_MEMORY=20MB -sEXPORTED_RUNTIME_METHODS=['HEAPU8'])
 	endif()
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         target_compile_options(FlowerEvolver PRIVATE -O3)

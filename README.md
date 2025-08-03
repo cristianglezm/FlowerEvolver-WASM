@@ -15,6 +15,11 @@ check the website [here](https://cristianglezm.github.io/FlowerEvolver-WASM/)
 > to initialize at the start: self.canvas = new OffscreenCanvas(radius * 2, radius * 3);
 > if you use FEService, you don't need a canvas, it will auto inject a canvas object into self or document.body
 
+## News
+
+* The version 3.0.0 brings 3D flower generation.
+* The version 2.0.0 integrates FEService to create flowers easily.
+
 ## Building
 
 Follow these steps to download, build, and run the project.
@@ -162,6 +167,7 @@ const fn = () => {
     worker.postMessage({ params: new FEParams(radius, numLayers, P, bias) });
 };
 ```
+
 ### Worker code
 
 In worker.js, initialize the FlowerEvolver service and process incoming messages:
@@ -175,22 +181,24 @@ self.onmessage = async (e) => {
     /// validate params to avoid OOM errors.
     let params = e.data.params;
     // Initialize FlowerEvolver service if not already initialized
-    if (!FE) {
+    if(!FE){
         FE = new FEService();
         await FE.init();
     }
-
+    FE.setParams(new FEParams(params.radius, params.numLayers, 
+                                params.P, params.bias));
     // Use the methods from the FEService instance
     let flower;
-    try {
+    try{
         // Create a flower (Flower class contains genome and image)
-        flower = await FE.makeFlower(params.radius, params.numLayers, params.P, params.bias);
-    } catch (e) {
+        flower = await FE.makeFlower();
+    }catch(e){
         // Handle errors
         console.error(e);
     }
 
-    // You can access the internal FE.canvas if you want, it will have the new flower image after calling await FE.makeFlower()
+    // You can access the internal FE.canvas if you want, 
+    // it will have the new flower image after calling await FE.makeFlower()
     self.postMessage({
         genome: flower.genome,
         image: flower.image
@@ -206,16 +214,18 @@ self.onmessage = async (e) => {
 
 ## API Reference
 
-The API reference is [here](https://github.com/cristianglezm/FlowerEvolver-WASM/blob/master/index.js). This file serves as a bridge between the WebAssembly module and JavaScript, providing a streamlined interface for interacting with the module.
+The API reference is [here](https://github.com/cristianglezm/FlowerEvolver-WASM/blob/master/index.js).
 
 ## License
 
 SFML parts in include/SFML and src/SFML are under its own [license](include/SFML/license.md).
 
+stb_image_write is under its own [license](include/std_image_write.h)
+
 the rest of the code is licensed under apache 2.0
 
 ```
-   Copyright 2023-2025 Cristian Gonzalez cristian.glez.m@gmail.com
+   Copyright 2023-2025 Cristian Gonzalez <cristian.glez.m@gmail.com>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

@@ -4,58 +4,13 @@
 #include <memory>
 #include <vector>
 
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Rect.hpp>
-
+#include <Image.hpp>
 #include <MathUtils.hpp>
 
 #include <EvoAI.hpp>
-
 #include <JsonBox.h>
 
-
 namespace fe{
-	/**
-	 * @brief simple Image to replace the one from sfml for emscripten.
-	 */
-	struct Image final{
-		Image()
-		: imageData()
-		, mWidth(0)
-		, mHeight(0){}
-		void create(std::size_t width, std::size_t height, const sf::Color& color) noexcept{
-			if(!imageData.empty()){
-				imageData.clear();
-			}
-			mWidth = width;
-			mHeight = height;
-			imageData.resize(mWidth * mHeight * 4);
-			for(auto x=0u;x<mWidth;++x){
-				for(auto y=0u;y<mHeight;++y){
-					setPixel(x, y, color);
-				}
-			}
-		}
-		void setPixel(const sf::Vector2f& pos, const sf::Color& color) noexcept{
-			setPixel(pos.x, pos.y, color);
-		}
-		sf::Vector2f getSize() noexcept{
-			return sf::Vector2f(mWidth, mHeight);
-		}
-		void setPixel(std::size_t x, std::size_t y, const sf::Color& color) noexcept{
-			if(!imageData.empty()){
-				std::size_t index = (y * mWidth + x) * 4;
-				imageData[index + 0] = color.r;
-				imageData[index + 1] = color.g;
-				imageData[index + 2] = color.b;
-				imageData[index + 3] = color.a;
-			}
-		}
-		// data
-		std::vector<std::uint8_t> imageData;
-		std::size_t mWidth;
-		std::size_t mHeight;
-	};
 	/**
 	 *  @brief Petals component
 	 *  @code
@@ -164,13 +119,22 @@ namespace fe{
 		void drawTrunk(Petals& petals) noexcept;
 	} // namespace priv/
 	/**
-	 *  @brief will draw the layer of petals what Petals::Type is
+	 * @brief Determines the number of times a number can be divided by a given divisor until it is <= 1.
+	 *
+	 * @param [in] val The number to be divided.
+	 * @param [in] divisor The divisor applied on each iteration.
+	 * @return The count of divisions performed until the value is ≤ 1.
+	 */
+	int getTimesDivisibleBy(int val, int divisor) noexcept;
+	/**
+	 *  @brief will draw the layer of a petal, 
 	 *  
 	 *  @param [in] petals Petals
 	 *  @param [in] g      a cppn EvoAI::Genome with 4 inputs 4 outputs
 	 *  @param [in] layer  the layer to draw
+	 *  @param [in] applyLayeredRadiusScaling it will divide the radius / 2.0 from petals.numLayers to layer
 	 */
-	void drawLayer(Petals& petals, EvoAI::Genome& g, int layer) noexcept;
+	void drawLayer(Petals& petals, EvoAI::Genome& g, int layer, bool applyLayeredRadiusScaling = true) noexcept;
 	/**
 	 *  @brief will draw what Petals::Type is
 	 *  
