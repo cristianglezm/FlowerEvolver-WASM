@@ -1,0 +1,45 @@
+[build-system]
+requires = ["scikit-build-core>=0.10", "nanobind>=2.4"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "flowerevolver"
+version = "4.0.0"
+description = "Generates 2D/3D flowers from CPPN genomes evolved via EvoAI"
+readme = "python/README.md"
+license = "Apache-2.0"
+authors = [{ name = "Cristian Gonzalez", email = "cristian.glez.m@gmail.com" }]
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: C++",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Scientific/Engineering :: Artificial Life",
+]
+
+[project.urls]
+Homepage = "https://github.com/cristianglezm/FlowerEvolver-WASM"
+Source = "https://github.com/cristianglezm/FlowerEvolver-WASM"
+
+[project.scripts]
+flower-evolver = "flowerevolver.cli:main"
+
+[tool.scikit-build]
+cmake.source-dir = "python"
+cmake.build-type = "Release"
+wheel.packages = ["python/flowerevolver"]
+build-dir = "build/python-{wheel_tag}"
+sdist.include = [
+    "pyproject.toml",
+    "package.json",
+    "LICENSE.md",
+    "python/**",
+    "src/**",
+    "include/**",
+    "cmake/modules/FindEvoAI.cmake",
+    "cmake/modules/FindJsonBox.cmake",
+]
+sdist.exclude = ["**"]
+
+[tool.pytest.ini_options]
+testpaths = ["python/tests"]

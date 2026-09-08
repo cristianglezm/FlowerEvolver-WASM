@@ -1,0 +1,10 @@
+function(add_fuzz_target name)
+    add_executable(${name} ${ARGN})
+    target_link_libraries(${name} PRIVATE FlowerEvolver)
+    target_compile_options(${name} PRIVATE -fsanitize=fuzzer,address,undefined -g -O1)
+    target_link_options(${name} PRIVATE -fsanitize=fuzzer,address,undefined)
+endfunction()
+
+add_fuzz_target(fuzz_flower_from_json fuzz_flower_from_json.cpp)
+add_fuzz_target(fuzz_dna_from_json fuzz_dna_from_json.cpp)
+add_fuzz_target(fuzz_stats_from_genome fuzz_stats_from_genome.cpp)

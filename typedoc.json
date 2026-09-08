@@ -1,0 +1,16 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["index.ts", "types/wasm-module.d.ts"],
+  "out": "build/docs-js",
+  "name": "FlowerEvolver-WASM JS/WASM API",
+  "readme": "docs/js-intro.md",
+  "customCss": "docs/js-custom.css",
+  "excludeExternals": true,
+  "navigationLinks": {
+    "Demo": "https://cristianglezm.github.io/FlowerEvolver-WASM/",
+    "GitHub": "https://github.com/cristianglezm/FlowerEvolver-WASM",
+    "C++ API": "https://cristianglezm.github.io/FlowerEvolver-WASM/docs/cpp/",
+    "Python API": "https://cristianglezm.github.io/FlowerEvolver-WASM/docs/python/"
+  },
+  "titleLink": "https://cristianglezm.github.io/FlowerEvolver-WASM/"
+}

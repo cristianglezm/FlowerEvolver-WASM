@@ -1,0 +1,185 @@
+#include <fe/Petals.hpp>
+
+namespace fe{
+	Petals::Petals() noexcept
+	: image()
+	, bias(1.0)
+	, P(6.0)
+	, radius(64)
+	, numLayers(3)
+	, hasBloom(false){}
+	Petals::Petals(int r, int nLayers, float P, float bias)
+	: image()
+	, bias(bias)
+	, P(P)
+	, radius(std::clamp(r, 4, 256))
+	, numLayers(std::clamp(nLayers, 1, getTimesDivisibleBy(radius, 2)))
+	, hasBloom(false){
+		image.create(radius * 2, radius * 3, fe::Color::Transparent);
+	}
+	Petals::Petals(JsonBox::Object o)
+	: image()
+	, bias(o["bias"].tryGetFloat(1.0))
+	, P(o["P"].tryGetFloat(6.0))
+	, radius(std::clamp(o["radius"].tryGetInteger(64), 4, 256))
+	, numLayers(std::clamp(o["numLayers"].tryGetInteger(3), 1, getTimesDivisibleBy(radius, 2)))
+	, hasBloom(false){
+		image.create(radius * 2, radius * 3, fe::Color::Transparent);
+	}
+	Petals::Petals(const Petals& rhs) noexcept
+	: image(rhs.image)
+	, bias(rhs.bias)
+	, P(rhs.P)
+	, radius(rhs.radius)
+	, numLayers(rhs.numLayers)
+	, hasBloom(false){}
+	Petals::Petals(Petals&& rhs) noexcept
+	: image(std::move(rhs.image))
+	, bias(rhs.bias)
+	, P(rhs.P)
+	, radius(rhs.radius)
+	, numLayers(rhs.numLayers)
+	, hasBloom(rhs.hasBloom){}
+	JsonBox::Value Petals::toJson() const noexcept{
+		JsonBox::Object o;
+		o["bias"] = JsonBox::Value(bias);
+		o["P"] = JsonBox::Value(P);
+		o["radius"] = JsonBox::Value(radius);
+		o["numLayers"] = JsonBox::Value(numLayers);
+		return JsonBox::Value(o);
+	}
+	void Petals::operator=(const Petals& rhs) noexcept{
+		image = rhs.image;
+		bias = rhs.bias;
+		P = rhs.P;
+		radius = rhs.radius;
+		numLayers = rhs.numLayers;
+		hasBloom = rhs.hasBloom;
+	}
+	void Petals::operator=(Petals&& rhs) noexcept{
+		image = std::move(rhs.image);
+		bias = rhs.bias;
+		P = rhs.P;
+		radius = rhs.radius;
+		numLayers = rhs.numLayers;
+		hasBloom = rhs.hasBloom;
+	}
+	namespace priv{
+		std::vector<double> queryNN(EvoAI::NeuralNetwork& nn, Petals& petals, const fe::Vector2f& pos, int currentRadius, int currentLayer) noexcept{
+			const auto& origin = fe::Vector2f(petals.radius, petals.radius);
+			float angle = std::sin(petals.P*Math::directedAngle(pos,origin, origin));
+			auto res = nn.forward({static_cast<float>(currentRadius), angle, static_cast<float>(currentLayer), petals.bias});
+			nn.reset();
+			return res;
+		}
+		void setColorAndCut(const fe::Vector2f& pos, EvoAI::NeuralNetwork& nn, Petals& petals, int currentRadius, int currentLayer) noexcept{
+			const auto size = petals.image.getSize();
+			const auto& bounds = fe::FloatRect(0,0,size.x,size.y);
+			const auto& origin = fe::Vector2f(petals.radius,petals.radius);
+			const float angle = std::sin(petals.P*Math::directedAngle(pos, origin, origin));
+			auto direction = Math::normalize(pos - origin);
+			auto res = nn.forward({0.0f, angle, static_cast<float>(currentLayer), petals.bias});
+			nn.reset();
+			float rMax = std::min(std::abs(res[3] * currentRadius),static_cast<double>(currentRadius));
+			auto newPos = origin + direction;
+			auto halfLayerSize = petals.numLayers/2;
+			for(auto r=0;r<=rMax;++r){
+				if(currentLayer >= halfLayerSize){
+					res = queryNN(nn,petals,newPos,r,currentLayer);
+					currentRadius = res[3];
+				}
+				if(bounds.contains(newPos)){
+					res = queryNN(nn,petals,newPos,currentRadius,currentLayer);
+					petals.image.setPixel(newPos.x,newPos.y, fe::Color(res[0] * 255,res[1] * 255, res[2] * 255, 255));
+				}
+				newPos += direction;
+			}
+		}
+		void EightWaySymmetricSetColor(const fe::Vector2f& origin, const fe::Vector2f& r, Petals& petals, EvoAI::NeuralNetwork& nn, int currentRadius, int currentLayer) noexcept{
+			setColorAndCut(fe::Vector2f(r.x + origin.x, r.y + origin.y), nn, petals, currentRadius, currentLayer);
+			setColorAndCut(fe::Vector2f(r.x + origin.x, -r.y + origin.y), nn, petals, currentRadius, currentLayer);
+			setColorAndCut(fe::Vector2f(-r.x + origin.x, -r.y + origin.y), nn, petals, currentRadius, currentLayer);
+			setColorAndCut(fe::Vector2f(-r.x + origin.x, r.y + origin.y), nn, petals, currentRadius, currentLayer);
+
+			setColorAndCut(fe::Vector2f(r.y + origin.x, r.x + origin.y), nn, petals, currentRadius, currentLayer);
+			setColorAndCut(fe::Vector2f(r.y + origin.x, -r.x + origin.y), nn, petals, currentRadius, currentLayer);
+			setColorAndCut(fe::Vector2f(-r.y + origin.x, -r.x + origin.y), nn, petals, currentRadius, currentLayer);
+			setColorAndCut(fe::Vector2f(-r.y + origin.x, r.x + origin.y), nn, petals, currentRadius, currentLayer);
+		}
+		void drawPetals(Petals& petals, EvoAI::NeuralNetwork& nn,int currentRadius, int currentLayer) noexcept{
+			int x = 0;
+			int y = currentRadius;
+			int d = 1-y;
+			const auto& origin = fe::Vector2f(petals.radius,petals.radius);
+			EightWaySymmetricSetColor(origin,fe::Vector2f(x,y),petals,nn,currentRadius,currentLayer);
+			while(x<=y){
+				if(d<=0){
+					d -= 2*x+1;
+				}else{
+					d += 2*y+1;
+					--y;
+				}
+				++x;
+				EightWaySymmetricSetColor(origin,fe::Vector2f(x,y),petals,nn,currentRadius,currentLayer);
+			}
+		}
+		void drawTrunk(Petals& petals) noexcept{
+			const auto& origin = fe::Vector2f(petals.radius,petals.radius);
+			const auto& size = petals.image.getSize();
+			const auto stemColor = fe::Color(0.2f * 255, 0.6f * 255, 0.2f * 255);
+			for(auto y=origin.y;y<size.y;++y){
+				petals.image.setPixel(origin.x-1,y,stemColor);
+				petals.image.setPixel(origin.x,y,stemColor);
+				petals.image.setPixel(origin.x+1,y,stemColor);
+			}
+		}
+	}//priv/
+	int getTimesDivisibleBy(int val, int divisor) noexcept{
+		int count = 0;
+		if(divisor <= 1){
+			return 1;
+		}
+		val = std::abs(val);
+		while(val > 1){
+			++count;
+			val /= divisor;
+		}
+		return count;
+	}
+	void drawLayer(Petals& petals, EvoAI::Genome& g, int layer, bool applyLayeredRadiusScaling) noexcept{
+		auto nn = EvoAI::Genome::makePhenotype(g);
+		auto r = petals.radius;
+		if(applyLayeredRadiusScaling){
+			for(auto i = petals.numLayers;i>layer;--i){
+				r /= 2;
+			}
+		}
+		priv::drawPetals(petals, nn, r, layer);
+	}
+	void draw(Petals::Type t, Petals& petals, EvoAI::Genome& g) noexcept{
+		switch(t){
+			case Petals::Type::Trunk:
+				priv::drawTrunk(petals);
+				break;
+			case Petals::Type::Petals:
+				{
+					auto nn = EvoAI::Genome::makePhenotype(g);
+					auto r = petals.radius;
+					for(auto layer = petals.numLayers;layer>=0;--layer){
+						priv::drawPetals(petals,nn,r,layer);
+						r /= 2;
+					}
+				}break;
+			case Petals::Type::TrunkAndPetals:
+				{
+					priv::drawTrunk(petals);
+					auto nn = EvoAI::Genome::makePhenotype(g);
+					auto r = petals.radius;
+					for(auto layer = petals.numLayers;layer>=0;--layer){
+						priv::drawPetals(petals,nn,r,layer);
+						r /= 2;
+					}
+				}break;
+		}
+	}
+}

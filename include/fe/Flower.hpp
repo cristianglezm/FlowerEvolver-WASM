@@ -1,0 +1,91 @@
+#ifndef FLOWER_HPP
+#define FLOWER_HPP
+
+#include <fe/Vector2.hpp>
+#include <JsonBox.h>
+
+#include <fe/config.hpp>
+#include <fe/DNA.hpp>
+#include <fe/Petals.hpp>
+
+namespace fe{
+	/**
+	 *  @brief Flower struct
+	 */
+	struct FE_API Flower final{
+		/**
+		 *  @brief default constructor
+		 */
+		Flower();
+		/**
+		 *  @brief constructor to use when creating a random flower.
+		 *  
+		 *  @param [in] pos       position
+		 *  @param [in] radius    radius
+		 *  @param [in] numLayers number of layers
+		 *  @param [in] P         P
+		 *  @param [in] bias      bias
+		 */
+        Flower(const fe::Vector2f& pos, int radius, int numLayers, float P, float bias);
+		/**
+		 *  @brief constructor to use when creating a random flower.
+		 *  
+		 *  @param [in] pos       position
+		 *  @param [in] radius    radius
+		 *  @param [in] numLayers number of layers
+		 *  @param [in] P         P
+		 *  @param [in] bias      bias
+		 *  @param [in] type      Petals::Type
+		 */
+        Flower(const fe::Vector2f& pos, int radius, int numLayers, float P, float bias, const Petals::Type& type);
+		/**
+		 *  @brief constructor to use when creating a child flower.
+		 *  
+		 *  @param [in] pos       position
+		 *  @param [in] radius    radius
+		 *  @param [in] numLayers number of layers
+		 *  @param [in] P         P
+		 *  @param [in] bias      bias
+		 *  @param [in] dna       fe::DNA to use to make this flower
+		 */
+		Flower(const fe::Vector2f& pos, int radius, int numLayers, float P, float bias, DNA&& dna);
+		/**
+		 *  @brief constructor to use when creating a child flower.
+		 *  
+		 *  @param [in] pos       position
+		 *  @param [in] radius    radius
+		 *  @param [in] numLayers number of layers
+		 *  @param [in] P         P
+		 *  @param [in] bias      bias
+		 *  @param [in] dna       fe::DNA to use to make this flower
+		 *  @param [in] type      Petals::Type
+		 */
+		Flower(const fe::Vector2f& pos, int radius, int numLayers, float P, float bias, DNA&& dna, const Petals::Type& type);
+		/**
+		 *  @brief copy constructor
+		 */
+		Flower(const Flower& rhs) noexcept;
+		/**
+		 *  @brief move constructor
+		 */
+		Flower(Flower&& rhs) noexcept;
+		/**
+		 *  @brief load a JsonBox::Object with ["Flower"]
+		 *  
+		 *  @param [in] o JsonBox::Object
+		 */
+		Flower(JsonBox::Object o);
+		/**
+		 *  @brief converts Flower to JsonBox::Value
+		 *  
+		 *  @return JsonBox::Value
+		 */
+		JsonBox::Value toJson() const noexcept;
+		void operator=(Flower&& rhs) noexcept;
+		void operator=(const Flower& rhs) noexcept;
+	//data
+		DNA dna;
+		Petals petals;
+	};
+}
+#endif // FLOWER_HPP

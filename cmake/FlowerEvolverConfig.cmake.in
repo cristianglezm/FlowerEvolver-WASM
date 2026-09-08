@@ -1,0 +1,22 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/modules")
+
+set(EvoAI_BUILD_STATIC TRUE)
+find_dependency(JsonBox)
+find_dependency(EvoAI 1)
+
+if(FlowerEvolver_BUILD_STATIC)
+    include("${CMAKE_CURRENT_LIST_DIR}/FlowerEvolverStaticTargets.cmake")
+else()
+    include("${CMAKE_CURRENT_LIST_DIR}/FlowerEvolverSharedTargets.cmake")
+endif()
+
+if(TARGET FlowerEvolver::FlowerEvolver)
+    set_property(TARGET FlowerEvolver::FlowerEvolver APPEND PROPERTY
+        INTERFACE_INCLUDE_DIRECTORIES ${JsonBox_INCLUDE_DIR} ${EvoAI_INCLUDE_DIR})
+endif()
+
+check_required_components(FlowerEvolver)

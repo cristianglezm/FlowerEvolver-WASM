@@ -35,8 +35,6 @@ local.properties
 #################
 ## Code::Blocks
 #################
-*Build*
-*build*
 *.depend
 *.layout
 *.cbn
@@ -214,6 +212,7 @@ $RECYCLE.BIN/
 #############
 
 *.py[co]
+__pycache__/
 
 # Packages
 *.egg
@@ -233,6 +232,18 @@ pip-log.txt
 # Unit test / coverage reports
 .coverage
 .tox
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# FlowerEvolver's own compiled nanobind extension normally lands under
+# build/python/ (already covered by build/ above) -- this is a safety net
+# for `pip install -e .`, which can place it directly inside the package
+# dir instead.
+python/FlowerEvolver/*.so
+python/FlowerEvolver/*.pyd
 
 #Translations
 *.mo
@@ -241,3 +252,20 @@ pip-log.txt
 .mr.developer.cfg
 
 node_modules
+
+# Playwright (tests/e2e)
+playwright-report/
+test-results/
+blob-report/
+playwright/.cache/
+
+# libFuzzer's own crash/oom/timeout artifacts (crash-<hash>, oom-<hash>,
+# ...) - written wherever a fuzz_* binary happens to be invoked from
+# (tests/fuzz/README.md's own examples run them from the repo root),
+# never meant to be tracked. Move genuinely interesting ones into
+# tests/fuzz/corpus/ (or tests/fuzz/known_issues/, see that folder's own
+# README section) by hand instead.
+crash-*
+oom-*
+timeout-*
+leak-*

@@ -1,0 +1,47 @@
+name: pkg-python
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+concurrency:
+  group: pkg-python-${{ github.event.release.tag_name || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish:
+    name: publish to PyPI
+    if: github.event_name == 'release'
+    runs-on: ubuntu-24.04
+
+    environment:
+      name: pypi
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Download Python release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          mkdir -p dist
+          gh release download "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern '*.whl' \
+            --pattern '*.tar.gz' \
+            --dir dist
+
+      - name: Show packages
+        run: ls -lh dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/

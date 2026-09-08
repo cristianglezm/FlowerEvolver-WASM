@@ -1,19 +1,63 @@
 {
   "name": "@cristianglezm/flower-evolver-wasm",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "wasm module to make 2D / 3D flowers that evolve using EvoAI library",
+  "type": "module",
   "main": "index.js",
-  "typings": "./public/FlowerEvolver.d.ts",
-  "files":[
-    "./public/*",
-    "./SFML-LICENSE.md",
-    "./index.*",
-    "./*.md"
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "default": "./index.js"
+    },
+    "./wasm": {
+      "types": "./types/wasm-module.d.ts",
+      "import": "./public/FlowerEvolver.js",
+      "default": "./public/FlowerEvolver.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "public",
+    "types",
+    "index.html",
+    "index.js",
+    "index.d.ts",
+    "LICENSE.md",
+    "README.md",
+    "SFML-LICENSE.md"
   ],
   "scripts": {
-    "build:emscripten": "bash .devops/dist.sh FALSE",
-    "build": "npm run build:emscripten",
-    "serve": "emrun --serve_root build index.html"
+    "prep": "bash .devops/prep.sh",
+    "prep:native": "bash .devops/prep.sh native",
+    "prep:android": "bash .devops/prep.sh android",
+    "build": "bash .devops/build.sh",
+    "build:ts": "tsc",
+    "build:native": "bash .devops/build.sh native",
+    "build:native:test": "bash .devops/build.sh native -DFlowerEvolver_BUILD_TESTS=ON",
+    "build:native:fuzz": "bash .devops/build.sh fuzz",
+    "build:android": "bash .devops/build.sh android",
+    "build:docs": "bash .devops/build.sh docs",
+    "build:docs:cpp": "cmake -S docs -B build/docs && cmake --build build/docs",
+    "build:docs:js": "typedoc",
+    "build:docs:python": "python -m sphinx -b html -q docs/python-conf build/docs-python",
+    "build:python": "bash .devops/build.sh python",
+    "clean": "rm -rf build dist",
+    "serve": "bash .devops/serve.sh",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cpp": "ctest --test-dir build/native/fe --output-on-failure",
+    "test:python": "pytest python/tests/",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "typedoc": "^0.28.20",
+    "typescript": "^5.9.3",
+    "vite": "^8.1.5",
+    "vitest": "^4.0.8"
   },
   "repository": {
     "type": "git",
@@ -26,7 +70,7 @@
     "NEAT",
     "EvoAI"
   ],
-  "author": "Cristian Gonzalez",
+  "author": "Cristian Gonzalez <cristian.glez.m@gmail.com>",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/cristianglezm/FlowerEvolver-WASM/issues"
