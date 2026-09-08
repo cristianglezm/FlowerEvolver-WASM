@@ -1,0 +1,41 @@
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = "FlowerEvolver-WASM"
+PROJECT_BRIEF          = "generate, mutate and reproduce 2D/3D procedural flowers."
+OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/doxygen
+CREATE_SUBDIRS         = NO
+OUTPUT_LANGUAGE        = English
+JAVADOC_AUTOBRIEF      = NO
+MARKDOWN_SUPPORT       = YES
+BUILTIN_STL_SUPPORT    = YES
+
+INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/../include
+RECURSIVE              = YES
+INCLUDE_PATH            = @CMAKE_CURRENT_SOURCE_DIR@/../include
+EXCLUDE                = @CMAKE_CURRENT_SOURCE_DIR@/../include/fe/detail
+EXCLUDE_PATTERNS       = */config.hpp.template \
+                         *.inl
+
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+HIDE_UNDOC_MEMBERS     = NO
+SHOW_INCLUDE_FILES     = YES
+SHOW_NAMESPACES        = YES
+
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF      = YES
+PREDEFINED              = FE_API=
+
+GENERATE_HTML          = NO
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
+XML_PROGRAMLISTING     = YES
+
+HAVE_DOT               = YES
+DOT_IMAGE_FORMAT       = svg
+INTERACTIVE_SVG        = YES
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+
+QUIET                  = YES
+WARN_IF_UNDOCUMENTED   = NO
+WARN_IF_DOC_ERROR      = YES

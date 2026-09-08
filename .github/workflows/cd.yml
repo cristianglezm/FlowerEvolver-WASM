@@ -9,12 +9,53 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout branch
-        uses: actions/checkout@v4
-      - name: build dist and deploy
+        uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Get CMake + Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: "3.28"
+          ninjaVersion: latest
+
+      - name: Install docs toolchain (Doxygen + Python dev headers + docs deps)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz python3-dev
+          pip install --break-system-packages -r docs/requirements.txt
+
+      # Needed so `npm run build:python` below (which build.sh's docs mode
+      # requires to produce docs/python/ - see its own "soft skip"
+      # comment) has something to link FlowerEvolver's Python extension
+      # against.
+      - name: Cache native dependencies (JsonBox + EvoAI)
+        id: cache-native
+        uses: actions/cache@v6
+        with:
+          path: build/native
+          key: native-deps-${{ runner.os }}-${{ hashFiles('.devops/prep.sh') }}
+
+      - name: Build dependencies (JsonBox + EvoAI)
+        if: steps.cache-native.outputs.cache-hit != 'true'
+        run: bash .devops/prep.sh native
+
+      - name: build demo dist, python bindings, assemble docs/, and deploy
         shell: bash
         env:
-            GITUSER: ${{secrets.GITUSER}}
-            EMAIL: ${{secrets.EMAIL}}
-            FE_EXPORT: FALSE
+          GITUSER: ${{secrets.GITUSER}}
+          EMAIL: ${{secrets.EMAIL}}
         run: |
-          bash .devops/dist.sh $FE_EXPORT && sh .devops/deploy.sh "$GITUSER" "$EMAIL"
+          npm ci --ignore-scripts
+          bash .devops/prep.sh
+          bash .devops/build.sh
+          npm run build:python
+          bash .devops/build.sh docs
+          sh .devops/deploy.sh "$GITUSER" "$EMAIL"

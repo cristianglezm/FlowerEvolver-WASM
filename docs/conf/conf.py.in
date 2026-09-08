@@ -1,0 +1,50 @@
+import datetime
+
+project = "FlowerEvolver-WASM"
+copyright = f"2023-{datetime.datetime.now().year}, Cristian Gonzalez"
+author = "Cristian Gonzalez"
+release = "@FE_VERSION@"
+
+extensions = [
+    "sphinx.ext.autosectionlabel",
+    "sphinx.ext.githubpages",
+    "breathe",
+]
+
+templates_path = []
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+primary_domain = "cpp"
+highlight_language = "cpp"
+
+html_theme = "pydata_sphinx_theme"
+html_theme_options = {
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/cristianglezm/FlowerEvolver-WASM",
+            "icon": "fa-brands fa-square-github",
+        },
+    ],
+    # persistent navbar links back to the demo app and over to the other
+    # two doc sites.
+    "external_links": [
+        {"name": "Demo", "url": "https://cristianglezm.github.io/FlowerEvolver-WASM/"},
+        {"name": "JS/WASM Docs", "url": "https://cristianglezm.github.io/FlowerEvolver-WASM/docs/js/"},
+        {"name": "Python Docs", "url": "https://cristianglezm.github.io/FlowerEvolver-WASM/docs/python/"},
+    ],
+    "show_toc_level": 2,
+    "navigation_depth": 3,
+    "navbar_end": ["navbar-icon-links"],
+}
+html_title = f"FlowerEvolver-WASM {release} C++ API"
+# served at /docs/cpp/ alongside the demo at / - see .github/workflows/cd.yml
+html_baseurl = "https://cristianglezm.github.io/FlowerEvolver-WASM/docs/cpp/"
+html_static_path = ["_static"]
+html_css_files = ["custom.css"]
+
+# - Breathe (Doxygen XML -> Sphinx bridge) --------------------------------
+breathe_projects = {"FlowerEvolver": "@CMAKE_CURRENT_BINARY_DIR@/doxygen/xml/"}
+breathe_default_project = "FlowerEvolver"
+breathe_default_members = ("members", "undoc-members")
+breathe_domain_by_extension = {"hpp": "cpp", "inl": "cpp"}

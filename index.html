@@ -41,6 +41,24 @@
 			color: #90ee90;
 		}
 	}
+		.top-links{
+			display: flex;
+			justify-content: center;
+			gap: 24px;
+			margin: 0 0 10px 0;
+		}
+		.top-links a{
+			color: #90ee90;
+			text-decoration: none;
+			font-size: 16px;
+			border: 1px solid #90ee90;
+			border-radius: 4px;
+			padding: 4px 12px;
+		}
+		.top-links a:hover{
+			background-color: green;
+			color: #fff;
+		}
 		.grid{
 			display: grid;
 			grid-template-columns: repeat(auto-fill,minmax(230px,1fr));
@@ -187,13 +205,19 @@
 </head>
 <body>
     <div>
-      <a href="/FlowerEvolver-WASM" style="text-decoration: none;"><h1 id="title">FlowerEvolver-WASM</h1></a>
+      <a href="./" style="text-decoration: none;"><h1 id="title">FlowerEvolver-WASM</h1></a>
     </div>
-    <canvas id="canvas" hidden width="128" height="192"></canvas>
-	<script crossorigin src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <nav class="top-links">
+      <a href="https://github.com/cristianglezm/FlowerEvolver-WASM" target="_blank" rel="noopener">GitHub</a>
+      <a href="docs/cpp/">C++ Docs</a>
+      <a href="docs/js/">JS/WASM Docs</a>
+      <a href="docs/python/">Python Docs</a>
+    </nav>
+    <script crossorigin src="https://unpkg.com/dexie/dist/dexie.js"></script>
     <script type="importmap">
 	{
 	  "imports": {
+		"@cristianglezm/flower-evolver-wasm": "./index.js",
 		"three": "https://unpkg.com/three@0.178.0/build/three.module.js",
 		"three/examples/jsm/controls/OrbitControls.js": "https://unpkg.com/three@0.178.0/examples/jsm/controls/OrbitControls.js",
 		"three/examples/jsm/loaders/GLTFLoader.js": "https://unpkg.com/three@0.178.0/examples/jsm/loaders/GLTFLoader.js",
@@ -204,6 +228,7 @@
 	}
     </script>
     <script type='module'>
+        import { FEService } from '@cristianglezm/flower-evolver-wasm';
         import * as THREE from 'three';
         import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
         import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -211,25 +236,7 @@
 		import { RenderPass      } from 'three/examples/jsm/postprocessing/RenderPass.js';
 		import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-        const wasmReadyPromise = new Promise(resolve => {
-            window.Module = {};
-            fetch('public/FlowerEvolver.wasm')
-                .then(response => response.arrayBuffer())
-                .then(buffer => {
-                    window.Module.wasmBinary = buffer;
-                    const script = document.createElement('script');
-                    script.src = 'public/FlowerEvolver.js';
-                    script.onload = () => {
-                        const interval = setInterval(() => {
-                            if (window.Module.makeFlower) {
-                                clearInterval(interval);
-                                resolve();
-                            }
-                        }, 50);
-                    };
-                    document.body.appendChild(script);
-                });
-        });
+        const feService = new FEService();
 
         const App = {
             db: null,
@@ -240,7 +247,7 @@
             async init() {
                 this.setupDOM();
                 this.disableWasmButtons(true, "Loading WASM...");
-                await wasmReadyPromise;
+                await feService.init();
                 this.disableWasmButtons(false);
                 await this.initDb();
                 this.showAllFlowers();
@@ -273,9 +280,8 @@
 
             async makeFlower() {
                 try {
-                    const genome = Module.makeFlower(64, 3, 6.0, 1.0);
-                    const image = document.getElementById("canvas").toDataURL();
-                    const id = await this.db.flowers.add({ genome, image });
+                    const flower = await feService.makeFlower();
+                    const id = await this.db.flowers.add({ genome: flower.genome, image: flower.image });
                     const newFlower = await this.db.flowers.get(id);
                     UI.addFlowerToGrid('flowers', newFlower);
                 } catch(e) { UI.createModal(e.message || e); }
@@ -286,24 +292,22 @@
                 const f1 = await this.db.flowers.get(this.selected[0]);
                 const f2 = await this.db.flowers.get(this.selected[1]);
                 try {
-                    const genome = Module.reproduce(f1.genome, f2.genome, 64, 3, 6.0, 1.0);
-                    const image = document.getElementById("canvas").toDataURL();
-                    const id = await this.db.flowers.add({ genome, image });
+                    const flower = await feService.reproduce(f1.genome, f2.genome);
+                    const id = await this.db.flowers.add({ genome: flower.genome, image: flower.image });
                     await this.db.descendants.add({ id, father: f1.id, mother: f2.id });
                     const newFlower = await this.db.flowers.get(id);
                     UI.addFlowerToGrid('flowers', newFlower);
-                } catch(e) { UI.createModal(Module.getExceptionMessage(e)); }
+                } catch(e) { UI.createModal(e.message || e); }
             },
 
             async mutateFlower(originalFlower) {
                  try {
-                    const genome = Module.mutate(originalFlower.genome, 64, 3, 6.0, 1.0, 0.2, 0.3, 0.2, 0.6, 0.35, 0.3, 0.4);
-                    const image = document.getElementById("canvas").toDataURL();
-                    const id = await this.db.flowers.add({ genome, image });
+                    const flower = await feService.mutate(originalFlower.genome);
+                    const id = await this.db.flowers.add({ genome: flower.genome, image: flower.image });
                     await this.db.mutations.add({ id, original: originalFlower.id });
                     const newFlower = await this.db.flowers.get(id);
                     UI.addFlowerToGrid(UI.getActiveGridId(), newFlower);
-                } catch(e) { UI.createModal(Module.getExceptionMessage(e)); }
+                } catch(e) { UI.createModal(e.message || e); }
             },
 
             deleteFlower(flower, elementId) {
@@ -480,9 +484,11 @@
                 flowerRoot.appendChild(createBtn("Mutate", () => App.mutateFlower(flower), true));
                 flowerRoot.appendChild(createBtn("Download Genome", () => this.downloadFile(flower.genome, `flower_${flower.id}.json`, 'application/json')));
                 flowerRoot.appendChild(createBtn("Download Image", () => this.downloadFile(flower.image, `flower_${flower.id}.png`, 'image/png')));
-                flowerRoot.appendChild(createBtn("Download 3D", () => {
-                     const gltfData = Module.make3DFlower(flower.genome, 64, 3, 6.0, 1.0, flower.id.toString(), '{}');
-                     this.downloadFile(gltfData, `flower_${flower.id}.gltf`, 'model/gltf+json');
+                flowerRoot.appendChild(createBtn("Download 3D", async () => {
+                     try {
+                         const gltfData = await feService.draw3DFlower(flower.genome, flower.id.toString(), 'both');
+                         this.downloadFile(gltfData, `flower_${flower.id}.gltf`, 'model/gltf+json');
+                     } catch(e) { UI.createModal(e.message || e); }
                 }, true));
                 flowerRoot.appendChild(createBtn("Show Mutations", () => App.showMutations(flower.id)));
                 flowerRoot.appendChild(createBtn("Show Descendants", () => App.showDescendants(flower.id)));
@@ -501,7 +507,7 @@
                 this.renderFlowerVisual(container, flower, nextState);
             },
 
-            renderFlowerVisual(container, flower, state) {
+            async renderFlowerVisual(container, flower, state) {
                 App.cleanupRenderer(flower.id);
                 container.innerHTML = '';
                 if (state === '2d') {
@@ -555,9 +561,11 @@
 				  });
 				};
 
-                const flowerParams = isEmissive ? '{ "sex": 2, "useNormals": true, "useEmissive": true }' : '{ "sex": 2, "useNormals": true }';
-                const gltfData = Module.make3DFlower(flower.genome, 64, 3, 6.0, 1.0, flower.id.toString(), flowerParams);
-                new GLTFLoader().parse(gltfData, '', (gltf) => {
+                try {
+                    const gltfData = isEmissive
+                        ? await feService.drawEmissive3DFlower(flower.genome, flower.id.toString(), 'both')
+                        : await feService.draw3DFlower(flower.genome, flower.id.toString(), 'both');
+                    new GLTFLoader().parse(gltfData, '', (gltf) => {
                     const model = gltf.scene;
 
                     const box = new THREE.Box3().setFromObject(model);
@@ -626,6 +634,7 @@
 					});
 
                 });
+                } catch(e) { UI.createModal(e.message || e); }
             },
 
             getActiveGridId() {

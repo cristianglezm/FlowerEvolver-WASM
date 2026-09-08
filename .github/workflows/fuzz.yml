@@ -1,0 +1,65 @@
+name: fuzz
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: fuzz-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  fuzz:
+    name: fuzz
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Get CMake + Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: "3.28"
+          ninjaVersion: latest
+
+      - name: Install Clang
+        run: sudo apt-get update && sudo apt-get install -y clang
+
+      - name: Cache native dependencies (JsonBox + EvoAI)
+        id: cache-native
+        uses: actions/cache@v6
+        with:
+          path: build/native
+          key: native-deps-${{ runner.os }}-${{ hashFiles('.devops/prep.sh') }}
+
+      - name: Build dependencies (JsonBox + EvoAI)
+        if: steps.cache-native.outputs.cache-hit != 'true'
+        run: bash .devops/prep.sh native
+
+      - name: Configure + build fuzz harnesses
+        run: npm run build:native:fuzz
+
+      - name: Fuzz - DNA JSON parsing
+        run: build/native/fuzz/bin/fuzz_dna_from_json -max_total_time=60 tests/fuzz/corpus
+
+      - name: Fuzz - Stats
+        run: build/native/fuzz/bin/fuzz_stats_from_genome -max_total_time=60 tests/fuzz/corpus
+
+      - name: Fuzz - Flower JSON parsing
+        continue-on-error: true
+        run: build/native/fuzz/bin/fuzz_flower_from_json -max_total_time=60 tests/fuzz/corpus
+
+      - name: Upload any newly-found crashes
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: fuzz-crashes
+          path: crash-*
+          if-no-files-found: ignore

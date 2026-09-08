@@ -1,0 +1,514 @@
+name: ci
+on:
+  push:
+    branches: [master]
+    tags: [v*]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  native:
+    name: native-${{ matrix.platform.name }}-${{ matrix.config.name }}
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - { name: Linux, os: ubuntu-24.04 }
+          - { name: macOS, os: macos-15 }
+          - { name: Windows, os: windows-2025 }
+          - { name: Windows MSVC, os: windows-2025 }
+        config:
+          - { name: Shared, flags: -DFlowerEvolver_BUILD_STATIC=FALSE }
+          - { name: Static, flags: -DFlowerEvolver_BUILD_STATIC=TRUE }
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup MSYS2
+        if: matrix.platform.name == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            git
+            base-devel
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+
+      - name: Setup MSVC Developer Command Prompt
+        if: matrix.platform.name == 'Windows MSVC'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Get CMake + Ninja
+        if: matrix.platform.name != 'Windows' && matrix.platform.name != 'Windows MSVC'
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: "3.28"
+          ninjaVersion: latest
+
+      - name: Get CMake + Ninja
+        if: matrix.platform.name == 'Windows MSVC'
+        uses: lukka/get-cmake@latest
+        with:
+          ninjaVersion: latest
+
+      - name: Cache native dependencies (JsonBox + EvoAI)
+        id: cache-native
+        uses: actions/cache@v6
+        with:
+          path: |
+            build/native/JsonBox/build/install
+            build/native/EvoAI/build/install
+          key: native-deps-${{ matrix.platform.name }}-${{ hashFiles('.devops/prep.sh') }}
+
+      - name: Build dependencies (JsonBox + EvoAI, MSYS2)
+        if: steps.cache-native.outputs.cache-hit != 'true' && matrix.platform.name == 'Windows'
+        shell: msys2 {0}
+        run: bash .devops/prep.sh native
+
+      - name: Build dependencies (JsonBox + EvoAI)
+        if: steps.cache-native.outputs.cache-hit != 'true' && matrix.platform.name != 'Windows'
+        run: bash .devops/prep.sh native
+
+      - name: Configure + Build (MSYS2)
+        if: matrix.platform.name == 'Windows'
+        shell: msys2 {0}
+        run: |
+          bash .devops/build.sh native \
+            ${{ matrix.config.flags }} \
+            -DFlowerEvolver_BUILD_TESTS=ON
+
+      - name: Configure + Build
+        if: matrix.platform.name != 'Windows'
+        run: |
+          bash .devops/build.sh native \
+            ${{ matrix.config.flags }} \
+            -DFlowerEvolver_BUILD_TESTS=ON
+
+      - name: Test (MSYS2)
+        if: matrix.platform.name == 'Windows'
+        shell: msys2 {0}
+        run: ctest --test-dir build/native/fe --output-on-failure --repeat until-pass:3
+
+      - name: Test
+        if: matrix.platform.name != 'Windows'
+        run: ctest --test-dir build/native/fe --output-on-failure --repeat until-pass:3
+
+      - name: Package (MSYS2)
+        if: matrix.platform.name == 'Windows'
+        shell: msys2 {0}
+        run: cd build/native/fe && cpack -G ZIP
+
+      - name: Package
+        if: matrix.platform.name != 'Windows'
+        run: cd build/native/fe && cpack -G ZIP
+
+      - name: Upload package
+        uses: actions/upload-artifact@v7
+        with:
+          name: FlowerEvolver-${{ matrix.platform.name }}-${{ matrix.config.name }}
+          path: build/native/fe/*.zip
+          if-no-files-found: error
+
+  wasm:
+    name: wasm (emscripten) + demo tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Cache wasm toolchain + dependencies
+        id: cache-wasm
+        uses: actions/cache@v6
+        with:
+          path: |
+            build/wasm/emsdk
+            build/wasm/JsonBox/build/install
+            build/wasm/EvoAI/build/install
+          key: wasm-deps-${{ hashFiles('.devops/prep.sh') }}
+
+      - name: npm ci
+        run: npm ci --ignore-scripts
+
+      - name: Prepare wasm toolchain + dependencies
+        if: steps.cache-wasm.outputs.cache-hit != 'true'
+        run: npm run prep
+
+      - name: Build wasm module + demo dist/
+        run: npm run build
+
+      - name: Run vitest (FEService, against the real build)
+        run: npm test
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright e2e
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Upload dist/ (release artifact for tag builds)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@v7
+        with:
+          name: FlowerEvolver-wasm-dist
+          path: dist/
+          if-no-files-found: error
+
+  docs:
+    name: docs (sanity build)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install docs toolchain (Doxygen + Python dev headers + docs deps)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz python3-dev
+          pip install --break-system-packages -r docs/requirements.txt
+
+      - name: Cache native dependencies (JsonBox + EvoAI)
+        id: cache-native
+        uses: actions/cache@v6
+        with:
+          path: build/native
+          key: native-deps-${{ runner.os }}-${{ hashFiles('.devops/prep.sh') }}
+
+      - name: Build dependencies (JsonBox + EvoAI)
+        if: steps.cache-native.outputs.cache-hit != 'true'
+        run: bash .devops/prep.sh native
+
+      - name: Build both doc sites (+ assemble dist/docs/)
+        run: |
+          npm ci --ignore-scripts
+          npm run build:python
+          bash .devops/build.sh docs
+
+  python-wheels:
+    name: python-wheels-${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install cibuildwheel
+        run: python -m pip install --upgrade pip cibuildwheel
+
+      - name: Compute native-deps path (macOS)
+        if: matrix.os == 'macos-15'
+        run: echo "DEPS_ROOT=${{ github.workspace }}/build/native-deps" >> "$GITHUB_ENV"
+
+      - name: Build wheels
+        env:
+          CIBW_BUILD: "cp39-* cp310-* cp311-* cp312-* cp313-* cp314-*"
+          CIBW_SKIP: "*-musllinux_* *-manylinux_i686 *-win32"
+          CIBW_TEST_REQUIRES: "pytest"
+          CIBW_TEST_SOURCES: "python/tests"
+          CIBW_TEST_COMMAND: "pytest python/tests"
+          CIBW_BEFORE_ALL_LINUX: "bash {project}/.devops/prep-wheel-deps.sh {project}/build/native-deps"
+          CIBW_BEFORE_ALL_MACOS: "bash {project}/.devops/prep-wheel-deps.sh ${{ env.DEPS_ROOT }}"
+          CIBW_CONFIG_SETTINGS_LINUX: >-
+            cmake.define.JsonBox_ROOT={project}/build/native-deps/JsonBox/build/install
+            cmake.define.EvoAI_ROOT={project}/build/native-deps/EvoAI/build/install
+          CIBW_CONFIG_SETTINGS_MACOS: >-
+            cmake.define.JsonBox_ROOT=${{ env.DEPS_ROOT }}/JsonBox/build/install
+            cmake.define.EvoAI_ROOT=${{ env.DEPS_ROOT }}/EvoAI/build/install
+        run: python -m cibuildwheel --output-dir wheelhouse
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+          if-no-files-found: error
+
+  python-wheels-windows-msvc:
+    name: python-wheels-windows-msvc
+    runs-on: windows-2025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup MSVC Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install Ninja
+        run: choco install ninja -y
+
+      - name: Install cibuildwheel
+        run: python -m pip install --upgrade pip cibuildwheel
+
+      - name: Compute native-deps path (forward slashes)
+        shell: bash
+        run: echo "DEPS_ROOT=${GITHUB_WORKSPACE//\\//}/build/native-deps" >> "$GITHUB_ENV"
+
+      - name: Build native dependencies
+        shell: bash
+        run: bash .devops/prep-wheel-deps.sh
+
+      - name: Build wheels
+        env:
+          CIBW_BUILD: "cp39-win_amd64 cp310-win_amd64 cp311-win_amd64 cp312-win_amd64 cp313-win_amd64"
+          CIBW_TEST_REQUIRES: "pytest"
+          CIBW_TEST_SOURCES: "python/tests"
+          CIBW_TEST_COMMAND: "pytest python/tests"
+          CMAKE_ARGS: >-
+            -G Ninja
+            -DJsonBox_ROOT=${{ env.DEPS_ROOT }}/JsonBox/build/install
+            -DEvoAI_ROOT=${{ env.DEPS_ROOT }}/EvoAI/build/install
+        shell: bash
+        run: python -m cibuildwheel --output-dir wheelhouse
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: wheels-windows-msvc
+          path: wheelhouse/*.whl
+          if-no-files-found: error
+
+  python-sdist:
+    name: python-sdist
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install build tools
+        run: python -m pip install --upgrade pip build pytest
+
+      - name: Build sdist
+        run: python -m build --sdist
+
+      - name: Build native dependencies
+        env:
+          DEPS_ROOT: "${{ github.workspace }}/build/native-deps"
+        run: bash .devops/prep-wheel-deps.sh
+
+      - name: Install built sdist
+        run: |
+          python -m pip install dist/*.tar.gz \
+            -Ccmake.define.JsonBox_ROOT=${{ github.workspace }}/build/native-deps/JsonBox/build/install \
+            -Ccmake.define.EvoAI_ROOT=${{ github.workspace }}/build/native-deps/EvoAI/build/install
+
+      - name: Test installed sdist
+        run: pytest python/tests
+
+      - name: Upload sdist
+        uses: actions/upload-artifact@v7
+        with:
+          name: python-sdist
+          path: dist/*.tar.gz
+          if-no-files-found: error
+
+  android:
+    name: android-${{ matrix.abi }}
+    runs-on: ubuntu-24.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        abi: [armeabi-v7a, arm64-v8a, x86, x86_64]
+
+    env:
+      ANDROID_NDK_VERSION: 26.2.11394342
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Cache Android NDK
+        id: cache-ndk
+        uses: actions/cache@v6
+        with:
+          path: /usr/local/lib/android/sdk/ndk/${{ env.ANDROID_NDK_VERSION }}
+          key: android-ndk-${{ env.ANDROID_NDK_VERSION }}
+
+      - name: Install Android NDK
+        if: steps.cache-ndk.outputs.cache-hit != 'true'
+        run: echo "y" | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --install "ndk;${{ env.ANDROID_NDK_VERSION }}"
+
+      - name: Point ANDROID_NDK at the installed NDK
+        run: echo "ANDROID_NDK=$ANDROID_SDK_ROOT/ndk/${{ env.ANDROID_NDK_VERSION }}" >> "$GITHUB_ENV"
+
+      - name: Cache JsonBox/EvoAI (this ABI)
+        id: cache-deps
+        uses: actions/cache@v6
+        with:
+          path: |
+            ${{ env.ANDROID_NDK }}/sources/third_party/JsonBox
+            ${{ env.ANDROID_NDK }}/sources/third_party/EvoAI
+          key: android-deps-${{ matrix.abi }}-${{ env.ANDROID_NDK_VERSION }}-${{ hashFiles('.devops/prep.sh') }}
+
+      - name: Prepare (JsonBox + EvoAI, this ABI)
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: bash .devops/prep.sh android ${{ matrix.abi }}
+
+      - name: Build
+        run: bash .devops/build.sh android ${{ matrix.abi }} -DFlowerEvolver_BUILD_STATIC=FALSE
+
+      - name: Package
+        run: cd build/android/fe-${{ matrix.abi }} && cpack -G ZIP
+
+      - name: Upload package
+        uses: actions/upload-artifact@v7
+        with:
+          name: FlowerEvolver-Android-${{ matrix.abi }}
+          path: build/android/fe-${{ matrix.abi }}/*.zip
+          if-no-files-found: error
+
+  android-merge:
+    name: android (merge ABIs)
+    needs: [android]
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Download per-ABI packages
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+          pattern: "FlowerEvolver-Android-*"
+          merge-multiple: false
+
+      - name: Merge all ABIs into one package
+        run: |
+          set -e
+          MERGED=FlowerEvolver-Android
+          mkdir -p "$MERGED"
+
+          for abi_dir in artifacts/FlowerEvolver-Android-*; do
+            zip_file=$(find "$abi_dir" -name '*.zip')
+            rm -rf extracted
+            unzip -q "$zip_file" -d extracted
+            src_dir=$(find extracted -mindepth 1 -maxdepth 1 -type d)
+            cp -a "$src_dir"/. "$MERGED"/
+          done
+
+          rm -rf extracted
+          zip -r "$MERGED.zip" "$MERGED"
+
+      - name: Upload merged package
+        uses: actions/upload-artifact@v7
+        with:
+          name: FlowerEvolver-Android
+          path: FlowerEvolver-Android.zip
+          if-no-files-found: error
+
+  release:
+    name: create release
+    needs:
+      - native
+      - wasm
+      - android-merge
+      - python-wheels
+      - python-wheels-windows-msvc
+      - python-sdist
+
+    runs-on: ubuntu-24.04
+
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download native packages + wasm dist + merged Android package
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+          pattern: "FlowerEvolver-*"
+          merge-multiple: false
+
+      - name: Download Python artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts/python
+          pattern: "wheels-*"
+          merge-multiple: true
+
+      - name: Download Python sdist
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts/python
+          pattern: "python-sdist"
+          merge-multiple: true
+
+      - name: Zip the wasm dist/ bundle
+        run: |
+          cd artifacts/FlowerEvolver-wasm-dist
+          zip -r ../FlowerEvolver-wasm-dist.zip .
+
+      - name: Create Release (draft)
+        uses: softprops/action-gh-release@v3
+        with:
+          generate_release_notes: true
+          draft: true
+          files: |
+            artifacts/FlowerEvolver-Linux-*/*.zip
+            artifacts/FlowerEvolver-macOS-*/*.zip
+            artifacts/FlowerEvolver-Windows-*/*.zip
+            artifacts/FlowerEvolver-Windows MSVC-*/*.zip
+            artifacts/FlowerEvolver-Android/*.zip
+            artifacts/FlowerEvolver-wasm-dist.zip
+            artifacts/python/*.whl
+            artifacts/python/*.tar.gz

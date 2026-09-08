@@ -20,35 +20,43 @@ set(FIND_JsonBox_PATHS
     /opt/csw
     /opt)
 
-if(JsonBox_ROOT)
-    SET(LIB_SUFFIX "/")
-    if(CMAKE_SYSTEM_NAME MATCHES "Android")
-        SET(LIB_SUFFIX "/${CMAKE_ANDROID_ARCH_ABI}")
-    endif(CMAKE_SYSTEM_NAME MATCHES "Android")
-	SET(JsonBox_INCLUDE_DIR "${JsonBox_ROOT}/include")
-    SET(JsonBox_LIBRARY "${JsonBox_ROOT}/lib${LIB_SUFFIX}/libJsonBox.a")
-    SET(JsonBox_LIBRARIES ${JsonBox_LIBRARY})
-	SET(JsonBox_FOUND 1)
-endif(JsonBox_ROOT)
+set(LIB_SUFFIX "")
+if(CMAKE_SYSTEM_NAME MATCHES "Android")
+    set(LIB_SUFFIX "/${CMAKE_ANDROID_ARCH_ABI}")
+endif()
 
-find_path(JsonBox_INCLUDE_DIR include/JsonBox.h
-          PATH_SUFFIXES include
-          PATHS ${FIND_JsonBox_PATHS})
+find_path(JsonBox_INCLUDE_DIR
+    JsonBox.h
+    PATH_SUFFIXES include
+    PATHS ${JsonBox_ROOT}
+    NO_CMAKE_FIND_ROOT_PATH
+)
 
 find_library(JsonBox_LIBRARY
-		NAMES JsonBox JsonBox.a
-		PATH_SUFFIXES lib
-		PATHS ${FIND_JsonBox_PATHS})
+    NAMES JsonBox
+    PATH_SUFFIXES lib${LIB_SUFFIX}
+    PATHS ${JsonBox_ROOT}
+    NO_CMAKE_FIND_ROOT_PATH
+)
+
+find_path(JsonBox_INCLUDE_DIR
+    JsonBox.h
+    PATH_SUFFIXES include
+    PATHS ${FIND_JsonBox_PATHS}
+)
+
+find_library(JsonBox_LIBRARY
+    NAMES JsonBox
+    PATH_SUFFIXES lib${LIB_SUFFIX}
+    PATHS ${FIND_JsonBox_PATHS}
+)
+
+set(JsonBox_LIBRARIES ${JsonBox_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(JsonBox DEFAULT_MSG JsonBox_LIBRARY JsonBox_INCLUDE_DIR)
-
-set(JsonBox_INCLUDE_DIR "${JsonBox_INCLUDE_DIR}")
-set(JsonBox_LIBRARIES "${JsonBox_LIBRARY}")
-
-if(NOT JsonBox_FOUND)
-	set(FIND_JsonBox_ERROR "Could NOT find JsonBox")
-	if(JsonBox_FIND_REQUIRED)
-		message(FATAL_ERROR ${FIND_JsonBox_ERROR})
-	endif()
-endif()
+find_package_handle_standard_args(
+    JsonBox
+    DEFAULT_MSG
+    JsonBox_LIBRARY
+    JsonBox_INCLUDE_DIR
+)
