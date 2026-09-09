@@ -55,7 +55,7 @@ jobs:
         if: matrix.platform.name != 'Windows' && matrix.platform.name != 'Windows MSVC'
         uses: lukka/get-cmake@latest
         with:
-          cmakeVersion: "3.28"
+          cmakeVersion: "4.4"
           ninjaVersion: latest
 
       - name: Get CMake + Ninja

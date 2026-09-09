@@ -23,7 +23,7 @@ jobs:
       - name: Get CMake + Ninja
         uses: lukka/get-cmake@latest
         with:
-          cmakeVersion: "3.28"
+          cmakeVersion: "4.4"
           ninjaVersion: latest
 
       - name: Install docs toolchain (Doxygen + Python dev headers + docs deps)
@@ -34,7 +34,7 @@ jobs:
 
       # Needed so `npm run build:python` below (which build.sh's docs mode
       # requires to produce docs/python/ - see its own "soft skip"
-      # comment) has something to link FlowerEvolver's Python extension
+      # comment) has something to link flowerevolver's Python extension
       # against.
       - name: Cache native dependencies (JsonBox + EvoAI)
         id: cache-native
@@ -54,8 +54,9 @@ jobs:
           EMAIL: ${{secrets.EMAIL}}
         run: |
           npm ci --ignore-scripts
-          bash .devops/prep.sh
-          bash .devops/build.sh
+          npm run prep
+          npm run build
+          npm run build:native
           npm run build:python
-          bash .devops/build.sh docs
+          npm run build:docs
           sh .devops/deploy.sh "$GITUSER" "$EMAIL"
