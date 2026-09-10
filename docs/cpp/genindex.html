@@ -1,0 +1,1130 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; FlowerEvolver-WASM 4.0.0 C++ API</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=16954400" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="_static/documentation_options.js?v=3304f9e4"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/cpp/genindex.html" />
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">FlowerEvolver-WASM 4.0.0 C++ API</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="source/api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/">
+    Demo
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/js/">
+    JS/WASM Docs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/python/">
+    Python Docs
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cristianglezm/FlowerEvolver-WASM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="source/api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/">
+    Demo
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/js/">
+    JS/WASM Docs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/python/">
+    Python Docs
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cristianglezm/FlowerEvolver-WASM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#D"><strong>D</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ 
+</div>
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/api.html#_CPPv410drawFlowerRKN2fe3DNAEiiff">drawFlower (C++ function)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/api.html#_CPPv414drawPetalLayerRKN2fe3DNAEiiffi">drawPetalLayer (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv410drawPetalsRKN2fe3DNAEiiff">drawPetals (C++ function)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/api.html#_CPPv42fe">fe (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5ColorE">fe::Color (C++ class)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color1aE">fe::Color::a (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color1bE">fe::Color::b (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color5BlackE">fe::Color::Black (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color4BlueE">fe::Color::Blue (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color5ColorE5Uint85Uint85Uint85Uint8">fe::Color::Color (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe5Color5ColorE6Uint32">[1]</a>, <a href="source/api.html#_CPPv4N2fe5Color5ColorEv">[2]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color4CyanE">fe::Color::Cyan (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color1gE">fe::Color::g (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color5GreenE">fe::Color::Green (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color7MagentaE">fe::Color::Magenta (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5ColorneERK5ColorRK5Color">fe::Color::operator!= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5ColormlERK5ColorRK5Color">fe::Color::operator* (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5ColormLER5ColorRK5Color">fe::Color::operator*= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5ColorplERK5ColorRK5Color">fe::Color::operator+ (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5ColorpLER5ColorRK5Color">fe::Color::operator+= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5ColormiERK5ColorRK5Color">fe::Color::operator- (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5ColormIER5ColorRK5Color">fe::Color::operator-= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5ColoreqERK5ColorRK5Color">fe::Color::operator== (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color1rE">fe::Color::r (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color3RedE">fe::Color::Red (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe5Color9toIntegerEv">fe::Color::toInteger (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color11TransparentE">fe::Color::Transparent (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color5WhiteE">fe::Color::White (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Color6YellowE">fe::Color::Yellow (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe15CylinderSegmentE">fe::CylinderSegment (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe15CylinderSegment6centerE">fe::CylinderSegment::center (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe15CylinderSegment15CylinderSegmentERKN2fe5Vec3fEffNSt8optionalIN2fe5Vec3fEEE">fe::CylinderSegment::CylinderSegment (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe15CylinderSegment7radiusXE">fe::CylinderSegment::radiusX (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe15CylinderSegment7radiusZE">fe::CylinderSegment::radiusZ (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe15CylinderSegment15uVecOrientationE">fe::CylinderSegment::uVecOrientation (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNAE">fe::DNA (C++ class)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNA3addERKN5EvoAI6GenomeE">fe::DNA::add (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe3DNA3addERRN5EvoAI6GenomeE">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNA5clearEv">fe::DNA::clear (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNA8distanceER3DNAR3DNA">fe::DNA::distance (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNA3DNAEN7JsonBox6ObjectE">fe::DNA::DNA (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe3DNA3DNAERK3DNA">[1]</a>, <a href="source/api.html#_CPPv4N2fe3DNA3DNAERR3DNA">[2]</a>, <a href="source/api.html#_CPPv4N2fe3DNA3DNAERRNSt6vectorIN5EvoAI6GenomeEEE">[3]</a>, <a href="source/api.html#_CPPv4N2fe3DNA3DNAEv">[4]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNA10getFitnessEv">fe::DNA::getFitness (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNA6mutateERK13MutationRates">fe::DNA::mutate (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNAaSERK3DNA">fe::DNA::operator= (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe3DNAaSERR3DNA">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNAixERKNSt6size_tE">fe::DNA::operator[] (C++ function)</a>, <a href="source/api.html#_CPPv4NK2fe3DNAixERKNSt6size_tE">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNA6removeEPN5EvoAI6GenomeE">fe::DNA::remove (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNA9reproduceER3DNAR3DNA">fe::DNA::reproduce (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNA10setFitnessEd">fe::DNA::setFitness (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe3DNA4sizeEv">fe::DNA::size (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe3DNA6toJsonEv">fe::DNA::toJson (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3DNAD0Ev">fe::DNA::~DNA (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe3dotERKN2fe5Vec2iERKN2fe5Vec2iE">fe::dot (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe14douglasPeuckerERKNSt6vectorIN2fe5Vec2iEEEfRNSt6vectorIN2fe5Vec2iEEE">fe::douglasPeucker (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4drawEN6Petals4TypeER6PetalsRN5EvoAI6GenomeE">fe::draw (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe9drawLayerER6PetalsRN5EvoAI6GenomeEib">fe::drawLayer (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe24encodeImageToPngInMemoryERK5Image">fe::encodeImageToPngInMemory (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe14encodeToBase64ERKNSt6vectorINSt7uint8_tEEE">fe::encodeToBase64 (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16findContourMooreERKNSt6vectorINSt7uint8_tEEEiiiRNSt6vectorIN2fe5Vec2iEEE">fe::findContourMoore (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe9FloatRectE">fe::FloatRect (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6FlowerE">fe::Flower (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Flower3dnaE">fe::Flower::dna (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Flower6FlowerEN7JsonBox6ObjectE">fe::Flower::Flower (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe6Flower6FlowerERK6Flower">[1]</a>, <a href="source/api.html#_CPPv4N2fe6Flower6FlowerERKN2fe8Vector2fEiiff">[2]</a>, <a href="source/api.html#_CPPv4N2fe6Flower6FlowerERKN2fe8Vector2fEiiffRKN6Petals4TypeE">[3]</a>, <a href="source/api.html#_CPPv4N2fe6Flower6FlowerERKN2fe8Vector2fEiiffRR3DNA">[4]</a>, <a href="source/api.html#_CPPv4N2fe6Flower6FlowerERKN2fe8Vector2fEiiffRR3DNARKN6Petals4TypeE">[5]</a>, <a href="source/api.html#_CPPv4N2fe6Flower6FlowerERR6Flower">[6]</a>, <a href="source/api.html#_CPPv4N2fe6Flower6FlowerEv">[7]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6FloweraSERK6Flower">fe::Flower::operator= (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe6FloweraSERR6Flower">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Flower6petalsE">fe::Flower::petals (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe6Flower6toJsonEv">fe::Flower::toJson (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParametersE">fe::FlowerParameters (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters14alphaThresholdE">fe::FlowerParameters::alphaThreshold (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters18connectionRadiusPxE">fe::FlowerParameters::connectionRadiusPx (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters24connectionVerticalOffsetE">fe::FlowerParameters::connectionVerticalOffset (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters30contourSimplificationToleranceE">fe::FlowerParameters::contourSimplificationTolerance (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters18droopStartRadiusPxE">fe::FlowerParameters::droopStartRadiusPx (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters16FlowerParametersEN7JsonBox6ObjectE">fe::FlowerParameters::FlowerParameters (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe16FlowerParameters16FlowerParametersEv">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters20layerVerticalSpacingE">fe::FlowerParameters::layerVerticalSpacing (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters16peakHeightOffsetE">fe::FlowerParameters::peakHeightOffset (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters16petalDroopFactorE">fe::FlowerParameters::petalDroopFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters16petalScaleFactorE">fe::FlowerParameters::petalScaleFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters18pistilStigmaHeightE">fe::FlowerParameters::pistilStigmaHeight (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters26pistilStigmaMaxWidthFactorE">fe::FlowerParameters::pistilStigmaMaxWidthFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters26pistilStigmaRadialSegmentsE">fe::FlowerParameters::pistilStigmaRadialSegments (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters27pistilStigmaTipNarrowFactorE">fe::FlowerParameters::pistilStigmaTipNarrowFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters17pistilStyleHeightE">fe::FlowerParameters::pistilStyleHeight (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters17pistilStyleRadiusE">fe::FlowerParameters::pistilStyleRadius (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters3sexE">fe::FlowerParameters::sex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters18stamenAntherHeightE">fe::FlowerParameters::stamenAntherHeight (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters26stamenAntherRadialSegmentsE">fe::FlowerParameters::stamenAntherRadialSegments (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters11stamenCountE">fe::FlowerParameters::stamenCount (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters20stamenFilamentHeightE">fe::FlowerParameters::stamenFilamentHeight (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters28stamenFilamentRadialSegmentsE">fe::FlowerParameters::stamenFilamentRadialSegments (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters20stamenFilamentRadiusE">fe::FlowerParameters::stamenFilamentRadius (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters10stemHeightE">fe::FlowerParameters::stemHeight (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters10stemRadiusE">fe::FlowerParameters::stemRadius (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters12stemSegmentsE">fe::FlowerParameters::stemSegments (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe16FlowerParameters6toJsonEv">fe::FlowerParameters::toJson (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters11useEmissiveE">fe::FlowerParameters::useEmissive (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe16FlowerParameters10useNormalsE">fe::FlowerParameters::useNormals (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe33generateEllipticalCylinderSegmentERN2fe4gltf4MeshERKN2fe5Vec3fERKN2fe5Vec3fEffffibbbNSt8optionalIN2fe5Vec3fEEE">fe::generateEllipticalCylinderSegment (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe18generatePetalLayerERN2fe4gltf5SceneERKNSt6vectorIN2fe5Vec2iEEERKN2fe5ImageEiRKN2fe5Vec3fERKN2fe16FlowerParametersE">fe::generatePetalLayer (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe14generatePistilERN2fe4gltf5SceneERKN2fe5Vec3fERKN2fe16FlowerParametersEiii">fe::generatePistil (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe25generateSegmentedCylinderERN2fe4gltf4MeshERKNSt6vectorI15CylinderSegmentEEibbb">fe::generateSegmentedCylinder (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe14generateStamenERN2fe4gltf5SceneERKN2fe5Vec3fERKN2fe16FlowerParametersEiii">fe::generateStamen (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe12generateStemERN2fe4gltf5SceneERKN2fe16FlowerParametersEi">fe::generateStem (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe14generateStigmaERN2fe4gltf4MeshERKN2fe15CylinderSegmentERKN2fe16FlowerParametersEib">fe::generateStigma (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe19getTimesDivisibleByEii">fe::getTimesDivisibleBy (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltfE">fe::gltf (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf22KHR_MaterialsClearcoatE">fe::gltf::KHR_MaterialsClearcoat (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf22KHR_MaterialsClearcoat15clearcoatFactorE">fe::gltf::KHR_MaterialsClearcoat::clearcoatFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf22KHR_MaterialsClearcoat27clearcoatNormalTextureIndexE">fe::gltf::KHR_MaterialsClearcoat::clearcoatNormalTextureIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf22KHR_MaterialsClearcoat24clearcoatRoughnessFactorE">fe::gltf::KHR_MaterialsClearcoat::clearcoatRoughnessFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf22KHR_MaterialsClearcoat30clearcoatRoughnessTextureIndexE">fe::gltf::KHR_MaterialsClearcoat::clearcoatRoughnessTextureIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf22KHR_MaterialsClearcoat21clearcoatTextureIndexE">fe::gltf::KHR_MaterialsClearcoat::clearcoatTextureIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf29KHR_MaterialsEmissiveStrengthE">fe::gltf::KHR_MaterialsEmissiveStrength (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf29KHR_MaterialsEmissiveStrength16emissiveStrengthE">fe::gltf::KHR_MaterialsEmissiveStrength::emissiveStrength (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf16KHR_MaterialsIORE">fe::gltf::KHR_MaterialsIOR (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf16KHR_MaterialsIOR3iorE">fe::gltf::KHR_MaterialsIOR::ior (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf25KHR_MaterialsTransmissionE">fe::gltf::KHR_MaterialsTransmission (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf25KHR_MaterialsTransmission18transmissionFactorE">fe::gltf::KHR_MaterialsTransmission::transmissionFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf25KHR_MaterialsTransmission24transmissionTextureIndexE">fe::gltf::KHR_MaterialsTransmission::transmissionTextureIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf19KHR_MaterialsVolumeE">fe::gltf::KHR_MaterialsVolume (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf19KHR_MaterialsVolume16attenuationColorE">fe::gltf::KHR_MaterialsVolume::attenuationColor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf19KHR_MaterialsVolume19attenuationDistanceE">fe::gltf::KHR_MaterialsVolume::attenuationDistance (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf19KHR_MaterialsVolume15thicknessFactorE">fe::gltf::KHR_MaterialsVolume::thicknessFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf19KHR_MaterialsVolume21thicknessTextureIndexE">fe::gltf::KHR_MaterialsVolume::thicknessTextureIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8MaterialE">fe::gltf::Material (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material11alphaCutoffE">fe::gltf::Material::alphaCutoff (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material9alphaModeE">fe::gltf::Material::alphaMode (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material15baseColorFactorE">fe::gltf::Material::baseColorFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material21baseColorTextureIndexE">fe::gltf::Material::baseColorTextureIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material19createPetalMaterialERKNSt6stringEiii">fe::gltf::Material::createPetalMaterial (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material26createPistilStigmaMaterialEi">fe::gltf::Material::createPistilStigmaMaterial (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material25createPistilStyleMaterialEv">fe::gltf::Material::createPistilStyleMaterial (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material26createStamenAntherMaterialEi">fe::gltf::Material::createStamenAntherMaterial (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material28createStamenFilamentMaterialEv">fe::gltf::Material::createStamenFilamentMaterial (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material18createStemMaterialEv">fe::gltf::Material::createStemMaterial (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material11doubleSidedE">fe::gltf::Material::doubleSided (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material14emissiveFactorE">fe::gltf::Material::emissiveFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material20emissiveTextureIndexE">fe::gltf::Material::emissiveTextureIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material21khrMaterialsClearcoatE">fe::gltf::Material::khrMaterialsClearcoat (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material28khrMaterialsEmissiveStrengthE">fe::gltf::Material::khrMaterialsEmissiveStrength (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material15khrMaterialsIORE">fe::gltf::Material::khrMaterialsIOR (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material24khrMaterialsTransmissionE">fe::gltf::Material::khrMaterialsTransmission (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material18khrMaterialsVolumeE">fe::gltf::Material::khrMaterialsVolume (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material8MaterialEv">fe::gltf::Material::Material (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material14metallicFactorE">fe::gltf::Material::metallicFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material29metallicRoughnessTextureIndexE">fe::gltf::Material::metallicRoughnessTextureIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material4nameE">fe::gltf::Material::name (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material18normalTextureIndexE">fe::gltf::Material::normalTextureIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material18normalTextureScaleE">fe::gltf::Material::normalTextureScale (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material21occlusionTextureIndexE">fe::gltf::Material::occlusionTextureIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material24occlusionTextureStrengthE">fe::gltf::Material::occlusionTextureStrength (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf8Material15roughnessFactorE">fe::gltf::Material::roughnessFactor (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4MeshE">fe::gltf::Mesh (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh11addTriangleEjjj">fe::gltf::Mesh::addTriangle (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh9addVertexERK6Vertex">fe::gltf::Mesh::addVertex (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh10hasNormalsE">fe::gltf::Mesh::hasNormals (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh13hasTexCoords0E">fe::gltf::Mesh::hasTexCoords0 (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh5indexE">fe::gltf::Mesh::index (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh7indicesE">fe::gltf::Mesh::indices (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh13materialIndexE">fe::gltf::Mesh::materialIndex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh9maxBoundsE">fe::gltf::Mesh::maxBounds (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh4MeshEiRKNSt6stringE">fe::gltf::Mesh::Mesh (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe4gltf4Mesh4MeshEv">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh9minBoundsE">fe::gltf::Mesh::minBounds (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh4nameE">fe::gltf::Mesh::name (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Mesh8verticesE">fe::gltf::Mesh::vertices (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4NodeE">fe::gltf::Node (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Node8childrenE">fe::gltf::Node::children (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Node5extraE">fe::gltf::Node::extra (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Node9makeGroupERKNSt6stringERKNSt6vectorIiEE">fe::gltf::Node::makeGroup (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Node8makeNodeERKNSt6stringERK4Mesh">fe::gltf::Node::makeNode (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Node4meshE">fe::gltf::Node::mesh (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Node4nameE">fe::gltf::Node::name (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf4Node4NodeEv">fe::gltf::Node::Node (C++ function)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5SceneE">fe::gltf::Scene (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene11addMaterialERK8Material">fe::gltf::Scene::addMaterial (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene11addMeshPartERK4Mesh">fe::gltf::Scene::addMeshPart (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene7addNodeERK4Node">fe::gltf::Scene::addNode (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene10addTextureERK11TextureInfo">fe::gltf::Scene::addTexture (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene14createMeshPartERKNSt6stringE">fe::gltf::Scene::createMeshPart (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene9materialsE">fe::gltf::Scene::materials (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene9meshPartsE">fe::gltf::Scene::meshParts (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene7modelIdE">fe::gltf::Scene::modelId (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene5nodesE">fe::gltf::Scene::nodes (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene5SceneERKNSt6stringE">fe::gltf::Scene::Scene (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf5Scene8texturesE">fe::gltf::Scene::textures (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf11TextureInfoE">fe::gltf::TextureInfo (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf11TextureInfo15createFromImageERKNSt6stringERKN2fe5ImageE">fe::gltf::TextureInfo::createFromImage (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf11TextureInfo8mimeTypeE">fe::gltf::TextureInfo::mimeType (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf11TextureInfo4nameE">fe::gltf::TextureInfo::name (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf11TextureInfo11TextureInfoERKNSt6stringERKNSt6stringE">fe::gltf::TextureInfo::TextureInfo (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf11TextureInfo3uriE">fe::gltf::TextureInfo::uri (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf6toJsonERKN2fe4gltf5SceneERKN2fe16FlowerParametersE">fe::gltf::toJson (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf11toJsonArrayERKN2fe5Vec3fE">fe::gltf::toJsonArray (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe4gltf11toJsonArrayERKN2fe5Vec4fE">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf9toJsonStrERKN7JsonBox5ValueE">fe::gltf::toJsonStr (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf6VertexE">fe::gltf::Vertex (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf6Vertex6normalE">fe::gltf::Vertex::normal (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf6Vertex8positionE">fe::gltf::Vertex::position (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf6Vertex9texCoord0E">fe::gltf::Vertex::texCoord0 (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4gltf6Vertex6VertexERKN2fe5Vec3fE">fe::gltf::Vertex::Vertex (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe4gltf6Vertex6VertexERKN2fe5Vec3fERKN2fe5Vec3fERKN2fe5Vec2fE">[1]</a>, <a href="source/api.html#_CPPv4N2fe4gltf6Vertex6VertexERKN2fe5Vec3fERKNSt8optionalIN2fe5Vec3fEEERKNSt8optionalIN2fe5Vec2fEEE">[2]</a>, <a href="source/api.html#_CPPv4N2fe4gltf6Vertex6VertexEv">[3]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5ImageE">fe::Image (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Image6createENSt6size_tENSt6size_tERKN2fe5ColorE">fe::Image::create (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe5Image8getPixelENSt6size_tENSt6size_tE">fe::Image::getPixel (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe5Image7getSizeEv">fe::Image::getSize (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Image5ImageEv">fe::Image::Image (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Image9imageDataE">fe::Image::imageData (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Image7mHeightE">fe::Image::mHeight (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Image6mWidthE">fe::Image::mWidth (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Image8setPixelENSt6size_tENSt6size_tERKN2fe5ColorE">fe::Image::setPixel (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe5Image8setPixelERKN2fe8Vector2fERKN2fe5ColorE">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Int16E">fe::Int16 (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Int32E">fe::Int32 (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Int64E">fe::Int64 (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Int8E">fe::Int8 (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe7IntRectE">fe::IntRect (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe8isBase64Eh">fe::isBase64 (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4MathE">fe::Math (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Math5angleERKN2fe8Vector2fERKN2fe8Vector2fE">fe::Math::angle (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Math16degreesToRadiansEf">fe::Math::degreesToRadians (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Math13directedAngleERKN2fe8Vector2fERKN2fe8Vector2fERKN2fe8Vector2fE">fe::Math::directedAngle (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Math9magnitudeERKN2fe8Vector2fE">fe::Math::magnitude (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Math9normalizeERKN2fe8Vector2fE">fe::Math::normalize (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Math2PIE">fe::Math::PI (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Math16radiansToDegreesEf">fe::Math::radiansToDegrees (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe13MutationRatesE">fe::MutationRates (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe13MutationRates11actTypeRateE">fe::MutationRates::actTypeRate (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe13MutationRates11addConnRateE">fe::MutationRates::addConnRate (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe13MutationRates11addNodeRateE">fe::MutationRates::addNodeRate (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe13MutationRates11disableRateE">fe::MutationRates::disableRate (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe13MutationRates10enableRateE">fe::MutationRates::enableRate (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe13MutationRates13MutationRatesEN7JsonBox6ObjectE">fe::MutationRates::MutationRates (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe13MutationRates13MutationRatesEfffffff">[1]</a>, <a href="source/api.html#_CPPv4N2fe13MutationRates13MutationRatesEv">[2]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe13MutationRates18perturbWeightsRateE">fe::MutationRates::perturbWeightsRate (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe13MutationRates14removeConnRateE">fe::MutationRates::removeConnRate (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe13MutationRates6toJsonEv">fe::MutationRates::toJson (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2femlE4Vec3I1TE1T4Vec3I1TE">fe::operator* (C++ function)</a>, <a href="source/api.html#_CPPv4I0EN2femlE4Vec3I1TE4Vec3I1TE1T">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2feplE4Vec3I1TE4Vec3I1TERK4Vec3I1TE">fe::operator+ (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2femiE4Vec3I1TE4Vec3I1TERK4Vec3I1TE">fe::operator- (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fedvE4Vec3I1TE4Vec3I1TE1T">fe::operator/ (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6PetalsE">fe::Petals (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals4biasE">fe::Petals::bias (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals8hasBloomE">fe::Petals::hasBloom (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals5imageE">fe::Petals::image (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals9numLayersE">fe::Petals::numLayers (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6PetalsaSERK6Petals">fe::Petals::operator= (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe6PetalsaSERR6Petals">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals1PE">fe::Petals::P (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals6PetalsEN7JsonBox6ObjectE">fe::Petals::Petals (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe6Petals6PetalsERK6Petals">[1]</a>, <a href="source/api.html#_CPPv4N2fe6Petals6PetalsERR6Petals">[2]</a>, <a href="source/api.html#_CPPv4N2fe6Petals6PetalsEiiff">[3]</a>, <a href="source/api.html#_CPPv4N2fe6Petals6PetalsEv">[4]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals6radiusE">fe::Petals::radius (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe6Petals6toJsonEv">fe::Petals::toJson (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals4TypeE">fe::Petals::Type (C++ enum)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals4Type6PetalsE">fe::Petals::Type::Petals (C++ enumerator)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals4Type5TrunkE">fe::Petals::Type::Trunk (C++ enumerator)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Petals4Type14TrunkAndPetalsE">fe::Petals::Type::TrunkAndPetals (C++ enumerator)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe26pointLineSegmentDistanceSqERKN2fe5Vec2iERKN2fe5Vec2iERKN2fe5Vec2iE">fe::pointLineSegmentDistanceSq (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4privE">fe::priv (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4priv10drawPetalsER6PetalsRN5EvoAI13NeuralNetworkEii">fe::priv::drawPetals (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4priv9drawTrunkER6Petals">fe::priv::drawTrunk (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4priv25EightWaySymmetricSetColorERKN2fe8Vector2fERKN2fe8Vector2fER6PetalsRN5EvoAI13NeuralNetworkEii">fe::priv::EightWaySymmetricSetColor (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4priv7queryNNERN5EvoAI13NeuralNetworkER6PetalsRKN2fe8Vector2fEii">fe::priv::queryNN (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4priv14setColorAndCutERKN2fe8Vector2fERN5EvoAI13NeuralNetworkER6Petalsii">fe::priv::setColorAndCut (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe4RectE">fe::Rect (C++ class)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe4Rect8containsE1T1T">fe::Rect::contains (C++ function)</a>, <a href="source/api.html#_CPPv4NK2fe4Rect8containsERK7Vector2I1TE">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe4Rect11getPositionEv">fe::Rect::getPosition (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe4Rect7getSizeEv">fe::Rect::getSize (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Rect6heightE">fe::Rect::height (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe4Rect10intersectsERK4RectI1TE">fe::Rect::intersects (C++ function)</a>, <a href="source/api.html#_CPPv4NK2fe4Rect10intersectsERK4RectI1TER4RectI1TE">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Rect4leftE">fe::Rect::left (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe4RectneEbRK4RectI1TERK4RectI1TE">fe::Rect::operator!= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe4RecteqEbRK4RectI1TERK4RectI1TE">fe::Rect::operator== (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe4Rect4RectERK4RectI1UE">fe::Rect::Rect (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe4Rect4RectE1T1T1T1T">[1]</a>, <a href="source/api.html#_CPPv4N2fe4Rect4RectERK7Vector2I1TERK7Vector2I1TE">[2]</a>, <a href="source/api.html#_CPPv4N2fe4Rect4RectEv">[3]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Rect3topE">fe::Rect::top (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Rect5widthE">fe::Rect::width (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe9resourcesE">fe::resources (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe9resources21anther_normal_textureE">fe::resources::anther_normal_texture (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe9resources21stigma_normal_textureE">fe::resources::stigma_normal_texture (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe15simplifyContourERKNSt6vectorIN2fe5Vec2iEEEfRNSt6vectorIN2fe5Vec2iEEE">fe::simplifyContour (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5StatsE">fe::Stats (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats7effectsE">fe::Stats::effects (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats7EffectsE">fe::Stats::Effects (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats7Effects7agilityE">fe::Stats::Effects::agility (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats7Effects7EffectsEv">fe::Stats::Effects::Effects (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats7Effects12intelligenceE">fe::Stats::Effects::intelligence (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats7Effects4luckE">fe::Stats::Effects::luck (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats7Effects8strengthE">fe::Stats::Effects::strength (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats7Effects8vitalityE">fe::Stats::Effects::vitality (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats6healthE">fe::Stats::health (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats16maturationPeriodE">fe::Stats::maturationPeriod (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats14maxTemperatureE">fe::Stats::maxTemperature (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats14minTemperatureE">fe::Stats::minTemperature (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats3SexE">fe::Stats::Sex (C++ enum)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats3sexE">fe::Stats::sex (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats3Sex4BothE">fe::Stats::Sex::Both (C++ enumerator)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats3Sex6FemaleE">fe::Stats::Sex::Female (C++ enumerator)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats3Sex4MaleE">fe::Stats::Sex::Male (C++ enumerator)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats7staminaE">fe::Stats::stamina (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats5StatsERKNSt6stringEfiii">fe::Stats::Stats (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe5Stats6toJsonEv">fe::Stats::toJson (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Stats12toxicityRateE">fe::Stats::toxicityRate (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Uint16E">fe::Uint16 (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Uint32E">fe::Uint32 (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe6Uint64E">fe::Uint64 (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Uint8E">fe::Uint8 (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Vec2fE">fe::Vec2f (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Vec2iE">fe::Vec2i (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe4Vec3E">fe::Vec3 (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe4Vec35crossERK4Vec3I1TE">fe::Vec3::cross (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe4Vec33dotERK4Vec3I1TE">fe::Vec3::dot (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe4Vec36lengthEv">fe::Vec3::length (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe4Vec313lengthSquaredEv">fe::Vec3::lengthSquared (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Vec39normalizeEv">fe::Vec3::normalize (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Vec3mLE1T">fe::Vec3::operator*= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Vec3pLERK4Vec3I1TE">fe::Vec3::operator+= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4NK2fe4Vec3miEv">fe::Vec3::operator- (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Vec3mIERK4Vec3I1TE">fe::Vec3::operator-= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Vec3dVE1T">fe::Vec3::operator/= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Vec34Vec3E1T1T1T">fe::Vec3::Vec3 (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe4Vec34Vec3Ev">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Vec31xE">fe::Vec3::x (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Vec31yE">fe::Vec3::y (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe4Vec31zE">fe::Vec3::z (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Vec3fE">fe::Vec3f (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Vec4fE">fe::Vec4f (C++ struct)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Vec4f1aE">fe::Vec4f::a (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Vec4f1bE">fe::Vec4f::b (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Vec4f1gE">fe::Vec4f::g (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Vec4f1rE">fe::Vec4f::r (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe5Vec4f5Vec4fEffff">fe::Vec4f::Vec4f (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2E">fe::Vector2 (C++ class)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2neEbRK7Vector2I1TERK7Vector2I1TE">fe::Vector2::operator!= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2mlE7Vector2I1TE1TRK7Vector2I1TE">fe::Vector2::operator* (C++ function)</a>, <a href="source/api.html#_CPPv4I0EN2fe7Vector2mlE7Vector2I1TERK7Vector2I1TE1T">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2mLER7Vector2I1TER7Vector2I1TE1T">fe::Vector2::operator*= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2plE7Vector2I1TERK7Vector2I1TERK7Vector2I1TE">fe::Vector2::operator+ (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2pLER7Vector2I1TER7Vector2I1TERK7Vector2I1TE">fe::Vector2::operator+= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2miE7Vector2I1TERK7Vector2I1TE">fe::Vector2::operator- (C++ function)</a>, <a href="source/api.html#_CPPv4I0EN2fe7Vector2miE7Vector2I1TERK7Vector2I1TERK7Vector2I1TE">[1]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2mIER7Vector2I1TER7Vector2I1TERK7Vector2I1TE">fe::Vector2::operator-= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2dvE7Vector2I1TERK7Vector2I1TE1T">fe::Vector2::operator/ (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2dVER7Vector2I1TER7Vector2I1TE1T">fe::Vector2::operator/= (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector2eqEbRK7Vector2I1TERK7Vector2I1TE">fe::Vector2::operator== (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4I0EN2fe7Vector27Vector2ERK7Vector2I1UE">fe::Vector2::Vector2 (C++ function)</a>, <a href="source/api.html#_CPPv4N2fe7Vector27Vector2E1T1T">[1]</a>, <a href="source/api.html#_CPPv4N2fe7Vector27Vector2Ev">[2]</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe7Vector21xE">fe::Vector2::x (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe7Vector21yE">fe::Vector2::y (C++ member)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe8Vector2fE">fe::Vector2f (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe8Vector2iE">fe::Vector2i (C++ type)</a>
+</li>
+      <li><a href="source/api.html#_CPPv4N2fe8Vector2uE">fe::Vector2u (C++ type)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/api.html#_CPPv414getFlowerStatsRKNSt6stringEfiii">getFlowerStats (C++ function)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/api.html#_CPPv412make3DFlowerRKN2fe3DNAEiiffRKNSt6stringERKNSt6stringE">make3DFlower (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv410makeFloweriiff">makeFlower (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv414makePetalLayeriiffi">makePetalLayer (C++ function)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/api.html#_CPPv410makePetalsiiff">makePetals (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv48makeStemiiff">makeStem (C++ function)</a>
+</li>
+      <li><a href="source/api.html#_CPPv46mutateN2fe3DNAEiifffffffff">mutate (C++ function)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="source/api.html#_CPPv49reproduceRKN2fe3DNAERKN2fe3DNAEiiff">reproduce (C++ function)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, Cristian Gonzalez.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

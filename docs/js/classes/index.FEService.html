@@ -1,0 +1,422 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>FEService | FlowerEvolver-WASM JS/WASM API</title><meta name="description" content="Documentation for FlowerEvolver-WASM JS/WASM API"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="https://cristianglezm.github.io/FlowerEvolver-WASM/" class="title">FlowerEvolver-WASM JS/WASM API</a>
+<div id="tsd-toolbar-links"><a href="https://cristianglezm.github.io/FlowerEvolver-WASM/">Demo</a><a href="https://github.com/cristianglezm/FlowerEvolver-WASM">GitHub</a><a href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/cpp/">C++ API</a><a href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/python/">Python API</a></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb" aria-label="Breadcrumb">
+<li><a href="../modules/index.html">index</a></li>
+<li><a href="" aria-current="page">FEService</a></li></ul>
+<h1>Class FEService</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>simple wrapper around fe wasm module.</p>
+</div>
+<div class="tsd-comment tsd-typography">
+<div class="tsd-tag-example">
+<h4 class="tsd-anchor-link" id="example">Example<a href="#example" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><pre><code class="ts"><span class="hl-0">let</span><span class="hl-1"> </span><span class="hl-2">fes</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">FEService</span><span class="hl-1">();</span><br/><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-2">fes</span><span class="hl-1">.</span><span class="hl-3">init</span><span class="hl-1">(); </span><span class="hl-5">// must resolve before any other call</span><br/><span class="hl-5">// make a flower with default params</span><br/><span class="hl-0">let</span><span class="hl-1"> </span><span class="hl-2">flowers</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Array</span><span class="hl-1">();</span><br/><span class="hl-2">flowers</span><span class="hl-1">.</span><span class="hl-3">push</span><span class="hl-1">(</span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-2">fes</span><span class="hl-1">.</span><span class="hl-3">makeFlower</span><span class="hl-1">());</span><br/><span class="hl-5">// radius, numLayers, P, bias</span><br/><span class="hl-2">fes</span><span class="hl-1">.</span><span class="hl-3">setParams</span><span class="hl-1">(</span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">FEParams</span><span class="hl-1">(</span><span class="hl-6">128</span><span class="hl-1">, </span><span class="hl-6">2</span><span class="hl-1">, </span><span class="hl-6">5.0</span><span class="hl-1">, -</span><span class="hl-6">1.0</span><span class="hl-1">));</span><br/><span class="hl-5">// make a flower with new params.</span><br/><span class="hl-2">flowers</span><span class="hl-1">.</span><span class="hl-3">push</span><span class="hl-1">(</span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-2">fes</span><span class="hl-1">.</span><span class="hl-3">makeFlower</span><span class="hl-1">());</span><br/><span class="hl-2">flowers</span><span class="hl-1">.</span><span class="hl-3">push</span><span class="hl-1">(</span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-2">fes</span><span class="hl-1">.</span><span class="hl-3">reproduce</span><span class="hl-1">(</span><span class="hl-2">flowers</span><span class="hl-1">[</span><span class="hl-6">0</span><span class="hl-1">].</span><span class="hl-2">genome</span><span class="hl-1">, </span><span class="hl-2">flowers</span><span class="hl-1">[</span><span class="hl-6">1</span><span class="hl-1">].</span><span class="hl-2">genome</span><span class="hl-1">));</span><br/><span class="hl-5">// mutate child using default mutation rates.</span><br/><span class="hl-2">flowers</span><span class="hl-1">.</span><span class="hl-3">push</span><span class="hl-1">(</span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-2">fes</span><span class="hl-1">.</span><span class="hl-3">mutate</span><span class="hl-1">(</span><span class="hl-2">flowers</span><span class="hl-1">[</span><span class="hl-6">2</span><span class="hl-1">].</span><span class="hl-2">genome</span><span class="hl-1">))</span>
+</code><button type="button">Copy</button></pre>
+
+</div></div></section><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L108">index.ts:108</a></li></ul></aside>
+<section class="tsd-panel-group tsd-index-group">
+<section class="tsd-panel tsd-index-panel">
+<details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h5 class="tsd-index-heading uppercase">Index</h5></summary>
+<div class="tsd-accordion-details">
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading tsd-anchor-link" id="constructors">Constructors<a href="#constructors" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-index-list"><a href="#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Constructor"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading tsd-anchor-link" id="methods">Methods<a href="#methods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-index-list"><a href="#draw3dflower" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>draw3<wbr/>D<wbr/>Flower</span></a>
+<a href="#drawemissive3dflower" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>draw<wbr/>Emissive3<wbr/>D<wbr/>Flower</span></a>
+<a href="#drawflower" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>draw<wbr/>Flower</span></a>
+<a href="#drawpetallayer" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>draw<wbr/>Petal<wbr/>Layer</span></a>
+<a href="#drawpetals" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>draw<wbr/>Petals</span></a>
+<a href="#getcommithash" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Commit<wbr/>Hash</span></a>
+<a href="#getflowerstats" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Flower<wbr/>Stats</span></a>
+<a href="#getparams" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Params</span></a>
+<a href="#getversion" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Version</span></a>
+<a href="#getversionstring" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Version<wbr/>String</span></a>
+<a href="#init" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>init</span></a>
+<a href="#make3dflower" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make3<wbr/>D<wbr/>Flower</span></a>
+<a href="#makeemissive3dflower" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make<wbr/>Emissive3<wbr/>D<wbr/>Flower</span></a>
+<a href="#makeflower" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make<wbr/>Flower</span></a>
+<a href="#makepetallayer" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make<wbr/>Petal<wbr/>Layer</span></a>
+<a href="#makepetals" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make<wbr/>Petals</span></a>
+<a href="#makestem" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make<wbr/>Stem</span></a>
+<a href="#mutate" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>mutate</span></a>
+<a href="#reproduce" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>reproduce</span></a>
+<a href="#setparams" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Params</span></a>
+</div></section></div></details></section></section>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="constructors-1">Constructors<a href="#constructors-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
+<section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="constructor"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="constructorfeservice"><span class="tsd-signature-keyword">new</span> <span class="tsd-kind-constructor-signature">FEService</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type tsd-kind-class">FEService</a><a href="#constructorfeservice" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<h4 class="tsd-returns-title">Returns <a href="" class="tsd-signature-type tsd-kind-class">FEService</a></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L112">index.ts:112</a></li></ul></aside></div></li></ul></section></section></details>
+<details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
+<section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="draw3dflower"><span>draw3<wbr/>D<wbr/>Flower</span><a href="#draw3dflower" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="draw3dflower-1"><span class="tsd-kind-call-signature">draw3DFlower</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">genome</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">flowerID</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">sex</span><span class="tsd-signature-symbol">:</span> <a href="../types/index.FlowerSex.html" class="tsd-signature-type tsd-kind-type-alias">FlowerSex</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><a href="#draw3dflower-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>returns a GLTF string of the flower, it uses the params inside genome.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">genome</span>: <span class="tsd-signature-type">string</span></span></li>
+<li><span><span class="tsd-kind-parameter">flowerID</span>: <span class="tsd-signature-type">string</span></span></li>
+<li><span><span class="tsd-kind-parameter">sex</span>: <a href="../types/index.FlowerSex.html" class="tsd-signature-type tsd-kind-type-alias">FlowerSex</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L209">index.ts:209</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="drawemissive3dflower"><span>draw<wbr/>Emissive3<wbr/>D<wbr/>Flower</span><a href="#drawemissive3dflower" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="drawemissive3dflower-1"><span class="tsd-kind-call-signature">drawEmissive3DFlower</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">genome</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">flowerID</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">sex</span><span class="tsd-signature-symbol">:</span> <a href="../types/index.FlowerSex.html" class="tsd-signature-type tsd-kind-type-alias">FlowerSex</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><a href="#drawemissive3dflower-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>returns a GLTF string of the flower (with normals and emissive textures), it uses the params inside genome.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">genome</span>: <span class="tsd-signature-type">string</span></span></li>
+<li><span><span class="tsd-kind-parameter">flowerID</span>: <span class="tsd-signature-type">string</span></span></li>
+<li><span><span class="tsd-kind-parameter">sex</span>: <a href="../types/index.FlowerSex.html" class="tsd-signature-type tsd-kind-type-alias">FlowerSex</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L224">index.ts:224</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="drawflower"><span>draw<wbr/>Flower</span><a href="#drawflower" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="drawflower-1"><span class="tsd-kind-call-signature">drawFlower</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">genome</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span><a href="#drawflower-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>it drawn the flower from the given genome.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">genome</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>stringified json</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span></h4><p>flower from the given genome.</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L294">index.ts:294</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="drawpetallayer"><span>draw<wbr/>Petal<wbr/>Layer</span><a href="#drawpetallayer" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="drawpetallayer-1"><span class="tsd-kind-call-signature">drawPetalLayer</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">genome</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">layer</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span><a href="#drawpetallayer-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>it drawns the petal layer from the given genome.(no stem)</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">genome</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>stringified json</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">layer</span>: <span class="tsd-signature-type">number</span></span>
+<div class="tsd-comment tsd-typography"><p>layer to draw</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span></h4><p>flower - petal from specified layer</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L333">index.ts:333</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="drawpetals"><span>draw<wbr/>Petals</span><a href="#drawpetals" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="drawpetals-1"><span class="tsd-kind-call-signature">drawPetals</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">genome</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span><a href="#drawpetals-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>it drawns the petals from the given genome. (no stem)</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">genome</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>stringified json</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span></h4><p>flower petals</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L313">index.ts:313</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="getcommithash"><span>get<wbr/>Commit<wbr/>Hash</span><a href="#getcommithash" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="getcommithash-1"><span class="tsd-kind-call-signature">getCommitHash</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><a href="#getcommithash-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>the short git commit hash this wasm binary was built from, or
+&quot;unknown&quot; for a build outside a git checkout.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L433">index.ts:433</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="getflowerstats"><span>get<wbr/>Flower<wbr/>Stats</span><a href="#getflowerstats" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="getflowerstats-1"><span class="tsd-kind-call-signature">getFlowerStats</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">genome</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">humidity</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">temperature</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">altitude</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">terrainType</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/index.FlowerStats.html" class="tsd-signature-type tsd-kind-interface">FlowerStats</a><a href="#getflowerstats-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>gets the flower stats.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">genome</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>stringified json</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">humidity</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0.5</span></span>
+<div class="tsd-comment tsd-typography"><p>0.0 to 1.0</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">temperature</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 20</span></span>
+<div class="tsd-comment tsd-typography"><p>degrees, same scale as the returned min/maxTemperature</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">altitude</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></span>
+<div class="tsd-comment tsd-typography"><p>meters above sea level</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">terrainType</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></span>
+<div class="tsd-comment tsd-typography"><p>terrain type id</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="../interfaces/index.FlowerStats.html" class="tsd-signature-type tsd-kind-interface">FlowerStats</a></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L405">index.ts:405</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="getparams"><span>get<wbr/>Params</span><a href="#getparams" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="getparams-1"><span class="tsd-kind-call-signature">getParams</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <a href="index.FEParams.html" class="tsd-signature-type tsd-kind-class">FEParams</a><a href="#getparams-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>gets the currents parameters</p>
+</div>
+<h4 class="tsd-returns-title">Returns <a href="index.FEParams.html" class="tsd-signature-type tsd-kind-class">FEParams</a></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L141">index.ts:141</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="getversion"><span>get<wbr/>Version</span><a href="#getversion" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="getversion-1"><span class="tsd-kind-call-signature">getVersion</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><a href="#getversion-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>the semver this wasm binary was built from, e.g. &quot;4.0.0&quot;.
+Same value as this package's own package.json &quot;version&quot;.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L422">index.ts:422</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="getversionstring"><span>get<wbr/>Version<wbr/>String</span><a href="#getversionstring" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="getversionstring-1"><span class="tsd-kind-call-signature">getVersionString</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><a href="#getversionstring-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>getVersion() + &quot;+&quot; + getCommitHash(), e.g. &quot;4.0.0+a1b2c3d&quot;.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L443">index.ts:443</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="init"><span>init</span><a href="#init" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="init-1"><span class="tsd-kind-call-signature">init</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#init-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>function to load wasm module.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L119">index.ts:119</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="make3dflower"><span>make3<wbr/>D<wbr/>Flower</span><a href="#make3dflower" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="make3dflower-1"><span class="tsd-kind-call-signature">make3DFlower</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">genome</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">flowerID</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">sex</span><span class="tsd-signature-symbol">:</span> <a href="../types/index.FlowerSex.html" class="tsd-signature-type tsd-kind-type-alias">FlowerSex</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><a href="#make3dflower-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>returns a GLTF string of the flower.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">genome</span>: <span class="tsd-signature-type">string</span></span></li>
+<li><span><span class="tsd-kind-parameter">flowerID</span>: <span class="tsd-signature-type">string</span></span></li>
+<li><span><span class="tsd-kind-parameter">sex</span>: <a href="../types/index.FlowerSex.html" class="tsd-signature-type tsd-kind-type-alias">FlowerSex</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4><p>GLTF file string</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L184">index.ts:184</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="makeemissive3dflower"><span>make<wbr/>Emissive3<wbr/>D<wbr/>Flower</span><a href="#makeemissive3dflower" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="makeemissive3dflower-1"><span class="tsd-kind-call-signature">makeEmissive3DFlower</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">genome</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">flowerID</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">sex</span><span class="tsd-signature-symbol">:</span> <a href="../types/index.FlowerSex.html" class="tsd-signature-type tsd-kind-type-alias">FlowerSex</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><a href="#makeemissive3dflower-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>returns a GLTF string of the flower (with normals and emissive textures).</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">genome</span>: <span class="tsd-signature-type">string</span></span></li>
+<li><span><span class="tsd-kind-parameter">flowerID</span>: <span class="tsd-signature-type">string</span></span></li>
+<li><span><span class="tsd-kind-parameter">sex</span>: <a href="../types/index.FlowerSex.html" class="tsd-signature-type tsd-kind-type-alias">FlowerSex</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4><p>GLTF file string</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L197">index.ts:197</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="makeflower"><span>make<wbr/>Flower</span><a href="#makeflower" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="makeflower-1"><span class="tsd-kind-call-signature">makeFlower</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span><a href="#makeflower-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>it makes a flower.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span></h4><p>flower</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L149">index.ts:149</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="makepetallayer"><span>make<wbr/>Petal<wbr/>Layer</span><a href="#makepetallayer" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="makepetallayer-1"><span class="tsd-kind-call-signature">makePetalLayer</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">layer</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span><a href="#makepetallayer-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>it makes the petal for the specified layer. (no stem)</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">layer</span>: <span class="tsd-signature-type">number</span></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span></h4><p>flower, only petal in layer</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L258">index.ts:258</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="makepetals"><span>make<wbr/>Petals</span><a href="#makepetals" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="makepetals-1"><span class="tsd-kind-call-signature">makePetals</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span><a href="#makepetals-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>it makes a flower with no stem.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span></h4><p>flower, only petals</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L240">index.ts:240</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="makestem"><span>make<wbr/>Stem</span><a href="#makestem" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="makestem-1"><span class="tsd-kind-call-signature">makeStem</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span><a href="#makestem-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>it makes a simple stem. (no petals)</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span></h4><p>flower, only stem</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L276">index.ts:276</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="mutate"><span>mutate</span><a href="#mutate" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="mutate-1"><span class="tsd-kind-call-signature">mutate</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">original</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">addNodeRate</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">addConnRate</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">removeConnRate</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">perturbWeightsRate</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">enableRate</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">disableRate</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">actTypeRate</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span><a href="#mutate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>it mutates the given flower genome.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">original</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>genome from original flower.</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">addNodeRate</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0.2</span></span></li>
+<li><span><span class="tsd-kind-parameter">addConnRate</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0.3</span></span></li>
+<li><span><span class="tsd-kind-parameter">removeConnRate</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0.2</span></span></li>
+<li><span><span class="tsd-kind-parameter">perturbWeightsRate</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0.6</span></span></li>
+<li><span><span class="tsd-kind-parameter">enableRate</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0.35</span></span></li>
+<li><span><span class="tsd-kind-parameter">disableRate</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0.3</span></span></li>
+<li><span><span class="tsd-kind-parameter">actTypeRate</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0.4</span></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span></h4><p>flower - the new mutated flower</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L372">index.ts:372</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="reproduce"><span>reproduce</span><a href="#reproduce" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="reproduce-1"><span class="tsd-kind-call-signature">reproduce</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">father</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">mother</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span><a href="#reproduce-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>it makes a child from two flower genomes.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">father</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>genome for father</p>
+</div></li>
+<li><span><span class="tsd-kind-parameter">mother</span>: <span class="tsd-signature-type">string</span></span>
+<div class="tsd-comment tsd-typography"><p>genome for mother</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="index.Flower.html" class="tsd-signature-type tsd-kind-class">Flower</a><span class="tsd-signature-symbol">&gt;</span></h4><p>flower - child flower</p>
+<aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L353">index.ts:353</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="setparams"><span>set<wbr/>Params</span><a href="#setparams" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="">
+<div class="tsd-signature tsd-anchor-link" id="setparams-1"><span class="tsd-kind-call-signature">setParams</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">params</span><span class="tsd-signature-symbol">:</span> <a href="index.FEParams.html" class="tsd-signature-type tsd-kind-class">FEParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">void</span><a href="#setparams-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>sets the parameters for the creation of flowers.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li><span><span class="tsd-kind-parameter">params</span>: <a href="index.FEParams.html" class="tsd-signature-type tsd-kind-class">FEParams</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/cristianglezm/FlowerEvolver-WASM/blob/83025e9f5cd398f45bc33f5d1402407b17537f15/index.ts#L134">index.ts:134</a></li></ul></aside></div></li></ul></section></section></details></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>On This Page</h3></summary>
+<div class="tsd-accordion-details">
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Constructors</summary>
+<div><a href="#constructor"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Constructor"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a></div></details>
+<details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Methods</summary>
+<div><a href="#draw3dflower"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>draw3<wbr/>D<wbr/>Flower</span></a><a href="#drawemissive3dflower"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>draw<wbr/>Emissive3<wbr/>D<wbr/>Flower</span></a><a href="#drawflower"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>draw<wbr/>Flower</span></a><a href="#drawpetallayer"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>draw<wbr/>Petal<wbr/>Layer</span></a><a href="#drawpetals"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>draw<wbr/>Petals</span></a><a href="#getcommithash"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Commit<wbr/>Hash</span></a><a href="#getflowerstats"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Flower<wbr/>Stats</span></a><a href="#getparams"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Params</span></a><a href="#getversion"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Version</span></a><a href="#getversionstring"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Version<wbr/>String</span></a><a href="#init"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>init</span></a><a href="#make3dflower"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make3<wbr/>D<wbr/>Flower</span></a><a href="#makeemissive3dflower"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make<wbr/>Emissive3<wbr/>D<wbr/>Flower</span></a><a href="#makeflower"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make<wbr/>Flower</span></a><a href="#makepetallayer"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make<wbr/>Petal<wbr/>Layer</span></a><a href="#makepetals"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make<wbr/>Petals</span></a><a href="#makestem"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>make<wbr/>Stem</span></a><a href="#mutate"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>mutate</span></a><a href="#reproduce"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>reproduce</span></a><a href="#setparams"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Params</span></a></div></details></div></details></div>
+<div class="site-menu">
+<nav id="tsd-sidebar-links" class="tsd-navigation"><a href="https://cristianglezm.github.io/FlowerEvolver-WASM/" class="tsd-nav-link">Demo</a><a href="https://github.com/cristianglezm/FlowerEvolver-WASM" class="tsd-nav-link">GitHub</a><a href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/cpp/" class="tsd-nav-link">C++ API</a><a href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/python/" class="tsd-nav-link">Python API</a></nav>
+<nav class="tsd-navigation"><a href="../modules.html">FlowerEvolver-WASM JS/WASM API</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<li>Loading...</li></ul></nav></div></div></div><footer>
+<p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
+<div class="overlay"></div></body></html>

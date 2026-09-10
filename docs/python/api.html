@@ -1,0 +1,1222 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>API Reference &#8212; FlowerEvolver-WASM 4.0.0 Python API</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=16954400" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="_static/documentation_options.js?v=3304f9e4"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/python/api.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="FlowerEvolver-WASM – Python API" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">FlowerEvolver-WASM 4.0.0 Python API</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/">
+    Demo
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/cpp/">
+    C++ Docs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/js/">
+    JS/WASM Docs
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cristianglezm/FlowerEvolver-WASM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/flowerevolver/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/">
+    Demo
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/cpp/">
+    C++ Docs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://cristianglezm.github.io/FlowerEvolver-WASM/docs/js/">
+    JS/WASM Docs
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/cristianglezm/FlowerEvolver-WASM" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/flowerevolver/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">API Reference</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h1>
+<section id="flowerevolver">
+<h2>flowerevolver<a class="headerlink" href="#flowerevolver" title="Link to this heading">#</a></h2>
+<p>Every class and free function here is bound directly from the C++ core
+(<code class="docutils literal notranslate"><span class="pre">src/bindings/python/*.cpp</span></code>) via nanobind - the same code path the
+JS/WASM API’s <code class="docutils literal notranslate"><span class="pre">FEService</span></code> and the native C++ library’s
+<code class="docutils literal notranslate"><span class="pre">include/fe/FlowerEvolver.hpp</span></code> both go through, so behavior (and, for
+<code class="docutils literal notranslate"><span class="pre">Flower</span></code>/<code class="docutils literal notranslate"><span class="pre">DNA</span></code>’s JSON, wire format) matches across all three.</p>
+<p id="module-flowerevolver">FlowerEvolver - generates 2D/3D flowers from CPPN genomes evolved via EvoAI.</p>
+<p>Native Python bindings (nanobind) around the same C++ core that powers the
+JS/WASM API and the native desktop app – genomes and rendered images
+round-trip with both (see Flower.to_json()/from_json()).</p>
+<p>Quick start:</p>
+<blockquote>
+<div><p>from flowerevolver import make_flower</p>
+<p>flower = make_flower(radius=64, num_layers=3, P=6.0, bias=1.0)
+flower.petals.image.to_png_bytes()  # -&gt; bytes, ready to write to disk
+flower.to_json()                    # -&gt; str, the genome</p>
+</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="flowerevolver.DNA">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">DNA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#flowerevolver.DNA" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The genome underlying a Flower - a small collection of CPPN genomes (a stats genome plus another for petals), evolved via EvoAI. Most code creates these indirectly, through make_flower()/reproduce()/mutate() rather than by hand. Individual genomes aren’t exposed to Python (EvoAI::Genome has no binding of its own) – treat DNA as an opaque, sized container.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.DNA.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#flowerevolver.DNA.clear" title="Link to this definition">#</a></dt>
+<dd><p>Removes every genome, leaving size() == 0.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="flowerevolver.DNA.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;nanobind.nb_func</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#flowerevolver.DNA.distance" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="flowerevolver.DNA.from_json">
+<span class="sig-name descname"><span class="pre">from_json</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;nanobind.nb_func</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#flowerevolver.DNA.from_json" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.DNA.get_fitness">
+<span class="sig-name descname"><span class="pre">get_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#flowerevolver.DNA.get_fitness" title="Link to this definition">#</a></dt>
+<dd><p>Reads back the fitness set via set_fitness() (from genome[0]); 0.0 if this DNA is empty.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.DNA.mutate">
+<span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flowerevolver.MutationRates" title="flowerevolver._core.MutationRates"><span class="pre">flowerevolver._core.MutationRates</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#flowerevolver.DNA.mutate" title="Link to this definition">#</a></dt>
+<dd><p>Mutates every existing genome in place (topology and weights), according to <cite>rates</cite>. This never adds or removes genomes – size() before and after is always identical; what changes is each genome’s internal structure, not how many there are.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="flowerevolver.DNA.reproduce">
+<span class="sig-name descname"><span class="pre">reproduce</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;nanobind.nb_func</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#flowerevolver.DNA.reproduce" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.DNA.set_fitness">
+<span class="sig-name descname"><span class="pre">set_fitness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fitness</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#flowerevolver.DNA.set_fitness" title="Link to this definition">#</a></dt>
+<dd><p>Applies the same fitness value to every genome this DNA holds.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.DNA.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#flowerevolver.DNA.size" title="Link to this definition">#</a></dt>
+<dd><p>Number of genomes this DNA holds.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.DNA.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#flowerevolver.DNA.to_json" title="Link to this definition">#</a></dt>
+<dd><p>Serializes to a compact JSON string – this DNA’s own genomes array, not wrapped in the outer {“Flower”: …} shape Flower.to_json() produces (a bare DNA isn’t a complete, renderable Flower on its own). Round-trips with DNA.from_json().</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flowerevolver.Effects">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">Effects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#flowerevolver.Effects" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Per-stat effect strengths derived from the genome, roughly -100..100 each.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Effects.agility">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">agility</span></span><a class="headerlink" href="#flowerevolver.Effects.agility" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; float</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Effects.intelligence">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">intelligence</span></span><a class="headerlink" href="#flowerevolver.Effects.intelligence" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; float</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Effects.luck">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">luck</span></span><a class="headerlink" href="#flowerevolver.Effects.luck" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; float</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Effects.strength">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">strength</span></span><a class="headerlink" href="#flowerevolver.Effects.strength" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; float</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Effects.vitality">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">vitality</span></span><a class="headerlink" href="#flowerevolver.Effects.vitality" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; float</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flowerevolver.Flower">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">Flower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#flowerevolver.Flower" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A complete flower: its genome (dna) and rendered image (petals). Usually created via make_flower()/reproduce()/mutate() rather than constructed directly.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Flower.dna">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">dna</span></span><a class="headerlink" href="#flowerevolver.Flower.dna" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; flowerevolver._core.DNA</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="flowerevolver.Flower.from_json">
+<span class="sig-name descname"><span class="pre">from_json</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;nanobind.nb_func</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#flowerevolver.Flower.from_json" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Flower.petals">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">petals</span></span><a class="headerlink" href="#flowerevolver.Flower.petals" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; flowerevolver._core.Petals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.Flower.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#flowerevolver.Flower.to_json" title="Link to this definition">#</a></dt>
+<dd><p>Serializes to the same {“Flower”: {“dna”: …, “petals”: …}} JSON shape used throughout this project’s ecosystem (the JS/WASM API, the native desktop app, Generation.json/Session.json’s own per-flower entries) – round-trips with Flower.from_json(), and interoperates with genomes saved by any of those.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flowerevolver.Image">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">Image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#flowerevolver.Image" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A simple RGBA pixel buffer - what Flower.petals.image and every draw_*()/make_*() call’s rendered output is. Pixel colors are plain (r, g, b, a) tuples of 0-255 ints, not a separate bound Color type.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.Image.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#flowerevolver.Image.create" title="Link to this definition">#</a></dt>
+<dd><p>Allocates a width x height buffer, filled with color (r, g, b, a).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.Image.get_pixel">
+<span class="sig-name descname"><span class="pre">get_pixel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#flowerevolver.Image.get_pixel" title="Link to this definition">#</a></dt>
+<dd><p>Returns the (r, g, b, a) color at (x, y); (0, 0, 0, 0) if out of range.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Image.height">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#flowerevolver.Image.height" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.Image.set_pixel">
+<span class="sig-name descname"><span class="pre">set_pixel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#flowerevolver.Image.set_pixel" title="Link to this definition">#</a></dt>
+<dd><p>Sets the pixel at (x, y) to color (r, g, b, a). Out-of-range x/y are silently ignored (matches the C++ API – see setPixel’s own bounds-check comment in src/fe/Image.cpp).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowerevolver.Image.to_png_bytes">
+<span class="sig-name descname"><span class="pre">to_png_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="headerlink" href="#flowerevolver.Image.to_png_bytes" title="Link to this definition">#</a></dt>
+<dd><p>Encodes to an in-memory PNG and returns it as bytes – e.g. <cite>pathlib.Path(‘flower.png’).write_bytes(image.to_png_bytes())</cite>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Image.width">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#flowerevolver.Image.width" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; int</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flowerevolver.MutationRates">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">MutationRates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#flowerevolver.MutationRates" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Rates controlling how DNA.mutate()/mutate() perturbs a genome. Every parameter is independent – a given mutation call can add a node, add a connection, and perturb weights all at once, each gated by its own rate below.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.MutationRates.act_type_rate">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">act_type_rate</span></span><a class="headerlink" href="#flowerevolver.MutationRates.act_type_rate" title="Link to this definition">#</a></dt>
+<dd><p>Rate to change a neuron’s activation function.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.MutationRates.add_conn_rate">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">add_conn_rate</span></span><a class="headerlink" href="#flowerevolver.MutationRates.add_conn_rate" title="Link to this definition">#</a></dt>
+<dd><p>Rate to add a new connection.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.MutationRates.add_node_rate">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">add_node_rate</span></span><a class="headerlink" href="#flowerevolver.MutationRates.add_node_rate" title="Link to this definition">#</a></dt>
+<dd><p>Rate to add a new node.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.MutationRates.disable_rate">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">disable_rate</span></span><a class="headerlink" href="#flowerevolver.MutationRates.disable_rate" title="Link to this definition">#</a></dt>
+<dd><p>Rate to disable a currently-enabled gene.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.MutationRates.enable_rate">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">enable_rate</span></span><a class="headerlink" href="#flowerevolver.MutationRates.enable_rate" title="Link to this definition">#</a></dt>
+<dd><p>Rate to enable a currently-disabled gene.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.MutationRates.perturb_weights_rate">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">perturb_weights_rate</span></span><a class="headerlink" href="#flowerevolver.MutationRates.perturb_weights_rate" title="Link to this definition">#</a></dt>
+<dd><p>Rate to change the weight of a connection.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.MutationRates.remove_conn_rate">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">remove_conn_rate</span></span><a class="headerlink" href="#flowerevolver.MutationRates.remove_conn_rate" title="Link to this definition">#</a></dt>
+<dd><p>Rate to remove an existing connection.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flowerevolver.Petals">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">Petals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#flowerevolver.Petals" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The rendered-image half of a Flower (Flower.petals) - the generation parameters that produced it, plus the resulting image.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Petals.P">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">P</span></span><a class="headerlink" href="#flowerevolver.Petals.P" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; float</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Petals.bias">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">bias</span></span><a class="headerlink" href="#flowerevolver.Petals.bias" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; float</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Petals.has_bloom">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">has_bloom</span></span><a class="headerlink" href="#flowerevolver.Petals.has_bloom" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; bool</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Petals.image">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">image</span></span><a class="headerlink" href="#flowerevolver.Petals.image" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; flowerevolver._core.Image</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Petals.num_layers">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">num_layers</span></span><a class="headerlink" href="#flowerevolver.Petals.num_layers" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; int</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Petals.radius">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">radius</span></span><a class="headerlink" href="#flowerevolver.Petals.radius" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; int</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flowerevolver.PetalsType">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">PetalsType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#flowerevolver.PetalsType" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Which part of a flower to render - passed to some of the lower-level make_*()/draw_*() calls.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="flowerevolver.PetalsType.TRUNK">
+<span class="sig-name descname"><span class="pre">TRUNK</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#flowerevolver.PetalsType.TRUNK" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="flowerevolver.PetalsType.PETALS">
+<span class="sig-name descname"><span class="pre">PETALS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#flowerevolver.PetalsType.PETALS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="flowerevolver.PetalsType.TRUNK_AND_PETALS">
+<span class="sig-name descname"><span class="pre">TRUNK_AND_PETALS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#flowerevolver.PetalsType.TRUNK_AND_PETALS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flowerevolver.Sex">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">Sex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#flowerevolver.Sex" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="flowerevolver.Sex.MALE">
+<span class="sig-name descname"><span class="pre">MALE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></span><a class="headerlink" href="#flowerevolver.Sex.MALE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="flowerevolver.Sex.FEMALE">
+<span class="sig-name descname"><span class="pre">FEMALE</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#flowerevolver.Sex.FEMALE" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="flowerevolver.Sex.BOTH">
+<span class="sig-name descname"><span class="pre">BOTH</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#flowerevolver.Sex.BOTH" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flowerevolver.Stats">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">Stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#flowerevolver.Stats" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Environment-dependent stats derived from a flower’s genome - see get_flower_stats().</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Stats.effects">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">effects</span></span><a class="headerlink" href="#flowerevolver.Stats.effects" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; flowerevolver._core.Effects</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Stats.health">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">health</span></span><a class="headerlink" href="#flowerevolver.Stats.health" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; int</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Stats.maturation_period">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">maturation_period</span></span><a class="headerlink" href="#flowerevolver.Stats.maturation_period" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; int</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Stats.max_temperature">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">max_temperature</span></span><a class="headerlink" href="#flowerevolver.Stats.max_temperature" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; int</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Stats.min_temperature">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">min_temperature</span></span><a class="headerlink" href="#flowerevolver.Stats.min_temperature" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; int</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Stats.sex">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">sex</span></span><a class="headerlink" href="#flowerevolver.Stats.sex" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; flowerevolver._core.Sex</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Stats.stamina">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">stamina</span></span><a class="headerlink" href="#flowerevolver.Stats.stamina" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; int</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowerevolver.Stats.toxicity_rate">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">toxicity_rate</span></span><a class="headerlink" href="#flowerevolver.Stats.toxicity_rate" title="Link to this definition">#</a></dt>
+<dd><p>(self) -&gt; float</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="free-functions">
+<h3>Free functions<a class="headerlink" href="#free-functions" title="Link to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.make_flower">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">make_flower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flowerevolver.Flower" title="flowerevolver._core.Flower"><span class="pre">flowerevolver._core.Flower</span></a></span></span><a class="headerlink" href="#flowerevolver.make_flower" title="Link to this definition">#</a></dt>
+<dd><p>Generates a brand new, random flower.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>radius</strong> – pixel radius, clamped to [4, 256].</p></li>
+<li><p><strong>num_layers</strong> – clamped to [1, floor(log2(radius))].</p></li>
+<li><p><strong>P</strong> – controls roughly how many petals the flower can have.</p></li>
+<li><p><strong>bias</strong> – bias fed into the CPPN alongside radius/angle/layer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a Flower – .to_json() for the genome, .petals.image for the render.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.make_petals">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">make_petals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flowerevolver.Flower" title="flowerevolver._core.Flower"><span class="pre">flowerevolver._core.Flower</span></a></span></span><a class="headerlink" href="#flowerevolver.make_petals" title="Link to this definition">#</a></dt>
+<dd><p>Same as make_flower(), but renders just the petals (no stem).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.make_petal_layer">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">make_petal_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flowerevolver.Flower" title="flowerevolver._core.Flower"><span class="pre">flowerevolver._core.Flower</span></a></span></span><a class="headerlink" href="#flowerevolver.make_petal_layer" title="Link to this definition">#</a></dt>
+<dd><p>Same as make_flower(), but renders just one petal layer (no stem).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>layer</strong> – which layer to render, 0-indexed from the outermost.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.make_stem">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">make_stem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flowerevolver.Flower" title="flowerevolver._core.Flower"><span class="pre">flowerevolver._core.Flower</span></a></span></span><a class="headerlink" href="#flowerevolver.make_stem" title="Link to this definition">#</a></dt>
+<dd><p>Same as make_flower(), but renders just a stem (no petals).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.draw_flower">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">draw_flower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flowerevolver.DNA" title="flowerevolver._core.DNA"><span class="pre">flowerevolver._core.DNA</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flowerevolver.Image" title="flowerevolver._core.Image"><span class="pre">flowerevolver._core.Image</span></a></span></span><a class="headerlink" href="#flowerevolver.draw_flower" title="Link to this definition">#</a></dt>
+<dd><p>Renders an existing DNA (e.g. from Flower.dna, or DNA.from_json()) instead of generating a new one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dna</strong> – the genome to render; needs at least 2 genomes.</p></li>
+<li><p><strong>radius</strong> – pixel radius, clamped to [4, 256].</p></li>
+<li><p><strong>num_layers</strong> – clamped to [1, floor(log2(radius))].</p></li>
+<li><p><strong>P</strong> – controls roughly how many petals the flower can have.</p></li>
+<li><p><strong>bias</strong> – bias fed into the CPPN alongside radius/angle/layer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the rendered Image.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if dna has fewer than 2 genomes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.draw_petals">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">draw_petals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flowerevolver.DNA" title="flowerevolver._core.DNA"><span class="pre">flowerevolver._core.DNA</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flowerevolver.Image" title="flowerevolver._core.Image"><span class="pre">flowerevolver._core.Image</span></a></span></span><a class="headerlink" href="#flowerevolver.draw_petals" title="Link to this definition">#</a></dt>
+<dd><p>Same as draw_flower(), but renders just the petals (no stem).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.draw_petal_layer">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">draw_petal_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flowerevolver.DNA" title="flowerevolver._core.DNA"><span class="pre">flowerevolver._core.DNA</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flowerevolver.Image" title="flowerevolver._core.Image"><span class="pre">flowerevolver._core.Image</span></a></span></span><a class="headerlink" href="#flowerevolver.draw_petal_layer" title="Link to this definition">#</a></dt>
+<dd><p>Same as draw_flower(), but renders just one petal layer (no stem).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>layer</strong> – which layer to render, 0-indexed from the outermost.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.reproduce">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">reproduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flowerevolver.DNA" title="flowerevolver._core.DNA"><span class="pre">flowerevolver._core.DNA</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dna2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flowerevolver.DNA" title="flowerevolver._core.DNA"><span class="pre">flowerevolver._core.DNA</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flowerevolver.Flower" title="flowerevolver._core.Flower"><span class="pre">flowerevolver._core.Flower</span></a></span></span><a class="headerlink" href="#flowerevolver.reproduce" title="Link to this definition">#</a></dt>
+<dd><p>Breeds two genomes into a rendered child Flower. For crossover only, with no rendering, see DNA.reproduce() instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dna1</strong> – the father’s genome.</p></li>
+<li><p><strong>dna2</strong> – the mother’s genome; must have the same number of genomes as dna1.</p></li>
+<li><p><strong>radius</strong> – pixel radius, clamped to [4, 256].</p></li>
+<li><p><strong>num_layers</strong> – clamped to [1, floor(log2(radius))].</p></li>
+<li><p><strong>P</strong> – controls roughly how many petals the flower can have.</p></li>
+<li><p><strong>bias</strong> – bias fed into the CPPN alongside radius/angle/layer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – if dna1 and dna2 don’t have the same number of genomes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.mutate">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flowerevolver.DNA" title="flowerevolver._core.DNA"><span class="pre">flowerevolver._core.DNA</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_node_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.20000000298023224</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_conn_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.30000001192092896</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_conn_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.20000000298023224</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perturb_weights_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.6000000238418579</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3499999940395355</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.30000001192092896</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">act_type_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.4000000059604645</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flowerevolver.Flower" title="flowerevolver._core.Flower"><span class="pre">flowerevolver._core.Flower</span></a></span></span><a class="headerlink" href="#flowerevolver.mutate" title="Link to this definition">#</a></dt>
+<dd><p>Mutates a copy of dna and renders the result – dna itself is left untouched.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dna</strong> – genome to mutate; needs at least 2 genomes.</p></li>
+<li><p><strong>radius</strong> – pixel radius, clamped to [4, 256].</p></li>
+<li><p><strong>num_layers</strong> – clamped to [1, floor(log2(radius))].</p></li>
+<li><p><strong>P</strong> – controls roughly how many petals the flower can have.</p></li>
+<li><p><strong>bias</strong> – bias fed into the CPPN alongside radius/angle/layer.</p></li>
+<li><p><strong>add_node_rate</strong> – rate to add a new node.</p></li>
+<li><p><strong>add_conn_rate</strong> – rate to add a new connection.</p></li>
+<li><p><strong>remove_conn_rate</strong> – rate to remove an existing connection.</p></li>
+<li><p><strong>perturb_weights_rate</strong> – rate to change a connection’s weight.</p></li>
+<li><p><strong>enable_rate</strong> – rate to enable a currently-disabled gene.</p></li>
+<li><p><strong>disable_rate</strong> – rate to disable a currently-enabled gene.</p></li>
+<li><p><strong>act_type_rate</strong> – rate to change a neuron’s activation function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if dna has fewer than 2 genomes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.make_3d_flower">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">make_3d_flower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flowerevolver.DNA" title="flowerevolver._core.DNA"><span class="pre">flowerevolver._core.DNA</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flower_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flower_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#flowerevolver.make_3d_flower" title="Link to this definition">#</a></dt>
+<dd><p>Generates a 3D flower model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dna</strong> – the genome to render; needs at least 2 genomes.</p></li>
+<li><p><strong>radius</strong> – pixel radius, clamped to [4, 256].</p></li>
+<li><p><strong>num_layers</strong> – clamped to [1, floor(log2(radius))].</p></li>
+<li><p><strong>P</strong> – controls roughly how many petals the flower can have.</p></li>
+<li><p><strong>bias</strong> – bias fed into the CPPN alongside radius/angle/layer.</p></li>
+<li><p><strong>flower_id</strong> – a unique string identifying this flower (used in the model’s own group names).</p></li>
+<li><p><strong>flower_params</strong> – JSON string, e.g. ‘{“sex”: 2, “useNormals”: true, “useEmissive”: false}’; “” for defaults.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the 3D model as a glTF 2.0 JSON string.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – if dna has fewer than 2 genomes, or radius/num_layers/flower_id are invalid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.get_flower_stats">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">get_flower_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">genome</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">humidity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">altitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terrain_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#flowerevolver.Stats" title="flowerevolver._core.Stats"><span class="pre">flowerevolver._core.Stats</span></a></span></span><a class="headerlink" href="#flowerevolver.get_flower_stats" title="Link to this definition">#</a></dt>
+<dd><p>Derives environment-dependent Stats from a flower’s genome.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>genome</strong> – a Flower.to_json()-shaped JSON string.</p></li>
+<li><p><strong>humidity</strong> – 0.0 to 1.0.</p></li>
+<li><p><strong>temperature</strong> – degrees, same scale as the resulting Stats’ min_temperature/max_temperature.</p></li>
+<li><p><strong>altitude</strong> – meters above sea level.</p></li>
+<li><p><strong>terrain_type</strong> – terrain type id.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – if genome doesn’t contain a DNA with at least 2 genomes.</p></li>
+<li><p><strong>RuntimeError</strong> – if genome is malformed JSON entirely.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.get_version">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#flowerevolver.get_version" title="Link to this definition">#</a></dt>
+<dd><p>The semver this extension was built from, e.g. “4.0.0”.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.get_commit_hash">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">get_commit_hash</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#flowerevolver.get_commit_hash" title="Link to this definition">#</a></dt>
+<dd><p>The short git commit hash this extension was built from, or “unknown” for a build outside a git checkout.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.get_version_string">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.</span></span><span class="sig-name descname"><span class="pre">get_version_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#flowerevolver.get_version_string" title="Link to this definition">#</a></dt>
+<dd><p>get_version() + “+” + get_commit_hash(), e.g. “4.0.0+a1b2c3d” – the one to put in a bug report.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="flowerevolver-cli">
+<h2>flowerevolver.cli<a class="headerlink" href="#flowerevolver-cli" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">flower-evolver</span></code> console script installed alongside the package -
+matches the native desktop app’s own single-flower flags. See
+the module docstring below for the exact invocations; <code class="docutils literal notranslate"><span class="pre">flower-evolver</span>
+<span class="pre">--help</span></code> covers the same ground interactively.</p>
+<p id="module-flowerevolver.cli">FlowerEvolver CLI - matches the native desktop app’s own single-flower
+flags: -lf, -sf, -si, -s3d, -m, -repr, and the shared -l/-r/-p/-b
+generation parameters.</p>
+<p>Three entry points (each self-sufficient - -lf/-repr just replace “start
+from a fresh flower” with “start from an existing one/two”). -m &lt;n&gt;
+mutates n times and saves only the final result, matching the native app
+- run this repeatedly (feeding each -sf output back in via -lf) if you
+want every intermediate step saved instead:</p>
+<blockquote>
+<div><p>flower-evolver -l &lt;numLayers&gt; -r &lt;radius&gt; -p &lt;P&gt; -b &lt;bias&gt; -m &lt;n&gt;
+flower-evolver -lf &lt;flower.json&gt; -l &lt;numLayers&gt; -r &lt;radius&gt; -p &lt;P&gt; -b &lt;bias&gt; -m &lt;n&gt; -sf &lt;out.json&gt; -si &lt;out.png&gt;
+flower-evolver -repr &lt;flower1.json&gt; &lt;flower2.json&gt; -l &lt;numLayers&gt; -r &lt;radius&gt; -p &lt;P&gt; -b &lt;bias&gt; -m &lt;n&gt; -sf &lt;out.json&gt; -si &lt;out.png&gt;</p>
+</div></blockquote>
+<p>Add -s3d &lt;filename&gt; to any of the above to also generate and save a 3D
+model (glTF) for the resulting flower, e.g.:</p>
+<blockquote>
+<div><p>flower-evolver -sf flower.json -si flower.png -s3d flower.gltf</p>
+</div></blockquote>
+<p>Use -se3d &lt;filename&gt; instead of (or alongside) -s3d for an emissive 3D
+model - same glTF export, but with useEmissive turned on, matching
+FEService.makeEmissive3DFlower()/drawEmissive3DFlower() on the JS/WASM
+side. Both can be passed together to save a regular and an emissive
+model from the same flower:</p>
+<blockquote>
+<div><p>flower-evolver -sf flower.json -si flower.png -s3d flower.gltf -se3d flower_emissive.gltf</p>
+</div></blockquote>
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.cli.build_parser">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.cli.</span></span><span class="sig-name descname"><span class="pre">build_parser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ArgumentParser</span></span></span><a class="headerlink" href="#flowerevolver.cli.build_parser" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowerevolver.cli.main">
+<span class="sig-prename descclassname"><span class="pre">flowerevolver.cli.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#flowerevolver.cli.main" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">FlowerEvolver-WASM – Python API</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver">flowerevolver</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.DNA"><code class="docutils literal notranslate"><span class="pre">DNA</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.DNA.clear"><code class="docutils literal notranslate"><span class="pre">DNA.clear()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.DNA.distance"><code class="docutils literal notranslate"><span class="pre">DNA.distance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.DNA.from_json"><code class="docutils literal notranslate"><span class="pre">DNA.from_json</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.DNA.get_fitness"><code class="docutils literal notranslate"><span class="pre">DNA.get_fitness()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.DNA.mutate"><code class="docutils literal notranslate"><span class="pre">DNA.mutate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.DNA.reproduce"><code class="docutils literal notranslate"><span class="pre">DNA.reproduce</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.DNA.set_fitness"><code class="docutils literal notranslate"><span class="pre">DNA.set_fitness()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.DNA.size"><code class="docutils literal notranslate"><span class="pre">DNA.size()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.DNA.to_json"><code class="docutils literal notranslate"><span class="pre">DNA.to_json()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Effects"><code class="docutils literal notranslate"><span class="pre">Effects</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Effects.agility"><code class="docutils literal notranslate"><span class="pre">Effects.agility</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Effects.intelligence"><code class="docutils literal notranslate"><span class="pre">Effects.intelligence</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Effects.luck"><code class="docutils literal notranslate"><span class="pre">Effects.luck</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Effects.strength"><code class="docutils literal notranslate"><span class="pre">Effects.strength</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Effects.vitality"><code class="docutils literal notranslate"><span class="pre">Effects.vitality</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Flower"><code class="docutils literal notranslate"><span class="pre">Flower</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Flower.dna"><code class="docutils literal notranslate"><span class="pre">Flower.dna</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Flower.from_json"><code class="docutils literal notranslate"><span class="pre">Flower.from_json</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Flower.petals"><code class="docutils literal notranslate"><span class="pre">Flower.petals</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Flower.to_json"><code class="docutils literal notranslate"><span class="pre">Flower.to_json()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Image"><code class="docutils literal notranslate"><span class="pre">Image</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Image.create"><code class="docutils literal notranslate"><span class="pre">Image.create()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Image.get_pixel"><code class="docutils literal notranslate"><span class="pre">Image.get_pixel()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Image.height"><code class="docutils literal notranslate"><span class="pre">Image.height</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Image.set_pixel"><code class="docutils literal notranslate"><span class="pre">Image.set_pixel()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Image.to_png_bytes"><code class="docutils literal notranslate"><span class="pre">Image.to_png_bytes()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Image.width"><code class="docutils literal notranslate"><span class="pre">Image.width</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.MutationRates"><code class="docutils literal notranslate"><span class="pre">MutationRates</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.MutationRates.act_type_rate"><code class="docutils literal notranslate"><span class="pre">MutationRates.act_type_rate</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.MutationRates.add_conn_rate"><code class="docutils literal notranslate"><span class="pre">MutationRates.add_conn_rate</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.MutationRates.add_node_rate"><code class="docutils literal notranslate"><span class="pre">MutationRates.add_node_rate</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.MutationRates.disable_rate"><code class="docutils literal notranslate"><span class="pre">MutationRates.disable_rate</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.MutationRates.enable_rate"><code class="docutils literal notranslate"><span class="pre">MutationRates.enable_rate</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.MutationRates.perturb_weights_rate"><code class="docutils literal notranslate"><span class="pre">MutationRates.perturb_weights_rate</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.MutationRates.remove_conn_rate"><code class="docutils literal notranslate"><span class="pre">MutationRates.remove_conn_rate</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Petals"><code class="docutils literal notranslate"><span class="pre">Petals</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Petals.P"><code class="docutils literal notranslate"><span class="pre">Petals.P</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Petals.bias"><code class="docutils literal notranslate"><span class="pre">Petals.bias</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Petals.has_bloom"><code class="docutils literal notranslate"><span class="pre">Petals.has_bloom</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Petals.image"><code class="docutils literal notranslate"><span class="pre">Petals.image</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Petals.num_layers"><code class="docutils literal notranslate"><span class="pre">Petals.num_layers</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Petals.radius"><code class="docutils literal notranslate"><span class="pre">Petals.radius</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.PetalsType"><code class="docutils literal notranslate"><span class="pre">PetalsType</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.PetalsType.TRUNK"><code class="docutils literal notranslate"><span class="pre">PetalsType.TRUNK</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.PetalsType.PETALS"><code class="docutils literal notranslate"><span class="pre">PetalsType.PETALS</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.PetalsType.TRUNK_AND_PETALS"><code class="docutils literal notranslate"><span class="pre">PetalsType.TRUNK_AND_PETALS</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Sex"><code class="docutils literal notranslate"><span class="pre">Sex</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Sex.MALE"><code class="docutils literal notranslate"><span class="pre">Sex.MALE</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Sex.FEMALE"><code class="docutils literal notranslate"><span class="pre">Sex.FEMALE</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Sex.BOTH"><code class="docutils literal notranslate"><span class="pre">Sex.BOTH</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Stats"><code class="docutils literal notranslate"><span class="pre">Stats</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Stats.effects"><code class="docutils literal notranslate"><span class="pre">Stats.effects</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Stats.health"><code class="docutils literal notranslate"><span class="pre">Stats.health</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Stats.maturation_period"><code class="docutils literal notranslate"><span class="pre">Stats.maturation_period</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Stats.max_temperature"><code class="docutils literal notranslate"><span class="pre">Stats.max_temperature</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Stats.min_temperature"><code class="docutils literal notranslate"><span class="pre">Stats.min_temperature</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Stats.sex"><code class="docutils literal notranslate"><span class="pre">Stats.sex</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Stats.stamina"><code class="docutils literal notranslate"><span class="pre">Stats.stamina</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.Stats.toxicity_rate"><code class="docutils literal notranslate"><span class="pre">Stats.toxicity_rate</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#free-functions">Free functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.make_flower"><code class="docutils literal notranslate"><span class="pre">make_flower()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.make_petals"><code class="docutils literal notranslate"><span class="pre">make_petals()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.make_petal_layer"><code class="docutils literal notranslate"><span class="pre">make_petal_layer()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.make_stem"><code class="docutils literal notranslate"><span class="pre">make_stem()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.draw_flower"><code class="docutils literal notranslate"><span class="pre">draw_flower()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.draw_petals"><code class="docutils literal notranslate"><span class="pre">draw_petals()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.draw_petal_layer"><code class="docutils literal notranslate"><span class="pre">draw_petal_layer()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.reproduce"><code class="docutils literal notranslate"><span class="pre">reproduce()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.mutate"><code class="docutils literal notranslate"><span class="pre">mutate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.make_3d_flower"><code class="docutils literal notranslate"><span class="pre">make_3d_flower()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.get_flower_stats"><code class="docutils literal notranslate"><span class="pre">get_flower_stats()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.get_version"><code class="docutils literal notranslate"><span class="pre">get_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.get_commit_hash"><code class="docutils literal notranslate"><span class="pre">get_commit_hash()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.get_version_string"><code class="docutils literal notranslate"><span class="pre">get_version_string()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver-cli">flowerevolver.cli</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.cli.build_parser"><code class="docutils literal notranslate"><span class="pre">build_parser()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flowerevolver.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/api.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023-2026, Cristian Gonzalez.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
