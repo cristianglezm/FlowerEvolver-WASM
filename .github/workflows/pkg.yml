@@ -42,4 +42,4 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: sh .devops/publish.sh "$GH_TOKEN"
+        run: bash .devops/publish.sh "$GH_TOKEN"
