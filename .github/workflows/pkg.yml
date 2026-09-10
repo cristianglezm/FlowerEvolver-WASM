@@ -1,4 +1,5 @@
 name: pkg
+
 on:
   release:
     types: [published]
@@ -8,10 +9,12 @@ jobs:
   npm:
     name: build + publish to npm and ghp
     runs-on: ubuntu-latest
+
     permissions:
       id-token: write
       packages: write
       contents: read
+
     steps:
       - name: checkout branch
         uses: actions/checkout@v7
@@ -20,7 +23,11 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - name: update npm
+        run: npm install --global npm@latest
 
       - name: build dist
         run: |
