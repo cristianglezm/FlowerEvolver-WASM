@@ -38,7 +38,7 @@ jobs:
         run: npm run test:e2e
 
       - name: publish to npm and github packages
-        if: github.event_name == 'release'
+        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
