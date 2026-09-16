@@ -31,9 +31,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "Android")
 endif()
 
 if(EvoAI_BUILD_STATIC)
-    set(EvoAI_LIBRARY_NAME "EvoAI-${EvoAI_FIND_VERSION_MAJOR}-s")
+    set(EvoAI_LIBRARY_NAME_RELEASE "EvoAI-${EvoAI_FIND_VERSION_MAJOR}-s")
+    set(EvoAI_LIBRARY_NAME_DEBUG "EvoAI-${EvoAI_FIND_VERSION_MAJOR}-s-d")
 else()
-    set(EvoAI_LIBRARY_NAME "EvoAI-${EvoAI_FIND_VERSION_MAJOR}")
+    set(EvoAI_LIBRARY_NAME_RELEASE "EvoAI-${EvoAI_FIND_VERSION_MAJOR}")
+    set(EvoAI_LIBRARY_NAME_DEBUG "EvoAI-${EvoAI_FIND_VERSION_MAJOR}-d")
 endif()
 
 find_path(EvoAI_INCLUDE_DIR
@@ -43,8 +45,15 @@ find_path(EvoAI_INCLUDE_DIR
     NO_CMAKE_FIND_ROOT_PATH
 )
 
-find_library(EvoAI_LIBRARY
-    NAMES ${EvoAI_LIBRARY_NAME}
+find_library(EvoAI_LIBRARY_RELEASE
+    NAMES ${EvoAI_LIBRARY_NAME_RELEASE}
+    PATH_SUFFIXES lib${LIB_SUFFIX}
+    PATHS ${EvoAI_ROOT}
+    NO_CMAKE_FIND_ROOT_PATH
+)
+
+find_library(EvoAI_LIBRARY_DEBUG
+    NAMES ${EvoAI_LIBRARY_NAME_DEBUG}
     PATH_SUFFIXES lib${LIB_SUFFIX}
     PATHS ${EvoAI_ROOT}
     NO_CMAKE_FIND_ROOT_PATH
@@ -56,13 +65,20 @@ find_path(EvoAI_INCLUDE_DIR
     PATHS ${FIND_EvoAI_PATHS}
 )
 
-find_library(EvoAI_LIBRARY
-    NAMES ${EvoAI_LIBRARY_NAME}
+find_library(EvoAI_LIBRARY_RELEASE
+    NAMES ${EvoAI_LIBRARY_NAME_RELEASE}
     PATH_SUFFIXES lib${LIB_SUFFIX}
     PATHS ${FIND_EvoAI_PATHS}
 )
 
-set(EvoAI_LIBRARIES ${EvoAI_LIBRARY})
+find_library(EvoAI_LIBRARY_DEBUG
+    NAMES ${EvoAI_LIBRARY_NAME_DEBUG}
+    PATH_SUFFIXES lib${LIB_SUFFIX}
+    PATHS ${FIND_EvoAI_PATHS}
+)
+
+include(SelectLibraryConfigurations)
+select_library_configurations(EvoAI)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(

@@ -32,8 +32,15 @@ find_path(JsonBox_INCLUDE_DIR
     NO_CMAKE_FIND_ROOT_PATH
 )
 
-find_library(JsonBox_LIBRARY
+find_library(JsonBox_LIBRARY_RELEASE
     NAMES JsonBox
+    PATH_SUFFIXES lib${LIB_SUFFIX}
+    PATHS ${JsonBox_ROOT}
+    NO_CMAKE_FIND_ROOT_PATH
+)
+
+find_library(JsonBox_LIBRARY_DEBUG
+    NAMES JsonBox_d
     PATH_SUFFIXES lib${LIB_SUFFIX}
     PATHS ${JsonBox_ROOT}
     NO_CMAKE_FIND_ROOT_PATH
@@ -45,13 +52,20 @@ find_path(JsonBox_INCLUDE_DIR
     PATHS ${FIND_JsonBox_PATHS}
 )
 
-find_library(JsonBox_LIBRARY
+find_library(JsonBox_LIBRARY_RELEASE
     NAMES JsonBox
     PATH_SUFFIXES lib${LIB_SUFFIX}
     PATHS ${FIND_JsonBox_PATHS}
 )
 
-set(JsonBox_LIBRARIES ${JsonBox_LIBRARY})
+find_library(JsonBox_LIBRARY_DEBUG
+    NAMES JsonBox_d
+    PATH_SUFFIXES lib${LIB_SUFFIX}
+    PATHS ${FIND_JsonBox_PATHS}
+)
+
+include(SelectLibraryConfigurations)
+select_library_configurations(JsonBox)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(
