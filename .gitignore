@@ -269,3 +269,5 @@ crash-*
 oom-*
 timeout-*
 leak-*
+
+*.backup
