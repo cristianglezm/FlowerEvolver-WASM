@@ -1,0 +1,20 @@
+FlowerEvolver-WASM
+===================
+
+C++ API reference for FlowerEvolver-WASM - generates 2D/3D flowers from CPPN
+genomes evolved via `EvoAI <https://github.com/cristianglezm/EvoAI>`_.
+
+For the JavaScript/WASM API (``FEService``, the high-level wrapper most web
+consumers actually want), see the `JS/WASM API docs <../js/>`_ instead --
+this page covers the native C++ library only. For native Python bindings,
+see the `Python API docs <../python/>`_.
+
+.. toctree::
+   :maxdepth: 2
+
+   source/api
+
+Indices
+-------
+
+* :ref:`genindex`

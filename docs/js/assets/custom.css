@@ -1,0 +1,11 @@
+:root[data-theme="light"] {
+    --color-accent: #008000;
+    --color-link: #2e8b57;
+    --color-active-menu-item: #d9f2d9;
+}
+
+:root[data-theme="dark"] {
+    --color-accent: #90ee90;
+    --color-link: #90ee90;
+    --color-active-menu-item: #2e4a2e;
+}
