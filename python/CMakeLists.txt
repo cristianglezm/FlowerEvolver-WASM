@@ -21,9 +21,35 @@ find_package(nanobind CONFIG REQUIRED)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/modules")
 
-find_package(JsonBox REQUIRED)
+include(FetchContent)
+
+find_package(JsonBox QUIET)
+if(NOT JsonBox_FOUND)
+    message(STATUS "JsonBox not found locally -- fetching and building from source (pass -Ccmake.define.JsonBox_ROOT=/path/to/install to use a local build instead)")
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    FetchContent_Declare(JsonBox
+        GIT_REPOSITORY https://github.com/cristianglezm/JsonBox.git
+        GIT_SHALLOW TRUE
+    )
+    FetchContent_MakeAvailable(JsonBox)
+    set(JsonBox_INCLUDE_DIR "${jsonbox_SOURCE_DIR}/include")
+    set(JsonBox_LIBRARIES JsonBox)
+endif()
+
 set(EvoAI_BUILD_STATIC TRUE)
-find_package(EvoAI 1 REQUIRED)
+find_package(EvoAI 1 QUIET)
+if(NOT EvoAI_FOUND)
+    message(STATUS "EvoAI not found locally -- fetching and building from source (pass -Ccmake.define.EvoAI_ROOT=/path/to/install to use a local build instead)")
+    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    set(EvoAI_BUILD_STATIC TRUE CACHE BOOL "" FORCE)
+    FetchContent_Declare(EvoAI
+        GIT_REPOSITORY https://github.com/cristianglezm/EvoAI.git
+        GIT_SHALLOW TRUE
+    )
+    FetchContent_MakeAvailable(EvoAI)
+    set(EvoAI_INCLUDE_DIR "${EvoAI_SOURCE_DIR}/include")
+    set(EvoAI_LIBRARIES EvoAI)
+endif()
 find_package(Git QUIET)
 set(FE_COMMIT_HASH "unknown")
 if(GIT_FOUND)
