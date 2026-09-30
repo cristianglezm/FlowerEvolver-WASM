@@ -24,6 +24,7 @@ Check the live demo [here](https://cristianglezm.github.io/FlowerEvolver-WASM/).
 * [Android](#android)
 * [Native C++ Library](#native-c-library)
 * [Python Bindings](#python-bindings)
+* [Species Classification](#species-classification)
 * [Documentation](#documentation)
 * [Testing](#testing)
 * [API Reference](#api-reference)
@@ -31,6 +32,23 @@ Check the live demo [here](https://cristianglezm.github.io/FlowerEvolver-WASM/).
 * [License](#license)
 
 ## News
+
+<details>
+<summary><strong>v4.1.0</strong> - species classification with a self-organizing map, a training API, tools and a Species tab (click to expand)</summary>
+
+**Additions**
+* Species classification with a self-organizing map (SOM): a flower is rendered once into a 267-number feature vector (a 16x16 silhouette of its petals plus 11 normalized stats) and its species is the `(x, y)` cell of the map whose prototype is closest -- a `SpeciesMatch {x, y, distance}`, or none for a flower that cannot be classified. A trained classifier is embedded in the library. The same code runs in the native library (`fe::extractFlowerFeatures`, `trainFlowerClassifier`, `classifyFlowers`, `fe::evaluateSOM`), the Python bindings (`extract_flower_features`, `train_flower_classifier`, `FlowerClassifier`) and the WASM build (`FEService`: `classify`, `classifyBatch`, `extractFeatures`, `classifyFeatures`, `train`, `fineTune`, `evaluate`, `getSOM`, `loadSOM`) -- see "Species Classification" below.
+* Training and fine-tuning in all three: one learning-rate decay across several calls, `validate()` on `SOMTrainingConfig` and `Environment`, and, natively and in Python, a per-epoch callback that can stop the run and a training report (distance per epoch, skipped samples, nodes used). In WASM one epoch is one call, so a page can show progress and cancel; training there is limited to 256 nodes by its fixed 30 MB heap.
+* A Species tab in the demo page: the map with its species counts, a detail panel with the four nearest species, "atypical" badges for flowers far from every prototype, fine-tuning with live progress, a distance-to-prototype chart and start/now occupancy maps, "Split this species" into sub-species (each with a small map of its own), "Use as parent", and classification in a Web Worker. Species live in their own table of the demo's database; a flower record is still `{id, genome, image}`.
+* `tools/som.py`, `tools/train_som.ipynb` and `tools/som_trainer`: generate a dataset, train, evaluate, fine-tune, classify and export a classifier into `include/fe/Resources.hpp` (`--weight-decimals` for a smaller file), with a feature cache, and `--workers N` to render the flowers in N processes -- see [tools/README.md](tools/README.md).
+* Docs: a species classification guide for C++ and for Python, and the JS/WASM reference for the new `FEService` calls. Tests: C++, pytest, vitest and Playwright cover training and classification, and libFuzzer harnesses cover the SOM code (classifier JSON, feature extraction, training and batch classification).
+
+**Changes**
+* Builds need [EvoAI](https://github.com/cristianglezm/EvoAI) 1.5 (the SOM API) and JsonBox 0.6.3: `npm run prep` (`.devops/prep.sh`) clones and installs both.
+* `fe::Environment` is built through `validate()`: a NaN or infinite `humidity` is refused with `std::invalid_argument` (`ValueError` in Python).
+* A wheel built from the sdist, which fetches and builds JsonBox and EvoAI when they are not installed, no longer carries their headers, libraries and CMake packages.
+
+</details>
 
 <details>
 <summary><strong>v4.0.0</strong> - native CMake build, Python bindings, TypeScript rewrite, docs site, and more (click to expand)</summary>
@@ -100,7 +118,7 @@ That's genuinely all most people need for the browser/npm package -- the table b
 
 ### Other build targets
 
-Every target follows the same two-step shape: a one-time `prep` (clones and builds JsonBox/EvoAI for that target) and a repeatable `build`.
+Every target follows the same two-step shape: a one-time `prep` (clones and builds JsonBox/EvoAI for that target, at the versions pinned in [.devops/dependencies.env](.devops/dependencies.env); `EVOAI_REF=<tag or branch>` in the environment tries another for one run) and a repeatable `build`.
 
 | Target | Setup (once) | Build | Notes |
 |---|---|---|---|
@@ -324,6 +342,45 @@ flower.to_json()                    # -> str, the genome
 ```
 
 `npm run test:python` runs its pytest suite. See [python/README.md](python/README.md) for the manual `pip install` invocation, the CLI, and more usage examples; the C++ glue itself lives in `src/bindings/python/`.
+
+## Species Classification
+
+Flowers can be grouped into species by a self-organizing map (SOM). A flower is rendered once into a 267-number feature
+vector (a 16x16 silhouette of its petals plus 11 normalized stats), and its species is the `(x, y)` cell of the map whose
+prototype is closest, or none for a flower that cannot be classified. A classifier trained offline is embedded in the library
+and used until you train or load another one. The same code runs in the native library, the Python bindings and the WASM
+build:
+
+```cpp
+// C++: fe::extractFlowerFeatures, trainFlowerClassifier, classifyFlowers, fe::evaluateSOM
+auto classifier = trainFlowerClassifier(samples, environment, fe::SOMTrainingConfig{});
+auto species = classifyFlowers(classifier, generationsJson, environment);  // fe::SpeciesMatch {x, y, distance} or std::nullopt per flower
+```
+
+```python
+# Python
+samples = [fe.extract_flower_features(genome, environment) for genome in genomes]
+classifier = fe.train_flower_classifier(samples, environment, fe.SOMTrainingConfig())
+classifier.classify(genomes[0], environment)   # SpeciesMatch(x, y, distance) or None
+```
+
+```ts
+// JS/WASM: the default classifier works out of the box
+const features = await service.extractFeatures(batch);   // extract once
+const species = await service.classifyFeatures(features); // { x, y, distance } | null per flower
+```
+
+Extract once and reuse the vectors when you classify, evaluate or fine-tune the same flowers more than once: rendering is the
+expensive part. Judge a trained map by its quantization error **and** how its nodes are used, and build the training population
+from the shapes you want told apart (a population full of one-petal flowers makes a map full of circular species). Fine-tuning
+moves prototypes, it does not create species. Training in WASM is limited to 256 nodes by its fixed 30 MB heap.
+
+* [Species classification guide](https://cristianglezm.github.io/FlowerEvolver-WASM/docs/cpp/source/species.html) and the
+  [Python version of it](https://cristianglezm.github.io/FlowerEvolver-WASM/docs/python/species.html), with a worked example each.
+* [JS/WASM docs](https://cristianglezm.github.io/FlowerEvolver-WASM/docs/js/) for `FEService`'s `classify`, `train`, `fineTuneFeatures` and friends.
+* [`tools/README.md`](tools/README.md) to build your own dataset and train, evaluate, fine-tune and export a classifier (`tools/som.py`, `tools/train_som.ipynb`).
+* The Species tab of the demo page (`index.html`) shows the map, fine-tunes it with live progress, splits a species in sub-species
+  with a small map of its own, picks parents from a species and classifies in a Web Worker.
 
 ## Documentation
 

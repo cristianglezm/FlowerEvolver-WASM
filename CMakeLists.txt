@@ -46,6 +46,12 @@ set(FE_CORE_PUBLIC_HEADERS
     "include/fe/DNA.hpp"
     "include/fe/Flower.hpp"
     "include/fe/Stats.hpp"
+    "include/fe/Environment.hpp"
+    "include/fe/SOMTrainingConfig.hpp"
+    "include/fe/SOMEvaluation.hpp"
+    "include/fe/SOMTrainingReport.hpp"
+    "include/fe/FlowerClassifier.hpp"
+    "include/fe/Resources.hpp"
     "include/fe/MathUtils.hpp"
     "include/fe/Image.hpp"
     "include/fe/Petals.hpp"
@@ -75,6 +81,10 @@ set(FE_CORE_SOURCES
     "src/fe/DNA.cpp"
     "src/fe/Flower.cpp"
     "src/fe/Stats.cpp"
+    "src/fe/Environment.cpp"
+    "src/fe/SOMTrainingConfig.cpp"
+    "src/fe/SOMEvaluation.cpp"
+    "src/fe/FlowerClassifier.cpp"
     "src/fe/MathUtils.cpp"
     "src/fe/Image.cpp"
     "src/fe/Petals.cpp"
@@ -120,7 +130,7 @@ if(EMSCRIPTEN)
         target_link_libraries(FlowerEvolver PRIVATE ${EvoAI_LIBRARIES})
     endif()
 	target_compile_options(FlowerEvolver PRIVATE -std=c++17 -Wall -Wextra -Wshadow -fexceptions)
-	target_link_options(FlowerEvolver PRIVATE -lembind -fexceptions -sMODULARIZE=1 -sEXPORT_ES6=1 -sSINGLE_FILE=1 -sEXPORT_NAME='fe' -sTOTAL_MEMORY=20MB -sEXPORTED_RUNTIME_METHODS=['HEAPU8'])
+	target_link_options(FlowerEvolver PRIVATE -lembind -fexceptions -sMODULARIZE=1 -sEXPORT_ES6=1 -sSINGLE_FILE=1 -sEXPORT_NAME='fe' -sTOTAL_MEMORY=30MB -sEXPORTED_RUNTIME_METHODS=['HEAPU8'])
     if(CMAKE_BUILD_TYPE STREQUAL "Release")
         target_compile_options(FlowerEvolver PRIVATE -O3)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")

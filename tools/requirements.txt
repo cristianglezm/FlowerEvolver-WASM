@@ -1,0 +1,5 @@
+flowerevolver==4.1.0
+numpy
+matplotlib
+jupyter
+ipykernel

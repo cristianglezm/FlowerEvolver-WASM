@@ -10,6 +10,7 @@ namespace fe_py{
     void bind_stats(nb::module_& m);
     void bind_flower(nb::module_& m);
     void bind_api(nb::module_& m);
+    void bind_som(nb::module_& m);
 }
 
 NB_MODULE(_core, m){
@@ -23,4 +24,5 @@ NB_MODULE(_core, m){
     fe_py::bind_stats(m);    // depends on nothing else bound here directly
     fe_py::bind_flower(m);   // depends on DNA and Petals (Flower.dna / Flower.petals)
     fe_py::bind_api(m);      // depends on DNA, Flower, Image, Stats (free function signatures)
+    fe_py::bind_som(m);      // depends on Flower (FlowerClassifier::classify(Flower, ...))
 }

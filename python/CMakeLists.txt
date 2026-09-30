@@ -23,15 +23,43 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/modules")
 
 include(FetchContent)
 
+set(FE_DEPENDENCIES_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../.devops/dependencies.env")
+if(NOT EXISTS "${FE_DEPENDENCIES_FILE}")
+    message(FATAL_ERROR "${FE_DEPENDENCIES_FILE} is missing: it pins the versions of JsonBox and EvoAI that are fetched")
+endif()
+file(STRINGS "${FE_DEPENDENCIES_FILE}" _fe_pins REGEX "^(JSONBOX|EVOAI)_REF=")
+foreach(_pin IN LISTS _fe_pins)
+    if(_pin MATCHES "^([A-Z]+)_REF=(.+)$")
+        # (not in the condition of the next if(): ${CMAKE_MATCH_1} is expanded before the match is made)
+        set(_pin_name "${CMAKE_MATCH_1}")
+        set(_pin_value "${CMAKE_MATCH_2}")
+        if(NOT DEFINED FE_${_pin_name}_REF)
+            set(FE_${_pin_name}_REF "${_pin_value}")
+        endif()
+    endif()
+endforeach()
+foreach(_name JSONBOX EVOAI)
+    if(NOT FE_${_name}_REF)
+        message(FATAL_ERROR "${FE_DEPENDENCIES_FILE} has to pin ${_name}_REF")
+    endif()
+endforeach()
+
+function(fe_keep_out_of_the_wheel directory)
+    set_property(DIRECTORY "${directory}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+endfunction()
+
 find_package(JsonBox QUIET)
 if(NOT JsonBox_FOUND)
     message(STATUS "JsonBox not found locally -- fetching and building from source (pass -Ccmake.define.JsonBox_ROOT=/path/to/install to use a local build instead)")
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    message(STATUS "JsonBox ${FE_JSONBOX_REF}")
     FetchContent_Declare(JsonBox
         GIT_REPOSITORY https://github.com/cristianglezm/JsonBox.git
+        GIT_TAG ${FE_JSONBOX_REF}
         GIT_SHALLOW TRUE
     )
     FetchContent_MakeAvailable(JsonBox)
+    fe_keep_out_of_the_wheel("${jsonbox_SOURCE_DIR}")
     set(JsonBox_INCLUDE_DIR "${jsonbox_SOURCE_DIR}/include")
     set(JsonBox_LIBRARIES JsonBox)
 endif()
@@ -42,11 +70,14 @@ if(NOT EvoAI_FOUND)
     message(STATUS "EvoAI not found locally -- fetching and building from source (pass -Ccmake.define.EvoAI_ROOT=/path/to/install to use a local build instead)")
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     set(EvoAI_BUILD_STATIC TRUE CACHE BOOL "" FORCE)
+    message(STATUS "EvoAI ${FE_EVOAI_REF}")
     FetchContent_Declare(EvoAI
         GIT_REPOSITORY https://github.com/cristianglezm/EvoAI.git
+        GIT_TAG ${FE_EVOAI_REF}
         GIT_SHALLOW TRUE
     )
     FetchContent_MakeAvailable(EvoAI)
+    fe_keep_out_of_the_wheel("${evoai_SOURCE_DIR}")
     set(EvoAI_INCLUDE_DIR "${EvoAI_SOURCE_DIR}/include")
     set(EvoAI_LIBRARIES EvoAI)
 endif()
@@ -72,6 +103,10 @@ set(FE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/../src/fe/MathUtils.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../src/fe/Image.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../src/fe/Petals.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/fe/Environment.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/fe/SOMTrainingConfig.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/fe/SOMEvaluation.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/fe/FlowerClassifier.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../src/fe/detail/FlowerEvolver.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../src/fe/3D/GLTF/Vertex.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../src/fe/3D/GLTF/TextureInfo.cpp"
@@ -98,6 +133,7 @@ set(FE_PYTHON_BINDING_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/../src/bindings/python/stats.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../src/bindings/python/flower.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/../src/bindings/python/api.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/bindings/python/som.cpp"
 )
 
 # NB_DOMAIN keeps this module's internal type-caster registrations isolated

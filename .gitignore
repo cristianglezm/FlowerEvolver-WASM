@@ -271,3 +271,4 @@ timeout-*
 leak-*
 
 *.backup
+**/.ipynb_checkpoints/
