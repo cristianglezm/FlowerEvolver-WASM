@@ -1,7 +1,10 @@
 #ifndef FLOWER_EVOLVER_HPP
 #define FLOWER_EVOLVER_HPP
 
+#include <optional>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <fe/config.hpp>
 #include <fe/Image.hpp>
@@ -149,5 +152,43 @@ FE_API fe::Flower mutate(fe::DNA original, int radius, int numLayers, float P, f
  * @return fe::Stats
  */
 FE_API fe::Stats getFlowerStats(const std::string& genome, float humidity, int temperature, int altitude, int terrainType);
+
+/**
+ * @brief trains a SOM species classifier over already-extracted feature vectors.
+ * @param samples each of size fe::FlowerClassifier::inputDim, see fe::extractFlowerFeatures().
+ * Wrong-size or non-finite ones are skipped and logged, not an error.
+ * @param environment recorded on the classifier as documentation only.
+ * @param training grid size + hyperparameters.
+ * @return fe::FlowerClassifier
+ * @throw std::invalid_argument if no sample is usable.
+ */
+FE_API fe::FlowerClassifier trainFlowerClassifier(const std::vector<std::vector<double>>& samples,
+    const fe::Environment& environment, const fe::SOMTrainingConfig& training);
+/**
+ * @brief same as above, over a whole {"Generation": [...]} JSON batch; flowers
+ * are extracted one at a time so peak memory stays low.
+ * @param generationsJson std::string json Generation of flowers.
+ * @param environment used for every flower's fe::Stats and recorded on the classifier.
+ * @param training grid size + hyperparameters.
+ * @return fe::FlowerClassifier
+ * @throw std::runtime_error if generationsJson is not parsable JSON.
+ * @throw std::invalid_argument if no flower is usable.
+ */
+FE_API fe::FlowerClassifier trainFlowerClassifier(const std::string& generationsJson,
+    const fe::Environment& environment, const fe::SOMTrainingConfig& training);
+/**
+ * @brief classifies every flower of a {"Generation": [...]} batch against a
+ * classifier, one entry per flower in input order.
+ * @param classifier a trained classifier, see trainFlowerClassifier().
+ * @param generationsJson std::string json Generation of flowers.
+ * @param environment used for every flower's fe::Stats.
+ * @return std::vector<std::optional<fe::SpeciesMatch>> the species of each flower and its
+ * distance to it, std::nullopt for a flower that can't be classified (same meaning as
+ * fe::FlowerClassifier::classify()), so the indexes always line up with the input.
+ * @throw std::runtime_error if generationsJson is not parsable JSON.
+ * @throw std::invalid_argument if environment is invalid.
+ */
+FE_API std::vector<std::optional<fe::SpeciesMatch>> classifyFlowers(const fe::FlowerClassifier& classifier,
+    const std::string& generationsJson, const fe::Environment& environment);
 
 #endif // FLOWER_EVOLVER_HPP

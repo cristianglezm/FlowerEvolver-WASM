@@ -37,7 +37,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: build/native
-          key: native-deps-${{ runner.os }}-${{ hashFiles('.devops/prep.sh') }}
+          key: native-deps-${{ runner.os }}-${{ hashFiles('.devops/prep.sh', '.devops/dependencies.sh', '.devops/dependencies.env') }}
 
       - name: Build dependencies (JsonBox + EvoAI)
         if: steps.cache-native.outputs.cache-hit != 'true'
@@ -55,6 +55,21 @@ jobs:
       - name: Fuzz - Flower JSON parsing
         continue-on-error: true
         run: build/native/fuzz/bin/fuzz_flower_from_json -max_total_time=60 tests/fuzz/corpus
+
+      - name: Fuzz - feature extraction
+        run: build/native/fuzz/bin/fuzz_extract_flower_features -max_total_time=60 -max_len=65536 tests/fuzz/corpus tests/fuzz/corpus-som
+
+      - name: Fuzz - classifier JSON loading
+        run: build/native/fuzz/bin/fuzz_classifier_from_json -max_total_time=60 -max_len=65536 tests/fuzz/corpus-som
+
+      - name: Fuzz - classifier training on feature vectors
+        run: build/native/fuzz/bin/fuzz_classifier_train_samples -max_total_time=60
+
+      - name: Fuzz - classifier training on a flower batch
+        run: build/native/fuzz/bin/fuzz_train_classifier -max_total_time=60 -max_len=65536 tests/fuzz/corpus-som
+
+      - name: Fuzz - batch classification
+        run: build/native/fuzz/bin/fuzz_classify_flowers -max_total_time=60 -max_len=65536 tests/fuzz/corpus-som
 
       - name: Upload any newly-found crashes
         if: always()

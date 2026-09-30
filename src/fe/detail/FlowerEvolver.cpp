@@ -1,9 +1,21 @@
 #include <fe/MathUtils.hpp>
 #include <fe/Petals.hpp>
+#include <fe/Resources.hpp>
 #include <fe/detail/FlowerEvolver.hpp>
 #include <fe/detail/GenomeValidation.hpp>
 #include <fe/3D.hpp>
+#include <iostream>
+#include <sstream>
 #include <string>
+
+namespace{
+	// compact, like every other JSON producer here
+	std::string jsonToString(const JsonBox::Value& v){
+		std::stringstream ss;
+		v.writeToStream(ss, false, true);
+		return ss.str();
+	}
+}
 
 namespace fe{
 namespace detail{
@@ -261,6 +273,91 @@ std::string impl_make3DFlower(const fe::DNA& dna, int radius, int numLayers, flo
          throw std::invalid_argument("make3DFlower() - error Exception during gltf string generation.");
      }
     return jsonString;
+}
+
+fe::FlowerClassifier impl_trainFlowerClassifier(const std::vector<std::vector<double>>& samples,
+		const fe::Environment& environment, const fe::SOMTrainingConfig& training){
+	environment.validate();
+	training.validate();
+	fe::FlowerClassifier classifier(training.width, training.height, environment);
+	classifier.train(samples, training.epochs, training.baseLR, training.baseRadius);
+	return classifier;
+}
+
+std::vector<std::optional<std::vector<double>>> impl_extractFlowerFeaturesBatch(
+        const std::string& generationsJson,
+        const fe::Environment& environment){
+        // the exception from extractFlowerFeatures() is swallowed below as "skip this flower",
+        // which would turn a bad environment into "no usable samples"
+        environment.validate();
+        JsonBox::Value v;
+        v.loadFromString(generationsJson);
+        auto& generation = v["Generation"].getArray();
+        std::vector<std::optional<std::vector<double>>> features;
+        features.reserve(generation.size());
+        for(auto& entry : generation){
+            try{
+                JsonBox::Object wrapper;
+                wrapper["Flower"] = entry;
+                features.emplace_back(fe::extractFlowerFeatures(jsonToString(JsonBox::Value(wrapper)), environment));
+            }catch(const std::exception&){
+                features.emplace_back(std::nullopt);
+            }
+        }
+        return features;
+}
+
+std::vector<std::vector<double>> impl_extractFeaturesFromGenerationsJson(
+        const std::string& generationsJson,
+        const fe::Environment& environment){
+        auto batch = impl_extractFlowerFeaturesBatch(generationsJson, environment);
+        std::vector<std::vector<double>> samples;
+        samples.reserve(batch.size());
+        for(auto& features : batch){
+            if(features){
+                samples.emplace_back(std::move(*features));
+            }
+        }
+        if(samples.size() < batch.size()){
+            std::cerr << "impl_extractFeaturesFromGenerationsJson: skipped " <<
+                batch.size() - samples.size() << "/" << batch.size()
+                << " unusable flowers." << std::endl;
+        }
+        return samples;
+}
+
+fe::FlowerClassifier impl_trainFlowerClassifier(const std::string& generationsJson,
+		const fe::Environment& environment, const fe::SOMTrainingConfig& training){
+	training.validate(); // before the expensive extraction
+	std::vector<std::vector<double>> samples = impl_extractFeaturesFromGenerationsJson(generationsJson, environment);
+	return impl_trainFlowerClassifier(samples, environment, training);
+}
+
+std::vector<std::optional<fe::SpeciesMatch>> impl_classifyFlowers(const fe::FlowerClassifier& classifier,
+		const std::string& generationsJson, const fe::Environment& environment){
+	environment.validate();
+	JsonBox::Value v;
+	v.loadFromString(generationsJson);
+	auto& generation = v["Generation"].getArray();
+	std::vector<std::optional<fe::SpeciesMatch>> matches;
+	matches.reserve(generation.size());
+	for(auto& entry : generation){
+		JsonBox::Object wrapper;
+		wrapper["Flower"] = entry;
+		matches.emplace_back(classifier.classify(jsonToString(JsonBox::Value(wrapper)), environment));
+	}
+	return matches;
+}
+
+fe::SOMEvaluation impl_evaluateFlowerClassifier(const fe::FlowerClassifier& classifier,
+		const std::string& generationsJson, const fe::Environment& environment){
+	return classifier.evaluate(impl_extractFeaturesFromGenerationsJson(generationsJson, environment));
+}
+
+void impl_fineTuneFlowerClassifier(fe::FlowerClassifier& classifier, const std::string& generationsJson,
+		const fe::Environment& environment, std::size_t epochs, double baseLR, double baseRadius){
+	auto samples = impl_extractFeaturesFromGenerationsJson(generationsJson, environment);
+	classifier.train(samples, epochs, baseLR, baseRadius);
 }
 
 } // namespace detail

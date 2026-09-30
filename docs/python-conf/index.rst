@@ -20,6 +20,7 @@ Installation and the ``flower-evolver`` command-line tool are covered in
 .. toctree::
    :maxdepth: 2
 
+   species
    api
 
 Indices

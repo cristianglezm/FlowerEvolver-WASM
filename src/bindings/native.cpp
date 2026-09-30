@@ -3,6 +3,7 @@
  * is declared and fully documented in include/fe/FlowerEvolver.hpp
  */
 #include <fe/FlowerEvolver.hpp>
+#include <fe/FlowerClassifier.hpp>
 #include <fe/detail/FlowerEvolver.hpp>
 
 fe::Flower makeFlower(int radius, int numLayers, float P, float bias) noexcept{
@@ -51,4 +52,19 @@ fe::Stats getFlowerStats(const std::string& genome, float humidity, int temperat
 
 std::string make3DFlower(const fe::DNA& dna, int radius, int numLayers, float P, float bias, const std::string& flowerId, const std::string& flowerParams){
 	return fe::detail::impl_make3DFlower(dna, radius, numLayers, P, bias, flowerId, flowerParams);
+}
+
+fe::FlowerClassifier trainFlowerClassifier(const std::vector<std::vector<double>>& samples,
+		const fe::Environment& environment, const fe::SOMTrainingConfig& training){
+	return fe::detail::impl_trainFlowerClassifier(samples, environment, training);
+}
+
+fe::FlowerClassifier trainFlowerClassifier(const std::string& generationsJson,
+		const fe::Environment& environment, const fe::SOMTrainingConfig& training){
+	return fe::detail::impl_trainFlowerClassifier(generationsJson, environment, training);
+}
+
+std::vector<std::optional<fe::SpeciesMatch>> classifyFlowers(const fe::FlowerClassifier& classifier,
+		const std::string& generationsJson, const fe::Environment& environment){
+	return fe::detail::impl_classifyFlowers(classifier, generationsJson, environment);
 }

@@ -12,6 +12,9 @@ JS/WASM API's ``FEService`` and the native C++ library's
 
 .. automodule:: flowerevolver
 
+The species classifier (``FlowerClassifier``, ``SOMTrainingConfig``, ``Environment`` and the three functions at the end
+of the list below) is explained in :doc:`species`.
+
 Free functions
 ~~~~~~~~~~~~~~
 
@@ -26,6 +29,9 @@ Free functions
 .. autofunction:: flowerevolver.mutate
 .. autofunction:: flowerevolver.make_3d_flower
 .. autofunction:: flowerevolver.get_flower_stats
+.. autofunction:: flowerevolver.extract_flower_features
+.. autofunction:: flowerevolver.train_flower_classifier
+.. autofunction:: flowerevolver.get_trained_som
 .. autofunction:: flowerevolver.get_version
 .. autofunction:: flowerevolver.get_commit_hash
 .. autofunction:: flowerevolver.get_version_string

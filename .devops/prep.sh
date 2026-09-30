@@ -49,6 +49,9 @@
 
 set -e
 
+# JSONBOX_REF, EVOAI_REF and fetch_dependency: the pinned versions of the two dependencies (.devops/dependencies.env)
+source "$(dirname "${BASH_SOURCE[0]}")/dependencies.sh"
+
 MODE="${1:-wasm}"
 if [ $# -gt 0 ]; then
     shift
@@ -74,18 +77,14 @@ case "$MODE" in
         source ./emsdk_env.sh
         cd ..
 
-        if [ ! -d JsonBox ]; then
-            git clone https://github.com/cristianglezm/JsonBox.git
-        fi
+        fetch_dependency https://github.com/cristianglezm/JsonBox.git JsonBox "$JSONBOX_REF"
         mkdir -p JsonBox/build
         cd JsonBox/build
         emcmake cmake -G Ninja -DCMAKE_INSTALL_PREFIX="$(pwd)/install" ..
         cmake --build . -j 4 --target install
         cd ../..
 
-        if [ ! -d EvoAI ]; then
-            git clone https://github.com/cristianglezm/EvoAI.git
-        fi
+        fetch_dependency https://github.com/cristianglezm/EvoAI.git EvoAI "$EVOAI_REF"
         mkdir -p EvoAI/build
         cd EvoAI/build
         emcmake cmake -G Ninja \
@@ -106,9 +105,7 @@ case "$MODE" in
         mkdir -p native
         cd native
 
-        if [ ! -d JsonBox ]; then
-            git clone https://github.com/cristianglezm/JsonBox.git
-        fi
+        fetch_dependency https://github.com/cristianglezm/JsonBox.git JsonBox "$JSONBOX_REF"
         mkdir -p JsonBox/build
         cd JsonBox/build
         cmake -G Ninja \
@@ -119,9 +116,7 @@ case "$MODE" in
         cmake --build . -j 4 --target install
         cd ../..
 
-        if [ ! -d EvoAI ]; then
-            git clone https://github.com/cristianglezm/EvoAI.git
-        fi
+        fetch_dependency https://github.com/cristianglezm/EvoAI.git EvoAI "$EVOAI_REF"
         mkdir -p EvoAI/build
         cd EvoAI/build
         cmake -G Ninja \
@@ -151,12 +146,8 @@ case "$MODE" in
         mkdir -p android
         cd android
 
-        if [ ! -d JsonBox ]; then
-            git clone https://github.com/cristianglezm/JsonBox.git
-        fi
-        if [ ! -d EvoAI ]; then
-            git clone https://github.com/cristianglezm/EvoAI.git
-        fi
+        fetch_dependency https://github.com/cristianglezm/JsonBox.git JsonBox "$JSONBOX_REF"
+        fetch_dependency https://github.com/cristianglezm/EvoAI.git EvoAI "$EVOAI_REF"
         ANDROID_DEPS_ROOT="$ANDROID_NDK/sources/third_party"
         for abi in "${ABIS[@]}"; do
             echo "--- JsonBox ($abi, API $ANDROID_API) ---"
