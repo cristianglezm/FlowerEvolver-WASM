@@ -12,6 +12,7 @@ see the `Python API docs <../python/>`_.
 .. toctree::
    :maxdepth: 2
 
+   source/species
    source/api
 
 Indices

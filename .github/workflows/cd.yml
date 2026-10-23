@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: build/native
-          key: native-deps-${{ runner.os }}-${{ hashFiles('.devops/prep.sh') }}
+          key: native-deps-${{ runner.os }}-${{ hashFiles('.devops/prep.sh', '.devops/dependencies.sh', '.devops/dependencies.env') }}
 
       - name: Build dependencies (JsonBox + EvoAI)
         if: steps.cache-native.outputs.cache-hit != 'true'

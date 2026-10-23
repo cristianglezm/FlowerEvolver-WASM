@@ -11,7 +11,9 @@ BUILTIN_STL_SUPPORT    = YES
 INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/../include
 RECURSIVE              = YES
 INCLUDE_PATH            = @CMAKE_CURRENT_SOURCE_DIR@/../include
-EXCLUDE                = @CMAKE_CURRENT_SOURCE_DIR@/../include/fe/detail
+# Resources.hpp is the embedded classifier as one 105 KB string literal; Doxygen's preprocessor overflows on it
+EXCLUDE                = @CMAKE_CURRENT_SOURCE_DIR@/../include/fe/detail \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../include/fe/Resources.hpp
 EXCLUDE_PATTERNS       = */config.hpp.template \
                          *.inl
 

@@ -32,14 +32,15 @@ if ! command -v git >/dev/null 2>&1; then
     fi
 fi
 
+# JSONBOX_REF, EVOAI_REF and fetch_dependency: the pinned versions (.devops/dependencies.env)
+source "$(dirname "${BASH_SOURCE[0]}")/dependencies.sh"
+
 DEPS_ROOT="${1:-${DEPS_ROOT:-/tmp/fe-native-deps}}"
 mkdir -p "$DEPS_ROOT"
 DEPS_ROOT="$(cd "$DEPS_ROOT" && pwd)"
 cd "$DEPS_ROOT"
 
-if [ ! -d JsonBox ]; then
-    git clone https://github.com/cristianglezm/JsonBox.git
-fi
+fetch_dependency https://github.com/cristianglezm/JsonBox.git JsonBox "$JSONBOX_REF"
 
 mkdir -p JsonBox/build
 cd JsonBox/build
@@ -52,9 +53,7 @@ cmake --build . -j 4 --config Release --target install
 
 cd "$DEPS_ROOT"
 
-if [ ! -d EvoAI ]; then
-    git clone https://github.com/cristianglezm/EvoAI.git
-fi
+fetch_dependency https://github.com/cristianglezm/EvoAI.git EvoAI "$EVOAI_REF"
 
 mkdir -p EvoAI/build
 cd EvoAI/build

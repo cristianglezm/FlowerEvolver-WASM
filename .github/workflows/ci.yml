@@ -71,7 +71,7 @@ jobs:
           path: |
             build/native/JsonBox/build/install
             build/native/EvoAI/build/install
-          key: native-deps-${{ matrix.platform.name }}-${{ hashFiles('.devops/prep.sh') }}
+          key: native-deps-${{ matrix.platform.name }}-${{ hashFiles('.devops/prep.sh', '.devops/dependencies.sh', '.devops/dependencies.env') }}
 
       - name: Build dependencies (JsonBox + EvoAI, MSYS2)
         if: steps.cache-native.outputs.cache-hit != 'true' && matrix.platform.name == 'Windows'
@@ -143,7 +143,7 @@ jobs:
             build/wasm/emsdk
             build/wasm/JsonBox/build/install
             build/wasm/EvoAI/build/install
-          key: wasm-deps-${{ hashFiles('.devops/prep.sh') }}
+          key: wasm-deps-${{ hashFiles('.devops/prep.sh', '.devops/dependencies.sh', '.devops/dependencies.env') }}
 
       - name: npm ci
         run: npm ci --ignore-scripts
@@ -208,7 +208,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: build/native
-          key: native-deps-${{ runner.os }}-${{ hashFiles('.devops/prep.sh') }}
+          key: native-deps-${{ runner.os }}-${{ hashFiles('.devops/prep.sh', '.devops/dependencies.sh', '.devops/dependencies.env') }}
 
       - name: Build dependencies (JsonBox + EvoAI)
         if: steps.cache-native.outputs.cache-hit != 'true'
@@ -398,7 +398,7 @@ jobs:
           path: |
             ${{ env.ANDROID_NDK }}/sources/third_party/JsonBox
             ${{ env.ANDROID_NDK }}/sources/third_party/EvoAI
-          key: android-deps-${{ matrix.abi }}-${{ env.ANDROID_NDK_VERSION }}-${{ hashFiles('.devops/prep.sh') }}
+          key: android-deps-${{ matrix.abi }}-${{ env.ANDROID_NDK_VERSION }}-${{ hashFiles('.devops/prep.sh', '.devops/dependencies.sh', '.devops/dependencies.env') }}
 
       - name: Prepare (JsonBox + EvoAI, this ABI)
         if: steps.cache-deps.outputs.cache-hit != 'true'

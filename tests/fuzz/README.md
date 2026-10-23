@@ -28,7 +28,7 @@ cmake -S . -B build/native/fuzz -G Ninja \
 cmake --build build/native/fuzz -j 4
 ```
 
-Produces `build/native/fuzz/bin/fuzz_{flower_from_json,dna_from_json,stats_from_genome}`.
+Produces one `build/native/fuzz/bin/fuzz_*` binary per harness in this directory.
 JsonBox/EvoAI don't need to be rebuilt with sanitizers for this to work --
 ASan intercepts the process-wide allocator regardless of which
 translation unit allocated the memory, so heap bugs anywhere in the call
@@ -53,7 +53,24 @@ ones worth knowing:
   directory -- move genuinely interesting ones into `tests/fuzz/corpus/`
   so future runs seed from them.
 
+## SOM species classifier harnesses
+
+- `fuzz_extract_flower_features`: genome JSON and environment numbers.
+- `fuzz_classifier_from_json`: `FlowerClassifier(JsonBox::Object)`, i.e. a saved classifier.
+- `fuzz_classifier_train_samples`: `train()`/`evaluate()` on feature vectors with wrong sizes,
+  NaN/Inf and arbitrary schedule arguments.
+- `fuzz_train_classifier`: `trainFlowerClassifier()` on a `{"Generation": [...]}` batch.
+- `fuzz_classify_flowers`: `classifyFlowers()` on a batch, against the embedded classifier.
+
+The last four take large inputs, so pass `-max_len=65536` or libFuzzer truncates the seeds at 4 KB.
+`fuzz_train_classifier` and `fuzz_classify_flowers` render flowers and run at tens of executions per
+second under ASan, so a short run covers little of them.
+
 ## Seed corpus
+
+`corpus-som/` holds seeds for the harnesses above: a generation batch, a single flower, and a saved
+classifier. They end with the bytes `FuzzedDataProvider` reads the numbers from, because it consumes
+those from the back of the input and the rest from the front.
 
 `tests/fuzz/corpus/` holds a handful of valid genome/DNA/flower JSON
 files (`dna_seed.json`, `flower_seed_0.json`, `flower_seed_1.json`,
