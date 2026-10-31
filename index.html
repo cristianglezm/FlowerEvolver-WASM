@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Cristian Gonzalez">
+    <title>FlowerEvolver-WASM Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body{
+			background-color: green;
+		}
+		button{
+			font-size: 20px;
+			border-radius: 315px 335px 155px 135px;
+			margin: 10px 10px 0 2px;
+			cursor: pointer;
+			border-color: #90ee90;
+			background-color: green;
+			color: #90ee90;
+		}
+		button:disabled {
+			cursor: not-allowed;
+			background-color: #556b2f;
+			color: #aaa;
+		}
+		h1{
+			text-align: center;
+			color: #90ee90;
+		}
+		#title{
+			font-size: 120px;
+			padding: 0;
+			margin: 0;
+			color: #90ee90;
+		}
+	@media only screen and (max-width: 1280px){
+		#title{
+			font-size: 40px;
+			padding: 0;
+			margin: 0;
+			color: #90ee90;
+		}
+	}
+		.top-links{
+			display: flex;
+			justify-content: center;
+			gap: 24px;
+			margin: 0 0 10px 0;
+		}
+		.top-links a{
+			color: #90ee90;
+			text-decoration: none;
+			font-size: 16px;
+			border: 1px solid #90ee90;
+			border-radius: 4px;
+			padding: 4px 12px;
+		}
+		.top-links a:hover{
+			background-color: green;
+			color: #fff;
+		}
+		.grid{
+			display: grid;
+			grid-template-columns: repeat(auto-fill,minmax(230px,1fr));
+			grid-gap: 10px;
+			background-color: #000;
+			border: 10px solid black;
+		}
+		#tabs{
+			position: relative;
+			top: 12px;
+			font-size: xx-large;
+			margin-bottom: 10px;
+		}
+		#tab-flowers, #tab-species{
+			text-decoration: none;
+			text-indent: 10px;
+			padding: 2px 10px 10px 10px;
+			margin: 10px 0 0;
+			color: #90ee90;
+			border-radius: 12px 12px 0 0;
+			cursor: pointer;
+		}
+		.tab:hover{
+			background-color: #252729;
+			cursor: pointer;
+		}
+		.active{
+			background-color: #252729;
+		}
+		#original, #parents{
+			display: grid;
+			grid-template-columns: auto auto;
+			grid-gap: 10px;
+			justify-content: center;
+		}
+		#mutated, #children{
+			display: grid;
+			grid-template-columns: repeat(auto-fill,minmax(230px,1fr));
+			grid-gap: 10px;
+			background-color: #000;
+		}
+		#header-mutations, #header-descendants, #header-species{
+			text-align: center;
+			color: #90ee90;
+			background-color: green;
+		}
+		.footer{
+			background-color: #252729;
+			color: #fff;
+			display: grid;
+			grid-template-columns: auto auto;
+			justify-items: stretch;
+		}
+		.github{
+			float: right;
+			position: relative;
+			top: 20px;
+			right: 20px;
+		}
+		#species-status, #species-caption{
+			text-align: center;
+			color: #90ee90;
+		}
+		#species-map{
+			display: grid;
+			gap: 8px;
+			padding: 10px;
+			background: #000;
+			overflow-x: auto;
+		}
+		#finetune input[type=number], #split input[type=number]{
+			width: 5em;
+			text-align: center;
+			background-color: green;
+			color: lightgreen;
+			border: solid lightgreen;
+			border-radius: 8rem;
+			appearance: textfield;
+			box-shadow: inset 0rem 0rem 0.3rem 0.125rem black;
+		}
+		/* the engraved track the progress fills; each engine only reads its own pseudo-elements,
+		   so they are separate rules (one unknown selector would drop a whole grouped rule) */
+		progress.engraved:not([hidden]){
+			display: block;
+		}
+		progress.engraved{
+			appearance: none;
+			width: 100%;
+			height: 1.1rem;
+			margin: 0.5rem 0;
+			border: solid #006400;
+			border-radius: 8rem;
+			background-color: #006400;
+			box-shadow: inset 0rem 0rem 0.4rem 0.2rem black;
+			overflow: hidden;
+		}
+		progress.engraved::-webkit-progress-bar{
+			background-color: #006400;
+			box-shadow: inset 0rem 0rem 0.4rem 0.2rem black;
+		}
+		progress.engraved::-webkit-progress-value{
+			background-color: lightgreen;
+			border-radius: 8rem;
+			box-shadow: inset 0rem 0rem 0.2rem 0.05rem green;
+		}
+		progress.engraved::-moz-progress-bar{
+			background-color: lightgreen;
+			border-radius: 8rem;
+			box-shadow: inset 0rem 0rem 0.2rem 0.05rem green;
+		}
+		#species-toolbar{
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 16px;
+			margin: 8px 20px;
+			color: lightgreen;
+		}
+		#species-summary{
+			flex: 1 1 260px;
+			margin: 0;
+		}
+		#species-layout{
+			display: flex;
+			flex-wrap: wrap;
+			gap: 16px;
+			align-items: flex-start;
+		}
+		#species-map{
+			flex: 1 1 420px;
+		}
+		#species-detail{
+			flex: 0 0 220px;
+			margin: 0 20px;
+			padding: 12px;
+			background: #252729;
+			color: #90ee90;
+			border-radius: 8px;
+			text-align: center;
+		}
+		#species-detail canvas{
+			width: 160px;
+			height: 160px;
+			image-rendering: pixelated;
+			background: #000;
+		}
+		#species-neighbours button, #species-parent-actions button, #species-split > button{
+			display: block;
+			width: 100%;
+			margin: 4px 0;
+		}
+		dialog#finetune, dialog#split{
+			background: #111;
+			color: lightgreen;
+			border: 1px solid #90ee90;
+			border-radius: 8px;
+			max-width: min(720px, 94vw);
+		}
+		dialog#finetune::backdrop, dialog#split::backdrop{
+			background: rgba(0, 0, 0, 0.7);
+		}
+		/* author display rules (flex, grid) beat the browser's [hidden] rule, so the attribute alone would not hide those boxes */
+		[hidden]{
+			display: none !important;
+		}
+		.tune-charts{
+			display: flex;
+			flex-wrap: wrap;
+			gap: 20px;
+			align-items: flex-start;
+		}
+		.tune-charts figure{
+			margin: 0;
+		}
+		.tune-charts figcaption{
+			font-size: 0.8em;
+			opacity: 0.8;
+			max-width: 320px;
+		}
+		.qe-chart{
+			width: 320px;
+			max-width: 100%;
+			background: #0b0b0b;
+			border: 1px solid #234;
+		}
+		.occupancy-pair{
+			display: flex;
+			gap: 14px;
+		}
+		.occupancy{
+			display: grid;
+			gap: 1px;
+			background: #234;
+			border: 1px solid #234;
+		}
+		.occupancy i{
+			display: block;
+			width: var(--cell, 14px);
+			height: var(--cell, 14px);
+		}
+		#subspecies-map{
+			display: grid;
+			grid-template-columns: repeat(var(--cols, 2), 1fr);
+			gap: 4px;
+			margin: 6px 0;
+		}
+		.subspecies-card{
+			background: #252729;
+			color: lightgreen;
+			border: 1px solid #3a3d40;
+			border-radius: 6px;
+			padding: 4px;
+			cursor: pointer;
+			font-size: 0.8em;
+		}
+		.subspecies-card.selected{
+			border-color: lightgreen;
+		}
+		.subspecies-card.empty{
+			opacity: 0.5;
+		}
+		.subspecies-card canvas{
+			width: 100%;
+			image-rendering: pixelated;
+		}
+		#species-parents{
+			font-size: 0.85em;
+			margin: 6px 0;
+		}
+		.species-card{
+			background: #252729;
+			color: #90ee90;
+			text-align: center;
+			padding: 6px;
+			border: 2px solid transparent;
+			border-radius: 8px;
+			cursor: pointer;
+		}
+		.species-card.empty{
+			opacity: 0.45;
+		}
+		.species-card.selected{
+			border-color: #90ee90;
+		}
+		.species-card canvas{
+			width: 64px;
+			height: 64px;
+			image-rendering: pixelated;
+			background: #000;
+		}
+		.species-name{
+			font-size: 13px;
+		}
+		.species-count{
+			font-weight: bold;
+		}
+		.species-badge{
+			display: block;
+			text-align: center;
+			color: #90ee90;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+		.species-badge.atypical{
+			color: #ffb347;
+		}
+		#buttons{
+			text-align: right;
+		}
+		.flower{
+			text-align: center;
+			padding: 10px;
+			background-color: #252729;
+            display: flex;
+            flex-direction: column;
+		}
+        .flower-visual{
+            width: 230px;
+            height: 192px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #252729;
+        }
+        .flower-visual img, .flower-visual canvas{
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+            width: auto;
+        }
+		.close{
+			color: #90ee90;
+			cursor: pointer;
+			margin-right: 5px;
+			float: right;
+			font-size: 38px;
+			font-weight: 700;
+		}
+		.modal-overlay {
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  background-color: rgba(0, 0, 0, 0.8);
+		  color: lightgreen;
+		  z-index: 10000;
+		  
+		}
+		.modal-box {
+		  position: relative;
+		  background-color: green;
+		  padding: 50px;
+		  border-radius: 6px;
+		  min-width: 300px;
+		  text-align: center;
+		  display: flex;
+		  flex-flow: column nowrap;
+		}
+		#modalYesNo .modal-box {
+		  background-color: rgba(0, 128, 0, 0.8);
+		  min-width: 320px;
+		}
+		.modal-close {
+		  position: absolute;
+		  top: 10px;
+		  right: 10px;
+		  cursor: pointer;
+		  font-size: xx-large;
+		}
+		#modalYesNo .modal-close {
+		  top: 8px;
+		  right: 12px;
+		}
+		.modal-message {
+		  margin: 0 0 20px;
+		}
+		.modal-buttons {
+		  display: flex;
+		  justify-content: center;
+		  gap: 10px;
+		}
+		#modalYesNo .modal-buttons {
+		  gap: 12px;
+		}
+	</style>
+</head>
+<body>
+    <div>
+      <a href="./" style="text-decoration: none;"><h1 id="title">FlowerEvolver-WASM</h1></a>
+    </div>
+    <nav class="top-links">
+      <a href="https://github.com/cristianglezm/FlowerEvolver-WASM" target="_blank" rel="noopener">GitHub</a>
+      <a href="docs/cpp/">C++ Docs</a>
+      <a href="docs/js/">JS/WASM Docs</a>
+      <a href="docs/python/">Python Docs</a>
+    </nav>
+    <script crossorigin src="https://unpkg.com/dexie/dist/dexie.js"></script>
+    <script type="importmap">
+	{
+	  "imports": {
+		"@cristianglezm/flower-evolver-wasm": "./index.js",
+		"three": "https://unpkg.com/three@0.178.0/build/three.module.js",
+		"three/examples/jsm/controls/OrbitControls.js": "https://unpkg.com/three@0.178.0/examples/jsm/controls/OrbitControls.js",
+		"three/examples/jsm/loaders/GLTFLoader.js": "https://unpkg.com/three@0.178.0/examples/jsm/loaders/GLTFLoader.js",
+		"three/examples/jsm/postprocessing/EffectComposer.js": "https://unpkg.com/three@0.178.0/examples/jsm/postprocessing/EffectComposer.js",
+		"three/examples/jsm/postprocessing/RenderPass.js": "https://unpkg.com/three@0.178.0/examples/jsm/postprocessing/RenderPass.js",
+		"three/examples/jsm/postprocessing/UnrealBloomPass.js": "https://unpkg.com/three@0.178.0/examples/jsm/postprocessing/UnrealBloomPass.js"
+	  }
+	}
+    </script>
+    <script type='module'>
+        import { FEService } from '@cristianglezm/flower-evolver-wasm';
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+		import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+		import { RenderPass      } from 'three/examples/jsm/postprocessing/RenderPass.js';
+		import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+
+        // --- species helpers (pure, no DOM/App access) ---
+        const SPECIES_ADJECTIVES = ['Slender', 'Ruffled', 'Spiral', 'Stout', 'Feathered', 'Rounded',
+            'Ragged', 'Delicate', 'Sprawling', 'Compact', 'Pointed', 'Gentle'];
+        const SPECIES_NOUNS = ['Aster', 'Iris', 'Lotus', 'Poppy', 'Orchid', 'Dahlia',
+            'Peony', 'Lily', 'Zinnia', 'Camellia', 'Tulip', 'Daisy'];
+
+        // Classification is by shape, not color, so the names deliberately avoid color words.
+        // Neighbours in a row share a noun and neighbours in a column share an adjective;
+        // grids larger than the word lists get a numeric suffix to stay unique.
+        function speciesName(x, y, gridWidth) {
+            const a = SPECIES_ADJECTIVES.length, n = SPECIES_NOUNS.length;
+            const block = Math.floor(x / a) + Math.floor(y / n) * Math.ceil(gridWidth / a);
+            const name = `${SPECIES_ADJECTIVES[x % a]} ${SPECIES_NOUNS[y % n]}`;
+            return block === 0 ? name : `${name} ${block + 1}`;
+        }
+
+        // Sub-species of a species are letters (a, b, ...), then numbers past z.
+        function subLabel(index) {
+            return index < 26 ? String.fromCharCode(97 + index) : String(index + 1);
+        }
+        // A sub-species map needs about this many flowers per cell to say anything.
+        const MIN_FLOWERS_PER_SUBCELL = 3;
+
+        function fingerprint(text) {
+            let h = 0x811c9dc5;
+            for (let i = 0; i < text.length; i++) {
+                h ^= text.charCodeAt(i);
+                h = Math.imul(h, 0x01000193);
+            }
+            return (h >>> 0).toString(16);
+        }
+
+        // A species row: the cell of a flower and how far it is from that species' prototype
+        // (match is what FEService returns, or null for a flower that cannot be classified).
+        function speciesRow(id, match, fp) {
+            return { id, x: match ? match.x : null, y: match ? match.y : null, d: match ? match.distance : null, fp };
+        }
+
+        // The distance has no scale of its own, so a flower is atypical when it is farther from its
+        // species than the mean plus 2 standard deviations of the distances of all the flowers. Fewer
+        // flowers than this say nothing about what is usual.
+        const MIN_FLOWERS_FOR_ATYPICAL = 20;
+        function atypicalStats(distances) {
+            const n = distances.length;
+            if (n < MIN_FLOWERS_FOR_ATYPICAL) return null;
+            const mean = distances.reduce((a, b) => a + b, 0) / n;
+            const std = Math.sqrt(distances.reduce((a, d) => a + (d - mean) * (d - mean), 0) / n);
+            return { n, mean, std, above: mean + 2 * std };
+        }
+
+        // EvoAI serializes the SOM's size fields as strings, hence Number().
+        function parseSom(json) {
+            const d = JSON.parse(json);
+            const som = {
+                w: Number(d.som.width),
+                h: Number(d.som.height),
+                dim: Number(d.som.inputDim),
+                n: Number(d.input.imageWidth),
+                toroidal: d.som.toroidal === true,
+                weights: d.som.weights,
+            };
+            if (!(som.w > 0 && som.h > 0) || som.n * som.n > som.dim || som.weights.length !== som.w * som.h * som.dim) {
+                throw new Error('unexpected classifier layout');
+            }
+            return som;
+        }
+
+        // Node layout is (y * width + x) * inputDim; the first n*n values are the
+        // silhouette, row-major, each an alpha in [0, 1].
+        function prototypeOf(som, x, y) {
+            const start = (y * som.w + x) * som.dim;
+            return som.weights.slice(start, start + som.n * som.n);
+        }
+
+        function drawPrototype(canvas, alpha) {
+            const ctx = canvas.getContext('2d');
+            const img = ctx.createImageData(canvas.width, canvas.height);
+            alpha.forEach((a, i) => {
+                img.data[i * 4] = 144;
+                img.data[i * 4 + 1] = 238;
+                img.data[i * 4 + 2] = 144;
+                img.data[i * 4 + 3] = Math.round(Math.min(1, Math.max(0, a)) * 255);
+            });
+            ctx.putImageData(img, 0, 0);
+        }
+        // --- end species helpers ---
+
+        // --- species worker ---
+        // The SOM work (extract, classify, evaluate, fine-tune) runs in a worker with its own wasm
+        // instance, so a slow call never blocks the page. makeSomHandlers() is the single copy of what
+        // the worker does: its source is pasted into the worker, and the main thread runs it directly if
+        // the worker cannot start. Every classification result carries the fingerprint of the classifier
+        // that produced it, because the classifier may be replaced while a job waits in the queue.
+        function makeSomHandlers(service, fingerprint) {
+            let fp = null;
+            const currentFp = () => (fp ??= fingerprint(service.getSOM() || service.getTrainedSOM()));
+            return {
+                classify: async (...a) => ({ match: await service.classify(...a), fp: currentFp() }),
+                classifyBatch: async (...a) => ({ matches: await service.classifyBatch(...a), fp: currentFp() }),
+                classifyFeatures: async (...a) => ({ matches: await service.classifyFeatures(...a), fp: currentFp() }),
+                extractFeatures: (...a) => service.extractFeatures(...a),
+                evaluateFeatures: (...a) => service.evaluateFeatures(...a),
+                fineTuneFeatures: async (...a) => { await service.fineTuneFeatures(...a); fp = null; },
+                getSOM: async () => service.getSOM(),
+                loadSOM: async (json) => { service.loadSOM(json); fp = null; }
+            };
+        }
+        const SOM_METHODS = ['classify', 'classifyBatch', 'classifyFeatures', 'extractFeatures',
+            'evaluateFeatures', 'fineTuneFeatures', 'getSOM', 'loadSOM'];
+
+        // Import maps do not apply inside a worker, so the library is imported by its absolute URL.
+        function somWorkerSource() {
+            const library = new URL('./index.js', document.baseURI).href;
+            return `import { FEService } from ${JSON.stringify(library)};
+${fingerprint}
+${makeSomHandlers}
+const service = new FEService();
+const handlers = makeSomHandlers(service, fingerprint);
+service.init().then(
+    () => self.postMessage({ ready: true }),
+    (e) => self.postMessage({ ready: false, error: String((e && e.message) || e) }));
+self.onmessage = async ({ data: { id, method, args } }) => {
+    try {
+        self.postMessage({ id, result: await handlers[method](...args) });
+    } catch (e) {
+        self.postMessage({ id, error: String((e && e.message) || e) });
+    }
+};
+`;
+        }
+
+        class WorkerBackend {
+            #worker; #nextId = 1; #pending = new Map();
+
+            static start() {
+                return new Promise((resolve, reject) => {
+                    const url = URL.createObjectURL(new Blob([somWorkerSource()], { type: 'text/javascript' }));
+                    const worker = new Worker(url, { type: 'module' });
+                    const backend = new WorkerBackend(worker);
+                    let started = false;
+                    const fail = (message) => { worker.terminate(); URL.revokeObjectURL(url); reject(new Error(message)); };
+                    worker.onerror = (e) => {
+                        if (!started) return fail(e.message || 'the worker failed to load');
+                        backend.#failAll('the worker stopped');
+                    };
+                    worker.onmessage = ({ data }) => {
+                        if ('ready' in data) {
+                            if (!data.ready) return fail(data.error);
+                            started = true;
+                            URL.revokeObjectURL(url);
+                            return resolve(backend);
+                        }
+                        const job = backend.#pending.get(data.id);
+                        backend.#pending.delete(data.id);
+                        if (job) data.error === undefined ? job.resolve(data.result) : job.reject(new Error(data.error));
+                    };
+                });
+            }
+
+            constructor(worker) { this.#worker = worker; }
+
+            #failAll(message) {
+                this.#pending.forEach(job => job.reject(new Error(message)));
+                this.#pending.clear();
+            }
+
+            call(method, args) {
+                return new Promise((resolve, reject) => {
+                    const id = this.#nextId++;
+                    this.#pending.set(id, { resolve, reject });
+                    this.#worker.postMessage({ id, method, args });
+                });
+            }
+        }
+
+        // The same calls on the main thread, for when a worker cannot be started.
+        class DirectBackend {
+            #handlers;
+            constructor(service) { this.#handlers = makeSomHandlers(service, fingerprint); }
+            call(method, args) { return this.#handlers[method](...args); }
+        }
+
+        // Jobs run one after another, in the order they were queued. A session is a job that keeps
+        // the queue for itself until it ends (the fine-tuning): inside it use the object it is given,
+        // never the client, or the call would wait for the session it is part of.
+        class SomClient {
+            #backend = null; #tail = Promise.resolve(); #service;
+
+            constructor(service) {
+                this.#service = service;
+                SOM_METHODS.forEach(method => { this[method] = (...args) => this.#enqueue(() => this.#backend.call(method, args)); });
+            }
+
+            async start() {
+                try {
+                    if (typeof Worker === 'undefined') throw new Error('Worker is not available');
+                    this.#backend = await WorkerBackend.start();
+                } catch (e) {
+                    console.warn('Species worker unavailable, classifying on the main thread:', e);
+                    this.#backend = new DirectBackend(this.#service);
+                }
+            }
+
+            #enqueue(job) {
+                const run = this.#tail.then(job);
+                this.#tail = run.catch(() => {});
+                return run;
+            }
+
+            session(body) {
+                return this.#enqueue(() => body(Object.fromEntries(SOM_METHODS.map(method => [method, (...args) => this.#backend.call(method, args)]))));
+            }
+        }
+
+        const feService = new FEService();
+        const somRunner = new SomClient(feService);
+
+        const App = {
+            db: null,
+            renderers: new Map(),
+            selected: [null, null],
+            selectedIndex: 0,
+            som: null,
+            speciesFp: '',
+            selectedSpecies: null,
+            backfilling: false,
+            pendingSpecies: new Set(),
+            subIndex: new Map(), // `x,y` -> { subfp, w, h } of the sub-species maps made for the current classifier
+            submap: null,        // the sub-species map of the selected species, if it has one
+            selectedSub: null,   // { x, y } of the sub-species the species list is filtered to
+            subBusy: new Set(),
+            parentsRender: 0,    // the newest render of the parents line is the one that writes it
+            customClassifier: false,
+            tuning: false,
+            qeHistory: [],
+            cancelTuning: false,
+            hideEmpty: false,
+
+            async init() {
+                this.setupDOM();
+                this.disableWasmButtons(true, "Loading WASM...");
+                await Promise.all([feService.init(), somRunner.start()]);
+                this.disableWasmButtons(false);
+                await this.loadSpeciesModel();
+                await this.initDb();
+                await this.restoreTunedClassifier();
+                await this.loadSubmapIndex();
+                this.showAllFlowers();
+            },
+
+            setupDOM() {
+                document.getElementById('btn-make').onclick = () => this.makeFlower();
+                document.getElementById('btn-reproduce').onclick = () => this.reproduceSelected();
+                document.getElementById('btn-show-desc').onclick = () => this.showDescSelected();
+                document.getElementById('btn-clear').onclick = () => this.clearAllFlowers();
+                document.getElementById('tab-flowers').onclick = () => this.showAllFlowers();
+                document.getElementById('tab-species').onclick = () => this.showSpecies();
+                document.getElementById('btn-finetune').onclick = () => this.fineTuneClassifier();
+                document.getElementById('btn-open-finetune').onclick = () => document.getElementById('finetune').showModal();
+                document.getElementById('btn-finetune-close').onclick = () => document.getElementById('finetune').close();
+                document.getElementById('species-hide-empty').onchange = (e) => { this.hideEmpty = e.target.checked; this.showSpecies(); };
+                document.getElementById('btn-reset-classifier').onclick = () => this.resetClassifier();
+                document.getElementById('btn-species-parent').onclick = () => this.useSpeciesAsParent();
+                document.getElementById('btn-species-reproduce').onclick = () => this.reproduceSelected();
+                document.getElementById('btn-species-split').onclick = () => this.openSplit();
+                document.getElementById('btn-species-unsplit').onclick = () => this.unsplitSpecies();
+                document.getElementById('btn-split').onclick = () => this.splitSpecies();
+                document.getElementById('btn-split-cancel').onclick = () => { this.cancelTuning = true; };
+                document.getElementById('btn-split-close').onclick = () => document.getElementById('split').close();
+                document.getElementById('btn-finetune-cancel').onclick = () => { this.cancelTuning = true; };
+            },
+
+            disableWasmButtons(disabled, text = "Make Flower") {
+                document.getElementById('btn-make').disabled = disabled;
+                document.getElementById('btn-make').textContent = text;
+                document.getElementById('btn-reproduce').disabled = disabled;
+                document.querySelectorAll('.wasm-dependent').forEach(btn => btn.disabled = disabled);
+            },
+
+            async initDb() {
+                this.db = new Dexie("Flowers");
+                this.db.version(1).stores({
+                    flowers: '++id',
+                    mutations:'id, original',
+                    descendants: 'id, father, mother, [father+mother]'
+                });
+                // the fine-tuned classifier JSON, one record with id 'tuned'
+                this.db.version(2).stores({
+                    flowers: '++id',
+                    mutations:'id, original',
+                    descendants: 'id, father, mother, [father+mother]',
+                    classifier: 'id'
+                });
+                // species of each flower, one row per flower (id = the flower's id), indexed by classifier
+                // fingerprint and by cell
+                this.db.version(3).stores({
+                    flowers: '++id',
+                    mutations:'id, original',
+                    descendants: 'id, father, mother, [father+mother]',
+                    classifier: 'id',
+                    species: 'id, fp, [x+y]'
+                }).upgrade(async tx => {
+                    const rows = [];
+                    await tx.table('flowers').toCollection().modify(f => {
+                        if (f.species) rows.push({ id: f.id, x: f.species.x, y: f.species.y, fp: f.species.fp });
+                        delete f.species;
+                        delete f.features; // left by an earlier build that stored feature vectors
+                    });
+                    if (rows.length) await tx.table('species').bulkPut(rows);
+                });
+                await this.db.open();
+            },
+
+            // A flower record is just genome and image; its species lives in its own table.
+            saveFlower(flower) {
+                return this.db.flowers.add({ genome: flower.genome, image: flower.image });
+            },
+
+            // The flower is already saved and on screen. Its species is worked out by the worker when its
+            // turn in the queue comes, and the card gets its badge then. Never throws: a classification
+            // problem must not stop a flower from being created.
+            classifyLater(id, genome) {
+                if (!this.som) return;
+                this.pendingSpecies.add(id);
+                somRunner.classify(genome).then(async ({ match, fp }) => {
+                    if (!await this.db.flowers.where(':id').equals(id).count()) return; // deleted while it waited
+                    const species = speciesRow(id, match, fp);
+                    await this.db.species.put(species);
+                    UI.setSpeciesBadge(id, species);
+                    this.scheduleAtypicalRefresh();
+                    if (match && this.subIndex.has(`${match.x},${match.y}`)) await this.ensureSub(species);
+                    if (this.isSpeciesVisible()) this.showSpecies();
+                }).catch(e => console.warn('classify failed:', e)).finally(() => this.pendingSpecies.delete(id));
+            },
+
+            async loadFlower(id) {
+                const flower = await this.db.flowers.get(id);
+                return flower && (await this.withSpecies([flower]))[0];
+            },
+
+            // Adds the species to flower objects in memory only, for the badge on their card.
+            async withSpecies(flowers) {
+                const rows = await this.db.species.bulkGet(flowers.map(f => f.id));
+                flowers.forEach((f, i) => { if (rows[i]) f.species = rows[i]; });
+                return flowers;
+            },
+
+            async makeFlower() {
+                try {
+                    const flower = await feService.makeFlower();
+                    const id = await this.saveFlower(flower);
+                    const newFlower = await this.loadFlower(id);
+                    UI.addFlowerToGrid('flowers', newFlower);
+                    this.classifyLater(id, flower.genome);
+                    if (this.isSpeciesVisible()) this.showSpecies();
+                } catch(e) { UI.createModal(e.message || e); }
+            },
+
+            async reproduceSelected() {
+                if(!this.selected[0] || !this.selected[1]) return UI.createModal("Please select two flowers to reproduce.");
+                const f1 = await this.db.flowers.get(this.selected[0]);
+                const f2 = await this.db.flowers.get(this.selected[1]);
+                if (!f1 || !f2) return UI.createModal("One of the selected flowers no longer exists, please select it again.");
+                try {
+                    const flower = await feService.reproduce(f1.genome, f2.genome);
+                    const id = await this.saveFlower(flower);
+                    await this.db.descendants.add({ id, father: f1.id, mother: f2.id });
+                    const newFlower = await this.loadFlower(id);
+                    UI.addFlowerToGrid('flowers', newFlower);
+                    this.classifyLater(id, flower.genome);
+                    if (this.isSpeciesVisible()) this.showSpecies();
+                } catch(e) { UI.createModal(e.message || e); }
+            },
+
+            async mutateFlower(originalFlower) {
+                 try {
+                    const flower = await feService.mutate(originalFlower.genome);
+                    const id = await this.saveFlower(flower);
+                    await this.db.mutations.add({ id, original: originalFlower.id });
+                    const newFlower = await this.loadFlower(id);
+                    this.classifyLater(id, flower.genome);
+                    if (this.isSpeciesVisible()) return this.showSpecies();
+                    UI.addFlowerToGrid(UI.getActiveGridId(), newFlower);
+                } catch(e) { UI.createModal(e.message || e); }
+            },
+
+            // `run` is the session when called from inside one, see SomClient.
+            async loadSpeciesModel(run = somRunner) {
+                try {
+                    const custom = await run.getSOM();
+                    const json = custom || feService.getTrainedSOM();
+                    this.som = parseSom(json);
+                    this.speciesFp = fingerprint(json);
+                    await this.loadSubmapIndex();
+                    this.customClassifier = Boolean(custom);
+                    this.scheduleAtypicalRefresh();
+                } catch (e) {
+                    console.warn('Species classifier unavailable:', e);
+                    this.som = null;
+                }
+            },
+
+            // A classifier fine-tuned in an earlier visit. A record that no longer parses is dropped.
+            async restoreTunedClassifier() {
+                try {
+                    const record = await this.db.classifier.get('tuned');
+                    if (!record) return;
+                    parseSom(record.json);
+                    await somRunner.loadSOM(record.json);
+                    await this.loadSpeciesModel();
+                } catch (e) {
+                    console.warn('Ignoring the saved fine-tuned classifier:', e);
+                    await this.db.classifier.delete('tuned').catch(() => {});
+                }
+            },
+
+            setTuning(busy) {
+                this.tuning = busy;
+                this.cancelTuning = false;
+                ['btn-finetune', 'btn-reset-classifier', 'btn-split', 'btn-species-split', 'btn-species-unsplit'].forEach(id => document.getElementById(id).disabled = busy);
+                document.getElementById('btn-finetune-cancel').hidden = !busy;
+                document.getElementById('btn-split-cancel').hidden = !busy;
+                if (!busy) {
+                    document.getElementById('finetune-progress').hidden = true;
+                    document.getElementById('split-progress').hidden = true;
+                }
+            },
+
+            showProgress(done, total, id = 'finetune-progress') {
+                const bar = document.getElementById(id);
+                bar.hidden = false;
+                bar.max = Math.max(1, total);
+                bar.value = done;
+            },
+
+            // One point per epoch, the first one is the classifier before fine-tuning.
+            drawQeChart(values, id = 'finetune-qe-chart', firstLabel = 'before') {
+                const svg = document.getElementById(id);
+                const ns = 'http://www.w3.org/2000/svg';
+                svg.replaceChildren();
+                const add = (tag, attrs, text) => {
+                    const el = document.createElementNS(ns, tag);
+                    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+                    if (text !== undefined) el.textContent = text;
+                    svg.appendChild(el);
+                    return el;
+                };
+                const left = 44, right = 12, top = 12, bottom = 26, w = 320, h = 150;
+                let lo = Math.min(...values), hi = Math.max(...values);
+                if (hi - lo < 1e-9) { lo -= 0.5; hi += 0.5; }
+                const pad = (hi - lo) * 0.1;
+                lo -= pad; hi += pad;
+                const x = i => left + (values.length === 1 ? 0 : i * (w - left - right) / (values.length - 1));
+                const y = v => top + (hi - v) * (h - top - bottom) / (hi - lo);
+                const ink = '#90ee90';
+                add('line', { x1: left, y1: top, x2: left, y2: h - bottom, stroke: '#456' });
+                add('line', { x1: left, y1: h - bottom, x2: w - right, y2: h - bottom, stroke: '#456' });
+                add('text', { x: left - 4, y: y(hi - pad) + 4, 'text-anchor': 'end', fill: ink, 'font-size': 10 }, (hi - pad).toFixed(2));
+                add('text', { x: left - 4, y: y(lo + pad) + 4, 'text-anchor': 'end', fill: ink, 'font-size': 10 }, (lo + pad).toFixed(2));
+                const every = Math.ceil(values.length / 8); // a long run would print the labels on top of each other
+                values.forEach((_, i) => {
+                    if (i % every === 0 || i === values.length - 1) add('text', { x: x(i), y: h - 8, 'text-anchor': 'middle', fill: ink, 'font-size': 10 }, i === 0 ? firstLabel : String(i));
+                });
+                add('polyline', { points: values.map((v, i) => `${x(i)},${y(v)}`).join(' '), fill: 'none', stroke: ink, 'stroke-width': 2 });
+                values.forEach((v, i) => add('circle', { cx: x(i), cy: y(v), r: values.length > 30 ? 2 : 3.5, fill: ink }, undefined));
+            },
+
+            // Flowers per species as a small heat map, nodeCounts is row-major like the classifier.
+            drawOccupancy(id, evaluation, { w: width, h: height } = this.som, size = 14) {
+                const box = document.getElementById(id);
+                const max = Math.max(1, ...evaluation.nodeCounts);
+                box.style.setProperty('--cell', `${size}px`);
+                box.style.gridTemplateColumns = `repeat(${width}, ${size}px)`;
+                box.replaceChildren(...evaluation.nodeCounts.slice(0, width * height).map((count, i) => {
+                    const cell = document.createElement('i');
+                    cell.style.background = count ? `rgb(${Math.round(40 + 160 * count / max)}, ${Math.round(80 + 170 * count / max)}, ${Math.round(40 + 60 * count / max)})` : '#0b0b0b';
+                    cell.title = `${count} flower${count === 1 ? '' : 's'} at ${i % width}, ${Math.floor(i / width)}`;
+                    return cell;
+                }));
+            },
+
+            // Feature vectors of every flower, in memory for this run only: the wasm calls are stateless and
+            // rendering is the slow part, so the vectors are what lets every epoch be its own call.
+            // Flowers are read from IndexedDB in small batches so the stored images never all sit in memory.
+            // `only`: the ids to extract, instead of every flower.
+            async collectFeatures(run, onProgress, only = null) {
+                const ids = only ?? await this.db.flowers.toCollection().primaryKeys();
+                const items = [];
+                const batchSize = 25;
+                for (let i = 0; i < ids.length; i += batchSize) {
+                    if (this.cancelTuning) return null;
+                    onProgress(i, ids.length);
+                    await new Promise(r => setTimeout(r));
+                    const rows = (await this.db.flowers.bulkGet(ids.slice(i, i + batchSize))).filter(Boolean);
+                    const extracted = await run.extractFeatures(this.genomeBatch(rows.map(row => row.genome)));
+                    rows.forEach((row, k) => items.push({ id: row.id, features: extracted[k] }));
+                }
+                return items;
+            },
+
+            async fineTuneClassifier() {
+                if (this.tuning) return;
+                const status = document.getElementById('finetune-status');
+                const charts = document.getElementById('finetune-charts');
+                const epochs = Number(document.getElementById('finetune-epochs').value);
+                const lr = Number(document.getElementById('finetune-lr').value);
+                const radius = Number(document.getElementById('finetune-radius').value);
+                if (!Number.isInteger(epochs) || epochs < 1 || !(lr > 0) || !(radius > 0)) {
+                    status.textContent = 'Epochs must be a whole number of at least 1; learning rate and radius must be above 0.';
+                    return;
+                }
+                if (this.backfilling) {
+                    status.textContent = 'Your flowers are still being classified, try again in a moment.';
+                    return;
+                }
+                this.setTuning(true);
+                charts.hidden = true;
+                // waits for the classifications already queued; the new ones wait for the end of the session
+                status.textContent = 'Waiting for the flowers being classified...';
+                await somRunner.session(async run => {
+                    let previous; // the classifier to go back to on Cancel, '' is the built-in one
+                    try {
+                        previous = await run.getSOM();
+                        const items = await this.collectFeatures(run, (done, total) => {
+                            status.textContent = `Preparing your flowers... ${done}/${total}`;
+                            this.showProgress(done, total);
+                        });
+                        if (items === null) {
+                            status.textContent = 'Cancelled.';
+                            return;
+                        }
+                        const features = items.map(item => item.features).filter(Boolean);
+                        if (!features.length) {
+                            status.textContent = items.length ? 'None of your flowers can be classified.' : 'Make some flowers first, there is nothing to fine-tune on.';
+                            return;
+                        }
+                        const f = n => n.toFixed(3);
+                        const before = await run.evaluateFeatures(features);
+                        let latest = before;
+                        this.qeHistory = [before.meanQuantizationError];
+                        charts.hidden = false;
+                        this.drawQeChart(this.qeHistory);
+                        this.drawOccupancy('finetune-occ-before', before);
+                        this.drawOccupancy('finetune-occ-now', before);
+                        for (let done = 0; done < epochs; done++) {
+                            if (this.cancelTuning) {
+                                await run.loadSOM(previous);
+                                charts.hidden = true;
+                                status.textContent = 'Cancelled, the classifier is unchanged.';
+                                return;
+                            }
+                            status.textContent = `Epoch ${done + 1}/${epochs} on ${features.length} flower${features.length === 1 ? '' : 's'}...`;
+                            this.showProgress(done, epochs);
+                            await new Promise(r => setTimeout(r)); // let the progress paint before the next call
+                            await run.fineTuneFeatures(features, 1, lr, radius, done, epochs);
+                            latest = await run.evaluateFeatures(features);
+                            this.qeHistory.push(latest.meanQuantizationError);
+                            this.drawQeChart(this.qeHistory);
+                            this.drawOccupancy('finetune-occ-now', latest);
+                            status.textContent = `Epoch ${done + 1}/${epochs}: distance to the species prototype ${f(latest.meanQuantizationError)}, ` +
+                                `species in use ${latest.usedNodes}/${latest.totalNodes}.`;
+                            this.showProgress(done + 1, epochs);
+                            await new Promise(r => setTimeout(r));
+                        }
+                        await this.db.classifier.put({ id: 'tuned', json: await run.getSOM() });
+                        await this.loadSpeciesModel(run);
+                        // the flowers were just extracted, so classify them from those vectors: no rendering
+                        const { matches, fp } = await run.classifyFeatures(items.map(item => item.features));
+                        const alive = new Set(await this.db.flowers.toCollection().primaryKeys()); // one may have been deleted meanwhile
+                        await this.db.species.bulkPut(items.map((item, k) => speciesRow(item.id, matches[k], fp))
+                            .filter(row => alive.has(row.id)));
+                        status.textContent = `Done. Mean distance to the species prototype ${f(before.meanQuantizationError)} -> ${f(latest.meanQuantizationError)}; ` +
+                            `species in use ${before.usedNodes} -> ${latest.usedNodes} of ${latest.totalNodes}; ` +
+                            `most crowded species ${before.busiestNodeCount} -> ${latest.busiestNodeCount} flowers.`;
+                        await this.showSpecies(null);
+                    } catch (e) {
+                        if (previous !== undefined) await run.loadSOM(previous);
+                        charts.hidden = true;
+                        status.textContent = `Fine-tuning failed: ${e.message || e}`;
+                    } finally {
+                        this.setTuning(false);
+                    }
+                }).catch(e => { status.textContent = `Fine-tuning failed: ${e.message || e}`; });
+            },
+
+            // Not inside the fine-tune dialog: a showModal() dialog sits in the top layer, above any
+            // z-index, so this confirmation would be hidden behind it.
+            resetClassifier() {
+                if (this.tuning) return;
+                UI.createModalYesNo('Go back to the built-in classifier? The fine-tuning is lost and the flowers are classified again.', async () => {
+                    const status = document.getElementById('species-status');
+                    this.setTuning(true);
+                    try {
+                        await somRunner.loadSOM('');
+                        await this.db.classifier.delete('tuned');
+                        await this.loadSpeciesModel();
+                        document.getElementById('finetune-charts').hidden = true;
+                    } catch (e) {
+                        status.textContent = `Reset failed: ${e.message || e}`;
+                        return;
+                    } finally {
+                        this.setTuning(false);
+                    }
+                    // after setTuning(false): the backfill that classifies the flowers again waits while tuning
+                    await this.showSpecies(null);
+                    status.textContent = 'Using the built-in classifier.';
+                });
+            },
+
+            genomeBatch(genomes) {
+                return `{"Generation":[${genomes.map(g => JSON.stringify(JSON.parse(g).Flower)).join(',')}]}`;
+            },
+
+            // Only meaningful for the classifier that produced it, hence the fingerprint check.
+            speciesOf(flower) {
+                const s = flower.species;
+                return s && s.fp === this.speciesFp && s.x !== null ? s : null;
+            },
+
+            nameOf(cell) {
+                return speciesName(cell.x, cell.y, this.som.w);
+            },
+
+            // Statistics of the distances of the flowers of the current classifier, see atypicalStats().
+            atypical: null,
+            isAtypical(row) {
+                return Boolean(this.atypical) && Number.isFinite(row.d) && row.d > this.atypical.above;
+            },
+            updateAtypical(rows) {
+                this.atypical = atypicalStats(rows.filter(r => r.fp === this.speciesFp && Number.isFinite(r.d)).map(r => r.d));
+            },
+            // Reads the species rows after the classifications of the last moment (one flower after the
+            // other can arrive in a burst) and marks the cards that are on the page.
+            scheduleAtypicalRefresh() {
+                clearTimeout(this.atypicalTimer);
+                this.atypicalTimer = setTimeout(async () => {
+                    this.updateAtypical(await this.db.species.toArray());
+                    const ids = [...new Set([...document.querySelectorAll('.flower[data-flower-id]')].map(card => Number(card.dataset.flowerId)))];
+                    (await this.db.species.bulkGet(ids)).forEach((row, i) => { if (row) UI.setSpeciesBadge(ids[i], row); });
+                }, 300);
+            },
+
+            isSpeciesVisible() {
+                return document.getElementById('species').style.display !== 'none';
+            },
+
+            async showSpecies(cell = this.selectedSpecies) {
+                UI.switchTab('species');
+                const status = document.getElementById('species-status');
+                document.getElementById('btn-open-finetune').hidden = !this.som;
+                document.getElementById('btn-reset-classifier').hidden = !this.som || !this.customClassifier;
+                if (!this.som) {
+                    status.textContent = 'No species classifier is available in this build.';
+                    return;
+                }
+                const previous = this.selectedSpecies;
+                if (!previous || !cell || previous.x !== cell.x || previous.y !== cell.y) this.selectedSub = null;
+                this.selectedSpecies = cell;
+                await this.classifyStale(status);
+                this.submap = cell ? await this.loadSubmap(cell) : null;
+                if (this.submap) await this.ensureSub(cell);
+                if (this.selectedSub && !(this.submap && this.selectedSub.x < this.submap.w && this.selectedSub.y < this.submap.h)) this.selectedSub = null;
+                // only the small species rows are read here; a flower (with its image) is
+                // loaded when its card is shown
+                const rows = await this.db.species.toArray();
+                this.updateAtypical(rows);
+                this.renderSpeciesSummary(rows, await this.db.flowers.count());
+                this.renderSpeciesMap(rows);
+                this.renderSpeciesDetail(rows);
+                await this.renderSpeciesFlowers();
+            },
+
+            // Flowers without a species row (saved before species existed) or with one from a
+            // different classifier. They are classified from their genome, 25 per wasm call.
+            async classifyStale(status) {
+                if (this.backfilling || this.tuning) return;
+                const ids = await this.db.flowers.toCollection().primaryKeys();
+                // rows written before the distance was stored have no d: classified again to get it
+                const current = new Set((await this.db.species.toArray()).filter(r => r.fp === this.speciesFp && r.d !== undefined).map(r => r.id));
+                const stale = ids.filter(id => !current.has(id) && !this.pendingSpecies.has(id));
+                if (!stale.length) return;
+                this.backfilling = true;
+                try {
+                    const batchSize = 25;
+                    for (let i = 0; i < stale.length; i += batchSize) {
+                        status.textContent = `Classifying flowers... ${i}/${stale.length}`;
+                        await new Promise(r => setTimeout(r));
+                        const flowers = (await this.db.flowers.bulkGet(stale.slice(i, i + batchSize))).filter(Boolean);
+                        let result;
+                        try {
+                            result = await somRunner.classifyBatch(this.genomeBatch(flowers.map(f => f.genome)));
+                        } catch (e) {
+                            console.warn('classify failed:', e); // retried on the next visit
+                            continue;
+                        }
+                        const { matches, fp } = result;
+                        await this.db.species.bulkPut(flowers.map((f, k) => speciesRow(f.id, matches[k], fp)));
+                    }
+                } finally {
+                    this.backfilling = false;
+                    status.textContent = '';
+                }
+            },
+
+            // How many flowers are in each cell, from the species rows of the current classifier.
+            speciesCounts(rows) {
+                const counts = new Map();
+                rows.forEach(r => {
+                    if (r.fp === this.speciesFp && r.x !== null) counts.set(`${r.x},${r.y}`, (counts.get(`${r.x},${r.y}`) || 0) + 1);
+                });
+                return counts;
+            },
+
+            renderSpeciesSummary(rows, flowerCount) {
+                const som = this.som;
+                const counts = this.speciesCounts(rows);
+                const classified = [...counts.values()].reduce((a, b) => a + b, 0);
+                let text = `${flowerCount} flower${flowerCount === 1 ? '' : 's'}`;
+                if (classified) {
+                    const [key, top] = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
+                    const [bx, by] = key.split(',').map(Number);
+                    text += `, ${counts.size} of ${som.w * som.h} species in use, most crowded: ${speciesName(bx, by, som.w)} (${top})`;
+                    const atypical = this.atypical && rows.filter(r => r.fp === this.speciesFp && this.isAtypical(r)).length;
+                    if (atypical) text += `, ${atypical} atypical (farther from their species than ${this.atypical.above.toFixed(2)})`;
+                }
+                document.getElementById('species-summary').textContent = text;
+            },
+
+            renderSpeciesMap(rows) {
+                const som = this.som;
+                const map = document.getElementById('species-map');
+                const counts = this.speciesCounts(rows);
+                const max = Math.max(1, ...counts.values());
+                document.getElementById('species-caption').textContent = som.toroidal && !this.hideEmpty
+                    ? 'Edges wrap around: the left edge touches the right, and the top touches the bottom.' : '';
+                map.innerHTML = '';
+                // hiding the empty ones gives up the 2D layout, so the cards just pack
+                map.style.display = 'grid';
+                map.style.gap = '8px';
+                map.style.gridTemplateColumns = this.hideEmpty
+                    ? 'repeat(auto-fill, minmax(90px, 1fr))' : `repeat(${som.w}, minmax(90px, 1fr))`;
+                const sel = this.selectedSpecies;
+                for (let y = 0; y < som.h; y++) {
+                    for (let x = 0; x < som.w; x++) {
+                        const count = counts.get(`${x},${y}`) || 0;
+                        const isSelected = sel && sel.x === x && sel.y === y;
+                        if (this.hideEmpty && !count && !isSelected) continue;
+                        const name = speciesName(x, y, som.w);
+                        const card = document.createElement('div');
+                        card.className = 'species-card' + (count ? '' : ' empty');
+                        if (isSelected) card.classList.add('selected');
+                        if (count) card.style.background = `hsl(135, 35%, ${16 + Math.round(22 * count / max)}%)`;
+                        card.title = `${name} (${x}, ${y})`;
+                        card.dataset.x = x;
+                        card.dataset.y = y;
+                        const canvas = document.createElement('canvas');
+                        canvas.width = canvas.height = som.n;
+                        drawPrototype(canvas, prototypeOf(som, x, y));
+                        const nameEl = document.createElement('div');
+                        nameEl.className = 'species-name';
+                        nameEl.textContent = name;
+                        const countEl = document.createElement('div');
+                        countEl.className = 'species-count';
+                        countEl.textContent = count;
+                        card.append(canvas, nameEl, countEl);
+                        card.onclick = () => this.showSpecies({ x, y });
+                        map.appendChild(card);
+                    }
+                }
+            },
+
+            // The selected species, large, with the species whose prototypes are closest to it.
+            renderSpeciesDetail(rows) {
+                const som = this.som;
+                const box = document.getElementById('species-detail');
+                const sel = this.selectedSpecies;
+                if (!sel) {
+                    box.hidden = true;
+                    return;
+                }
+                const counts = this.speciesCounts(rows);
+                const count = counts.get(`${sel.x},${sel.y}`) || 0;
+                const classified = [...counts.values()].reduce((a, b) => a + b, 0);
+                const canvas = document.getElementById('species-detail-canvas');
+                canvas.width = canvas.height = som.n;
+                drawPrototype(canvas, prototypeOf(som, sel.x, sel.y));
+                document.getElementById('species-detail-name').textContent = speciesName(sel.x, sel.y, som.w);
+                document.getElementById('species-detail-meta').textContent =
+                    `Cell ${sel.x}, ${sel.y} - ${count} flower${count === 1 ? '' : 's'}` + (classified ? ` (${Math.round(100 * count / classified)}% of yours)` : '');
+                const weights = (x, y) => som.weights.slice((y * som.w + x) * som.dim, (y * som.w + x + 1) * som.dim);
+                const mine = weights(sel.x, sel.y);
+                const others = [];
+                for (let y = 0; y < som.h; y++) {
+                    for (let x = 0; x < som.w; x++) {
+                        if (x === sel.x && y === sel.y) continue;
+                        const w = weights(x, y);
+                        let d = 0;
+                        for (let k = 0; k < mine.length; k++) d += (mine[k] - w[k]) ** 2;
+                        others.push({ x, y, d: Math.sqrt(d) });
+                    }
+                }
+                others.sort((a, b) => a.d - b.d);
+                const list = document.getElementById('species-neighbours');
+                list.replaceChildren(...others.slice(0, 4).map(o => {
+                    const button = document.createElement('button');
+                    button.textContent = `${speciesName(o.x, o.y, som.w)} (${counts.get(`${o.x},${o.y}`) || 0})`;
+                    button.title = `distance ${o.d.toFixed(2)}`;
+                    button.onclick = () => this.showSpecies({ x: o.x, y: o.y });
+                    return button;
+                }));
+                document.getElementById('btn-species-parent').disabled = count === 0;
+                this.renderSubspecies(rows, count);
+                this.renderSpeciesParents().catch(e => console.warn('parents:', e));
+                box.hidden = false;
+            },
+
+            // --- sub-species ---
+            // A species can be split in a small second map trained on its own flowers. The maps live in the
+            // `classifier` table next to the tuned classifier, one record per species and main classifier
+            // (the id holds the main classifier's fingerprint, so going back to a classifier brings its
+            // splits back). Nothing here needs the library to know about them: the worker swaps the
+            // classifier it holds for the sub-map while one exclusive job runs, and swaps it back.
+            subId(cell) {
+                return `sub:${this.speciesFp}:${cell.x},${cell.y}`;
+            },
+
+            subLabelOf(row) {
+                const meta = this.subIndex.get(`${row.x},${row.y}`);
+                if (!meta || row.sfp !== meta.subfp || row.sx === undefined || row.sx === null) return '';
+                return ` / ${subLabel(row.sy * meta.w + row.sx)}`;
+            },
+
+            async loadSubmapIndex() {
+                this.subIndex = new Map();
+                if (!this.db) return; // the database is opened after the first model load, init() loads the index again
+                const records = await this.db.classifier.where(':id').startsWith('sub:').toArray();
+                records.filter(r => r.fp === this.speciesFp).forEach(r => this.subIndex.set(`${r.x},${r.y}`, { subfp: r.subfp, w: r.w, h: r.h }));
+            },
+
+            async loadSubmap(cell) {
+                const record = await this.db.classifier.get(this.subId(cell));
+                if (!record) return null;
+                let som = null;
+                try { som = parseSom(record.json); } catch (e) { /* no thumbnails for a layout the page cannot draw */ }
+                return { ...record, som };
+            },
+
+            // Runs `fn` with `json` as the classifier the worker holds, and puts the previous one back.
+            // Only inside a session, so no other job can see the swap.
+            async withClassifier(run, json, fn) {
+                const main = await run.getSOM();
+                await run.loadSOM(json);
+                try {
+                    return await fn();
+                } finally {
+                    await run.loadSOM(main);
+                }
+            },
+
+            renderSubspecies(rows, count) {
+                const sm = this.submap;
+                const splitButton = document.getElementById('btn-species-split');
+                const map = document.getElementById('subspecies-map');
+                splitButton.hidden = Boolean(sm);
+                splitButton.disabled = this.tuning || count < MIN_FLOWERS_PER_SUBCELL * 2;
+                splitButton.title = count < MIN_FLOWERS_PER_SUBCELL * 2 ? `Needs at least ${MIN_FLOWERS_PER_SUBCELL * 2} flowers in this species` : 'Train a second, small map on the flowers of this species';
+                document.getElementById('btn-species-unsplit').hidden = !sm;
+                document.getElementById('subspecies-title').hidden = !sm;
+                map.hidden = !sm;
+                if (!sm) {
+                    map.replaceChildren();
+                    return;
+                }
+                const sel = this.selectedSpecies;
+                const counts = new Map();
+                rows.filter(r => r.x === sel.x && r.y === sel.y && r.sfp === sm.subfp && r.sx !== null && r.sx !== undefined)
+                    .forEach(r => counts.set(`${r.sx},${r.sy}`, (counts.get(`${r.sx},${r.sy}`) || 0) + 1));
+                map.style.setProperty('--cols', sm.w);
+                const cards = [];
+                for (let y = 0; y < sm.h; y++) {
+                    for (let x = 0; x < sm.w; x++) {
+                        const n = counts.get(`${x},${y}`) || 0;
+                        const card = document.createElement('button');
+                        card.className = 'subspecies-card' + (n === 0 ? ' empty' : '') + (this.selectedSub && this.selectedSub.x === x && this.selectedSub.y === y ? ' selected' : '');
+                        if (sm.som) {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = canvas.height = sm.som.n;
+                            drawPrototype(canvas, prototypeOf(sm.som, x, y));
+                            card.appendChild(canvas);
+                        }
+                        card.append(`${this.nameOf(sel)} / ${subLabel(y * sm.w + x)} (${n})`);
+                        card.onclick = () => {
+                            const same = this.selectedSub && this.selectedSub.x === x && this.selectedSub.y === y;
+                            this.selectedSub = same ? null : { x, y };
+                            this.renderSubspecies(rows, count);
+                            this.renderSpeciesFlowers();
+                        };
+                        cards.push(card);
+                    }
+                }
+                map.replaceChildren(...cards);
+            },
+
+            // Gives a sub-species to the flowers of a split species that have none (new ones, or ones
+            // classified again after the main classifier came back). Never throws.
+            async ensureSub(cell) {
+                const key = `${cell.x},${cell.y}`;
+                if (this.subBusy.has(key)) return;
+                this.subBusy.add(key);
+                try {
+                    const submap = await this.loadSubmap(cell);
+                    if (!submap) return;
+                    const missing = await this.db.species.where('[x+y]').equals([cell.x, cell.y])
+                        .filter(r => r.fp === this.speciesFp && r.sfp !== submap.subfp).toArray();
+                    for (let i = 0; i < missing.length; i += 25) {
+                        const rows = missing.slice(i, i + 25);
+                        const flowers = (await this.db.flowers.bulkGet(rows.map(r => r.id))).filter(Boolean);
+                        if (!flowers.length) continue;
+                        const { matches, fp } = await somRunner.session(run => this.withClassifier(run, submap.json,
+                            () => run.classifyBatch(this.genomeBatch(flowers.map(f => f.genome)))));
+                        const written = [];
+                        for (let k = 0; k < flowers.length; k++) {
+                            const row = rows.find(r => r.id === flowers[k].id);
+                            const current = await this.db.species.get(row.id);
+                            // classified again by another classifier in the meantime: leave it to that one
+                            if (!current || current.fp !== row.fp || current.x !== row.x || current.y !== row.y) continue;
+                            const updated = { ...current, sx: matches[k] ? matches[k].x : null, sy: matches[k] ? matches[k].y : null, sfp: fp };
+                            await this.db.species.put(updated);
+                            written.push(updated);
+                        }
+                        written.forEach(row => UI.setSpeciesBadge(row.id, row));
+                    }
+                } catch (e) {
+                    console.warn('sub-species failed:', e);
+                } finally {
+                    this.subBusy.delete(key);
+                }
+            },
+
+            openSplit() {
+                const sel = this.selectedSpecies;
+                if (!sel || !this.som) return;
+                document.getElementById('split-title').textContent = `Split ${this.nameOf(sel)}`;
+                document.getElementById('split-status').textContent = '';
+                document.getElementById('split-charts').hidden = true;
+                document.getElementById('split').showModal();
+            },
+
+            // Prototypes start as flowers of the species themselves, so every cell begins inside the data.
+            initialSubmapJson(mainJson, w, h, vectors) {
+                const d = JSON.parse(mainJson);
+                const order = vectors.map((_, i) => i);
+                for (let i = order.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [order[i], order[j]] = [order[j], order[i]];
+                }
+                const weights = [];
+                for (let k = 0; k < w * h; k++) weights.push(...vectors[order[k % order.length]]);
+                // not toroidal: on a grid this small the wrap would make every cell a neighbour of every other
+                d.som = { ...d.som, width: String(w), height: String(h), inputDim: String(vectors[0].length), toroidal: false, weights };
+                return JSON.stringify(d);
+            },
+
+            async splitSpecies() {
+                if (this.tuning) return;
+                const sel = this.selectedSpecies;
+                if (!sel || !this.som) return;
+                const status = document.getElementById('split-status');
+                const charts = document.getElementById('split-charts');
+                const w = Number(document.getElementById('split-width').value);
+                const h = Number(document.getElementById('split-height').value);
+                const epochs = Number(document.getElementById('split-epochs').value);
+                if (![w, h, epochs].every(Number.isInteger) || w < 1 || h < 1 || w > 6 || h > 6 || epochs < 1 || w * h < 2) {
+                    status.textContent = 'Columns and rows are whole numbers from 1 to 6 (two sub-species at least), epochs a whole number of at least 1.';
+                    return;
+                }
+                if (this.backfilling) {
+                    status.textContent = 'Your flowers are still being classified, try again in a moment.';
+                    return;
+                }
+                const ids = await this.db.species.where('[x+y]').equals([sel.x, sel.y]).filter(r => r.fp === this.speciesFp).primaryKeys();
+                const needed = MIN_FLOWERS_PER_SUBCELL * w * h;
+                const tooFew = n => `This species has ${n} flower${n === 1 ? '' : 's'}; ${w * h} sub-species need at least ${needed}. Use fewer cells or make more flowers.`;
+                if (ids.length < needed) {
+                    status.textContent = tooFew(ids.length);
+                    return;
+                }
+                this.setTuning(true);
+                charts.hidden = true;
+                status.textContent = 'Waiting for the flowers being classified...';
+                let saved = false;
+                await somRunner.session(async run => {
+                    let main;
+                    try {
+                        main = await run.getSOM();
+                        const items = await this.collectFeatures(run, (done, total) => {
+                            status.textContent = `Preparing the flowers... ${done}/${total}`;
+                            this.showProgress(done, total, 'split-progress');
+                        }, ids);
+                        if (items === null) {
+                            status.textContent = 'Cancelled.';
+                            return;
+                        }
+                        const vectors = items.map(item => item.features).filter(Boolean);
+                        if (vectors.length < needed) {
+                            status.textContent = tooFew(vectors.length);
+                            return;
+                        }
+                        await run.loadSOM(this.initialSubmapJson(main || feService.getTrainedSOM(), w, h, vectors));
+                        const radius = Math.max(w, h) / 2;
+                        const grid = { w, h };
+                        const start = await run.evaluateFeatures(vectors);
+                        const curve = [start.meanQuantizationError];
+                        charts.hidden = false;
+                        this.drawQeChart(curve, 'split-qe-chart', 'start');
+                        this.drawOccupancy('split-occ-before', start, grid, 28);
+                        this.drawOccupancy('split-occ-now', start, grid, 28);
+                        for (let done = 0; done < epochs; done++) {
+                            if (this.cancelTuning) {
+                                charts.hidden = true;
+                                status.textContent = 'Cancelled, nothing was changed.';
+                                return;
+                            }
+                            status.textContent = `Epoch ${done + 1}/${epochs} on ${vectors.length} flowers...`;
+                            this.showProgress(done, epochs, 'split-progress');
+                            await new Promise(r => setTimeout(r)); // let the progress paint before the next call
+                            await run.fineTuneFeatures(vectors, 1, 0.5, radius, done, epochs);
+                            const latest = await run.evaluateFeatures(vectors);
+                            curve.push(latest.meanQuantizationError);
+                            this.drawQeChart(curve, 'split-qe-chart', 'start');
+                            this.drawOccupancy('split-occ-now', latest, grid, 28);
+                            status.textContent = `Epoch ${done + 1}/${epochs}: distance to the sub-species prototype ${latest.meanQuantizationError.toFixed(3)}, ` +
+                                `sub-species in use ${latest.usedNodes}/${latest.totalNodes}.`;
+                            this.showProgress(done + 1, epochs, 'split-progress');
+                            await new Promise(r => setTimeout(r));
+                        }
+                        const json = await run.getSOM();
+                        const { matches, fp } = await run.classifyFeatures(items.map(item => item.features));
+                        await this.db.classifier.put({ id: this.subId(sel), fp: this.speciesFp, x: sel.x, y: sel.y, json, subfp: fp, w, h, flowers: vectors.length, at: Date.now() });
+                        for (let k = 0; k < items.length; k++) {
+                            if (!items[k].features) continue;
+                            const row = await this.db.species.get(items[k].id);
+                            // deleted, or classified again, while this ran
+                            if (!row || row.fp !== this.speciesFp || row.x !== sel.x || row.y !== sel.y) continue;
+                            await this.db.species.put({ ...row, sx: matches[k] ? matches[k].x : null, sy: matches[k] ? matches[k].y : null, sfp: fp });
+                        }
+                        saved = true;
+                        status.textContent = `Done: ${this.nameOf(sel)} is now ${w * h} sub-species.`;
+                    } catch (e) {
+                        charts.hidden = true;
+                        status.textContent = `Splitting failed: ${e.message || e}`;
+                    } finally {
+                        if (main !== undefined) await run.loadSOM(main);
+                        this.setTuning(false);
+                    }
+                }).catch(e => { status.textContent = `Splitting failed: ${e.message || e}`; this.setTuning(false); });
+                if (saved) {
+                    await this.loadSubmapIndex();
+                    this.selectedSub = null;
+                    if (this.isSpeciesVisible()) await this.showSpecies(sel);
+                }
+            },
+
+            unsplitSpecies() {
+                const sel = this.selectedSpecies;
+                if (!sel || !this.submap) return;
+                UI.createModalYesNo(`Remove the sub-species of ${this.nameOf(sel)}? Its flowers stay in the species.`, async () => {
+                    await this.db.classifier.delete(this.subId(sel));
+                    await this.db.species.where('[x+y]').equals([sel.x, sel.y]).modify(row => { delete row.sx; delete row.sy; delete row.sfp; });
+                    this.selectedSub = null;
+                    await this.loadSubmapIndex();
+                    await this.showSpecies(sel);
+                });
+            },
+
+            // Picks a random flower of the selected species as the next parent (the two slots alternate, like
+            // the Select button of a card), so two close species can be crossed without leaving this tab.
+            async useSpeciesAsParent() {
+                const sel = this.selectedSpecies;
+                if (!sel) return;
+                const sub = this.submap && this.selectedSub;
+                const ids = await this.db.species.where('[x+y]').equals([sel.x, sel.y])
+                    .filter(r => r.fp === this.speciesFp && (!sub || (r.sfp === this.submap.subfp && r.sx === sub.x && r.sy === sub.y)))
+                    .primaryKeys();
+                if (!ids.length) return;
+                const other = this.selected[(this.selectedIndex + 1) % 2];
+                const others = ids.filter(id => id !== other);
+                const pool = others.length ? others : ids;
+                this.selectFlower(pool[Math.floor(Math.random() * pool.length)]);
+                await this.renderSpeciesParents();
+            },
+
+            async renderSpeciesParents() {
+                const mine = ++this.parentsRender;
+                const describe = async (slot) => {
+                    const id = this.selected[slot];
+                    if (id === null) return 'none';
+                    if (!await this.db.flowers.where(':id').equals(id).count()) {
+                        this.selected[slot] = null; // deleted since it was picked
+                        return 'none';
+                    }
+                    const row = await this.db.species.get(id);
+                    return `#${id} (${row && row.x !== null && row.fp === this.speciesFp ? this.nameOf(row) + this.subLabelOf(row) : 'unclassified'})`;
+                };
+                const [first, second] = [await describe(0), await describe(1)];
+                if (mine !== this.parentsRender) return; // a newer render is on its way, this one would write stale parents
+                document.getElementById('species-parents').textContent =
+                    `Parent 1: ${first}. Parent 2: ${second}. The next pick replaces parent ${this.selectedIndex + 1}.`;
+            },
+
+            // Only the flowers of the selected species are read, through the cell index.
+            async renderSpeciesFlowers() {
+                const sel = this.selectedSpecies;
+                const header = document.getElementById('header-species');
+                if (!sel) {
+                    header.textContent = 'Select a species to see its flowers';
+                    UI.populateGrid('species-flowers', []);
+                    return;
+                }
+                const ids = await this.db.species.where('[x+y]').equals([sel.x, sel.y]).filter(r => r.fp === this.speciesFp).primaryKeys();
+                let flowers = await this.withSpecies((await this.db.flowers.bulkGet(ids)).filter(Boolean));
+                let name = this.nameOf(sel);
+                const sub = this.submap && this.selectedSub;
+                if (sub) {
+                    flowers = flowers.filter(f => f.species && f.species.sfp === this.submap.subfp && f.species.sx === sub.x && f.species.sy === sub.y);
+                    name += ` / ${subLabel(sub.y * this.submap.w + sub.x)}`;
+                }
+                header.textContent = `${name} - ${flowers.length} flower${flowers.length === 1 ? '' : 's'}`;
+                UI.populateGrid('species-flowers', flowers);
+            },
+
+            deleteFlower(flower, elementId) {
+                UI.createModalYesNo("Are you sure you want to delete this flower?", async () => {
+                    this.cleanupRenderer(flower.id);
+                    document.getElementById(`${elementId}-f-${flower.id}`)?.remove();
+                    await this.db.flowers.delete(flower.id);
+                    await this.db.species.delete(flower.id);
+                    await this.db.mutations.where({ original: flower.id }).or('id').equals(flower.id).delete();
+                    await this.db.descendants.where({ id: flower.id }).or('father').equals(flower.id).or('mother').equals(flower.id).delete();
+                    if (this.isSpeciesVisible()) this.showSpecies();
+                });
+            },
+
+            selectFlower(flowerId) {
+                const oldId = this.selected[this.selectedIndex];
+                if (oldId !== null) {
+                    document.querySelectorAll(`.flower`).forEach(el => {
+                        if (el.id.endsWith(`-f-${oldId}`)) el.style.border = '';
+                    });
+                }
+                this.selected[this.selectedIndex] = flowerId;
+                document.querySelectorAll(`.flower`).forEach(el => {
+                    if (el.id.endsWith(`-f-${flowerId}`)) el.style.border = '2px solid red';
+                });
+                this.selectedIndex = (this.selectedIndex + 1) % 2;
+            },
+
+            async showAllFlowers() {
+                UI.switchTab('flowers');
+                const allFlowers = await this.withSpecies(await this.db.flowers.toArray());
+                UI.populateGrid('flowers', allFlowers);
+            },
+
+            async showMutations(originalId) {
+                UI.switchTab('mutations');
+                const originalFlower = await this.loadFlower(originalId);
+                const mutationRecords = await this.db.mutations.where({original: originalId}).toArray();
+                const mutationIds = mutationRecords.map(m => m.id);
+                const mutatedFlowers = await this.withSpecies(mutationIds.length > 0 ? await this.db.flowers.where('id').anyOf(mutationIds).toArray() : []);
+                UI.populateGrid('original', originalFlower ? [originalFlower] : []);
+                UI.populateGrid('mutated', mutatedFlowers);
+                document.getElementById('header-mutations').textContent = `Mutations of ${originalId}`;
+            },
+
+            async showDescendants(parentId) {
+                 UI.switchTab('descendants');
+                 const parentFlower = await this.loadFlower(parentId);
+                 const childRecords = await this.db.descendants.where("father").equals(parentId).or("mother").equals(parentId).toArray();
+                 const childIds = childRecords.map(c => c.id);
+                 const childFlowers = await this.withSpecies(childIds.length > 0 ? await this.db.flowers.where('id').anyOf(childIds).toArray() : []);
+                 UI.populateGrid('parents', parentFlower ? [parentFlower] : []);
+                 UI.populateGrid('children', childFlowers);
+                 document.getElementById('header-descendants').textContent = `Descendants of ${parentId}`;
+            },
+
+             async showDescSelected() {
+                if (!this.selected[0] || !this.selected[1]) return UI.createModal("Please select two parents.");
+                UI.switchTab('descendants');
+                const [p1, p2] = await Promise.all([
+                    this.loadFlower(this.selected[0]),
+                    this.loadFlower(this.selected[1])
+                ]);
+                const childRecords = await this.db.descendants.where('[father+mother]')
+                    .equals([p1.id, p2.id])
+                    .or('[father+mother]').equals([p2.id, p1.id])
+                    .toArray();
+                const childIds = childRecords.map(c => c.id);
+                const childFlowers = await this.withSpecies(childIds.length ? await this.db.flowers.where('id').anyOf(childIds).toArray() : []);
+                UI.populateGrid('parents', [p1, p2]);
+                UI.populateGrid('children', childFlowers);
+                document.getElementById('header-descendants').textContent = `Descendants of ${p1.id} & ${p2.id}`;
+            },
+
+            async clearAllFlowers() {
+                UI.createModalYesNo("This will delete all data permanently. Are you sure?", async () => {
+                    this.renderers.forEach((_, key) => this.cleanupRenderer(key));
+                    this.renderers.clear();
+                    this.db.close();
+                    await Dexie.delete("Flowers");
+                    await this.initDb();
+                    // the tuned classifier lived in that database, so go back to the built-in one
+                    await somRunner.loadSOM('');
+                    await this.loadSpeciesModel();
+                    this.showAllFlowers();
+                });
+            },
+			
+			cleanupRenderer(flowerId) {
+			  const entry = this.renderers.get(flowerId);
+			  if (!entry) return;
+			  const {
+				renderer,
+				controls,
+				animationFrameId,
+				scene,
+				composer,
+				canvas,
+				resizeHandler
+			  } = entry;
+
+			  if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+			  scene.traverse(obj => {
+				if (obj.geometry) {
+				  obj.geometry.dispose();
+				}
+				if (obj.material) {
+				  const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+				  mats.forEach(mat => {
+					for (const key in mat) {
+					  const prop = mat[key];
+					  if (prop && typeof prop.dispose === 'function') {
+						prop.dispose();
+					  }
+					}
+					mat.dispose();
+				  });
+				}
+			  });
+			  if (composer) {
+				composer.passes.forEach(pass => {
+				  if (pass.dispose) pass.dispose();
+				});
+			  }
+
+			  controls.dispose();
+			  renderer.dispose();
+
+			  if (canvas) {
+				const gl = renderer.getContext();
+				const ext = gl.getExtension('WEBGL_lose_context');
+				if (ext) ext.loseContext();
+				canvas.parentNode?.removeChild(canvas);
+			  }
+			  this.renderers.delete(flowerId);
+			}
+        };
+
+        const UI = {
+            addFlowerToGrid(gridId, flower) {
+                const grid = document.getElementById(gridId);
+                if (!grid) return;
+                const flowerCard = this.createFlowerCard(flower, gridId);
+                grid.insertBefore(flowerCard, grid.firstChild);
+            },
+            
+            populateGrid(gridId, flowers) {
+                const grid = document.getElementById(gridId);
+                grid.innerHTML = '';
+                flowers.forEach(f => this.addFlowerToGrid(gridId, f));
+            },
+
+            createSpeciesBadge(cell) {
+                const badge = document.createElement('a');
+                badge.className = 'species-badge';
+                const atypical = App.isAtypical(cell);
+                badge.textContent = App.nameOf(cell) + App.subLabelOf(cell) + (atypical ? ' · atypical' : '');
+                badge.classList.toggle('atypical', atypical);
+                if (Number.isFinite(cell.d)) {
+                    badge.title = `Distance to the species prototype: ${cell.d.toFixed(2)}` + (App.atypical
+                        ? `. Atypical above ${App.atypical.above.toFixed(2)} (the mean plus 2 standard deviations of ${App.atypical.n} flowers).` : '');
+                }
+                badge.onclick = () => App.showSpecies({ x: cell.x, y: cell.y });
+                return badge;
+            },
+
+            // For a flower that was shown before its species was known.
+            setSpeciesBadge(flowerId, species) {
+                const cell = App.som && App.speciesOf({ species });
+                document.querySelectorAll(`.flower[data-flower-id="${flowerId}"]`).forEach(card => {
+                    card.querySelector('.species-badge')?.remove();
+                    if (cell) card.querySelector('h1').after(this.createSpeciesBadge(cell));
+                });
+            },
+
+            createFlowerCard(flower, elementId) {
+                const flowerRoot = document.createElement("div");
+                flowerRoot.id = `${elementId}-f-${flower.id}`;
+                flowerRoot.className = "flower";
+                flowerRoot.dataset.viewState = '2d';
+
+                const visualContainer = document.createElement('div');
+                visualContainer.className = 'flower-visual';
+                visualContainer.innerHTML = `<img src="${flower.image}" alt="Flower ${flower.id}">`;
+                const title = document.createElement("h1");
+                title.textContent = flower.id;
+                flowerRoot.appendChild(visualContainer);
+                flowerRoot.appendChild(title);
+                flowerRoot.dataset.flowerId = flower.id;
+                const cell = App.som && App.speciesOf(flower);
+                if (cell) flowerRoot.appendChild(this.createSpeciesBadge(cell));
+
+                const createBtn = (text, onClick, isWasm = false) => {
+                    const btn = document.createElement("button");
+                    btn.textContent = text;
+                    btn.onclick = onClick;
+                    if (isWasm) btn.classList.add('wasm-dependent');
+                    return btn;
+                };
+
+                const toggleBtn = createBtn("Show 3D", () => this.toggleFlowerView(toggleBtn, flowerRoot, visualContainer, flower), true);
+                flowerRoot.appendChild(createBtn("Select", () => App.selectFlower(flower.id)));
+                flowerRoot.appendChild(toggleBtn);
+                flowerRoot.appendChild(createBtn("Mutate", () => App.mutateFlower(flower), true));
+                flowerRoot.appendChild(createBtn("Download Genome", () => this.downloadFile(flower.genome, `flower_${flower.id}.json`, 'application/json')));
+                flowerRoot.appendChild(createBtn("Download Image", () => this.downloadFile(flower.image, `flower_${flower.id}.png`, 'image/png')));
+                flowerRoot.appendChild(createBtn("Download 3D", async () => {
+                     try {
+                         const gltfData = await feService.draw3DFlower(flower.genome, flower.id.toString(), 'both');
+                         this.downloadFile(gltfData, `flower_${flower.id}.gltf`, 'model/gltf+json');
+                     } catch(e) { UI.createModal(e.message || e); }
+                }, true));
+                flowerRoot.appendChild(createBtn("Show Mutations", () => App.showMutations(flower.id)));
+                flowerRoot.appendChild(createBtn("Show Descendants", () => App.showDescendants(flower.id)));
+                flowerRoot.appendChild(createBtn("Delete", () => App.deleteFlower(flower, elementId)));
+
+                return flowerRoot;
+            },
+
+            toggleFlowerView(button, root, container, flower) {
+                const currentState = root.dataset.viewState;
+                let nextState;
+                if (currentState === '2d')      { nextState = '3d';  button.textContent = 'Show E3D'; }
+                else if (currentState === '3d') { nextState = 'e3d'; button.textContent = 'Show 2D';  }
+                else                            { nextState = '2d';  button.textContent = 'Show 3D';  }
+                root.dataset.viewState = nextState;
+                this.renderFlowerVisual(container, flower, nextState);
+            },
+
+            async renderFlowerVisual(container, flower, state) {
+                App.cleanupRenderer(flower.id);
+                container.innerHTML = '';
+                if (state === '2d') {
+                    container.innerHTML = `<img src="${flower.image}" alt="Flower ${flower.id}">`;
+                    return;
+                }
+                const isEmissive = (state === 'e3d');
+                const canvas = document.createElement('canvas');
+                container.appendChild(canvas);
+
+                const scene = new THREE.Scene();
+                const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+								
+                renderer.setClearColor(0x252729);
+                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.001, 1000);
+				
+				let composer, bloomPass;
+				if (isEmissive) {
+				  composer = new EffectComposer(renderer);
+				  const renderPass = new RenderPass(scene, camera);
+				  composer.addPass(renderPass);
+				  const size = renderer.getSize(new THREE.Vector2());
+				  bloomPass = new UnrealBloomPass(
+					size,      // resolution
+					1.2,       // strength
+					0.4,       // radius
+					0.85       // threshold
+				  );
+				  composer.addPass(bloomPass);
+				}
+				
+                const controls = new OrbitControls(camera, renderer.domElement);
+                controls.enabled = false;
+                controls.enableDamping = true;
+
+				const addPetalLights = (root) => {
+				  root.traverse((petal) => {
+					if (!petal.isMesh || !Array.isArray(petal.userData.lights)) return;
+					petal.userData.lights.forEach(def => {
+					  const pivot = new THREE.Object3D();
+					  pivot.position.fromArray(def.position);
+					  const light = new THREE.PointLight(def.color, def.intensity, def.radius, def.decay);
+					  light.castShadow = false;
+					  pivot.add(light);
+					  //const helper = new THREE.PointLightHelper(light, def.radius);
+					  //pivot.add(helper);
+					  petal.add(pivot);
+					});
+				  });
+				};
+
+                try {
+                    const gltfData = isEmissive
+                        ? await feService.drawEmissive3DFlower(flower.genome, flower.id.toString(), 'both')
+                        : await feService.draw3DFlower(flower.genome, flower.id.toString(), 'both');
+                    new GLTFLoader().parse(gltfData, '', (gltf) => {
+                    const model = gltf.scene;
+
+                    const box = new THREE.Box3().setFromObject(model);
+                    const size = box.getSize(new THREE.Vector3());
+                    const center = box.getCenter(new THREE.Vector3());
+                    model.position.y = -size.y / 2;
+                    model.scale.y = 0.01;	
+                    scene.add(model);
+					
+                    if (isEmissive) {
+						addPetalLights(model);
+                    } else {
+                        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+                        const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+                        dirLight.position.set(5, 10, 7.5);
+                        scene.add(dirLight);
+                    }
+					
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const fov = camera.fov * (Math.PI / 180);
+                    const initialCamZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 1.2;
+                    camera.position.set(center.x, center.y, center.z + initialCamZ);
+                    camera.lookAt(center);
+
+                    const sproutDuration = 800;
+                    const cameraMoveDuration = 1200;
+                    const startTime = Date.now();
+                    let animationFrameId;
+					const clock           = new THREE.Clock();
+					let cameraDone        = false;
+					const startPos        = new THREE.Vector3(center.x, center.y, center.z + initialCamZ);
+					const endPos          = new THREE.Vector3(center.x, center.y + initialCamZ, center.z);
+					const easeOutQuad     = t => t * (2 - t);
+					function animate() {
+					  requestAnimationFrame(animate);
+					  const elapsed = clock.getElapsedTime() * 1000;
+					  const tSprout = Math.min(elapsed / sproutDuration, 1);
+					  model.scale.y = easeOutQuad(tSprout);
+					  if (elapsed > sproutDuration && !cameraDone) {
+						const raw   = (elapsed - sproutDuration) / cameraMoveDuration;
+						const tCam  = THREE.MathUtils.clamp(raw, 0, 1);
+						const eased = easeOutQuad(tCam);
+						camera.position.lerpVectors(startPos, endPos, eased);
+						camera.lookAt(center);
+						if (tCam === 1) {
+						  controls.enabled = true;
+						  cameraDone      = true;
+						}
+					  }
+					  controls.update();
+					  if (isEmissive) {
+						composer.render();
+					  } else {
+					    renderer.render(scene, camera);
+					  }
+					}
+					clock.start();
+					animate();
+					App.renderers.set(flower.id, {
+					  renderer,
+					  controls,
+					  animationFrameId,
+					  scene,
+					  composer,
+					  canvas: renderer.domElement
+					});
+
+                });
+                } catch(e) { UI.createModal(e.message || e); }
+            },
+
+            getActiveGridId() {
+                if (document.getElementById('flowers').style.display !== 'none') return 'flowers';
+                if (document.getElementById('mutations').style.display !== 'none') return 'mutated';
+                return 'flowers';
+            },
+
+            downloadFile(content, fileName, mimeType) {
+                const a = document.createElement('a');
+                let blob;
+                if (content.startsWith('data:')) {
+                    const byteString = atob(content.split(',')[1]);
+                    const ab = new ArrayBuffer(byteString.length);
+                    const ia = new Uint8Array(ab);
+                    for (let i = 0; i < byteString.length; i++) {
+                        ia[i] = byteString.charCodeAt(i);
+                    }
+                    blob = new Blob([ab], { type: mimeType });
+                } else {
+                    blob = new Blob([content], {type: mimeType});
+                }
+                a.href = URL.createObjectURL(blob);
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            },
+
+            switchTab(tabName) {
+                const navLinks = {'flowers': document.getElementById('tab-flowers'), 'species': document.getElementById('tab-species')};
+                const contentDivs = {'flowers': 'grid', 'mutations': 'block', 'descendants': 'block', 'species': 'block'};
+
+                Object.keys(contentDivs).forEach(id => {
+                    document.getElementById(id).style.display = 'none';
+                    if (navLinks[id]) navLinks[id].classList.remove('active');
+                });
+                
+                document.getElementById(tabName).style.display = contentDivs[tabName];
+                if (navLinks[tabName]) navLinks[tabName].classList.add('active');
+            },
+
+			createModal(msg) {
+			  const existing = document.getElementById("modal");
+			  if (existing) document.body.removeChild(existing);
+
+			  const modal = document.createElement("div");
+			  modal.id = "modal";
+			  modal.className = "modal-overlay";
+
+			  const box = document.createElement("div");
+			  box.className = "modal-box";
+
+			  const closeSpan = document.createElement("span");
+			  closeSpan.className = "modal-close";
+			  closeSpan.textContent = "×";
+			  closeSpan.onclick = () => modal.remove();
+
+			  const msgP = document.createElement("p");
+			  msgP.className = "modal-message";
+			  msgP.textContent = msg;
+
+			  const buttonContainer = document.createElement("div");
+			  buttonContainer.className = "modal-buttons";
+
+			  const okBtn = document.createElement("button");
+			  okBtn.textContent = "Ok";
+			  okBtn.onclick = () => modal.remove();
+			  buttonContainer.appendChild(okBtn);
+
+			  box.append(closeSpan, msgP, buttonContainer);
+			  modal.appendChild(box);
+			  document.body.appendChild(modal);
+			},
+
+			createModalYesNo(msg, callback) {
+			  const existing = document.getElementById("modalYesNo");
+			  if (existing) document.body.removeChild(existing);
+
+			  const modal = document.createElement("div");
+			  modal.id = "modalYesNo";
+			  modal.className = "modal-overlay";
+
+			  const box = document.createElement("div");
+			  box.className = "modal-box";
+
+			  const closeSpan = document.createElement("span");
+			  closeSpan.className = "modal-close";
+			  closeSpan.textContent = "×";
+			  closeSpan.onclick = () => modal.remove();
+			  const msgP = document.createElement("p");
+			  msgP.className = "modal-message";
+			  msgP.textContent = msg;
+			  const buttonContainer = document.createElement("div");
+			  buttonContainer.className = "modal-buttons";
+			  const noBtn = document.createElement("button");
+			  noBtn.textContent = "No";
+			  noBtn.onclick = () => modal.remove();
+			  const yesBtn = document.createElement("button");
+			  yesBtn.textContent = "Yes";
+			  yesBtn.onclick = () => {
+				callback();
+				modal.remove();
+			  };
+
+			  buttonContainer.append(noBtn, yesBtn);
+			  box.append(closeSpan, msgP, buttonContainer);
+			  modal.appendChild(box);
+			  document.body.appendChild(modal);
+			},
+        };
+
+        App.init();
+
+    </script>
+	<noscript>
+		<strong>We're sorry but Flower Evolver WASM doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+	<div id="buttons">
+		<button id="btn-make">Make Flower</button>
+		<button id="btn-reproduce">reproduce selected</button>
+		<button id="btn-show-desc">show selected Descendants</button>
+		<button id="btn-clear">clear all flowers</button>
+	</div>
+	<div>
+		<nav id="tabs">
+			<ul style="margin: 0px; padding: 0px;">
+				<a id="tab-flowers" class="tab active">Flowers</a>
+				<a id="tab-species" class="tab">Species</a>
+			</ul>
+		</nav>
+	</div>
+	<div id="flowers" class="grid"></div>
+	<div id="mutations" style="display:none;">
+		<div id="original" class="grid"></div>
+		<h2 id="header-mutations"></h2>
+		<div id="mutated" class="grid"></div>
+	</div>
+	<div id="descendants" style="display:none;">
+		<div id="parents" class="grid"></div>
+		<h2 id="header-descendants"></h2>
+		<div id="children" class="grid"></div>
+	</div>
+	<div id="species" style="display:none; background-color: black;">
+		<div id="species-toolbar">
+			<p id="species-summary"></p>
+			<label><input type="checkbox" id="species-hide-empty"> Hide empty species</label>
+			<button id="btn-open-finetune">Fine-tune...</button>
+			<button id="btn-reset-classifier" class="wasm-dependent" hidden>Use the built-in classifier</button>
+		</div>
+		<dialog id="finetune">
+			<h3>Fine-tune the classifier on my flowers</h3>
+			<p>Nudges the species prototypes towards the flowers you have, then re-classifies them. It does not add species, it spreads your flowers over the existing ones. Each epoch is one pass over your flowers; a few are enough. Flowers made before this was added are prepared once first, which is the slow part.</p>
+			<label>Epochs <input id="finetune-epochs" type="number" min="1" step="1" value="3"></label>
+			<label>Learning rate <input id="finetune-lr" type="number" min="0.001" step="0.05" value="0.3"></label>
+			<label>Radius <input id="finetune-radius" type="number" min="0.1" step="0.1" value="1"></label>
+			<button id="btn-finetune" class="wasm-dependent">Fine-tune</button>
+			<button id="btn-finetune-cancel" hidden>Cancel</button>
+			<progress id="finetune-progress" class="engraved" max="1" value="0" hidden></progress>
+			<p id="finetune-status"></p>
+			<div id="finetune-charts" class="tune-charts" hidden>
+				<figure>
+					<svg id="finetune-qe-chart" class="qe-chart" viewBox="0 0 320 150" role="img" aria-label="Distance to the species prototype after each epoch"></svg>
+					<figcaption>Mean distance to the species prototype, per epoch (lower is a closer fit)</figcaption>
+				</figure>
+				<figure>
+					<div class="occupancy-pair">
+						<div><div id="finetune-occ-before" class="occupancy"></div><span>Before</span></div>
+						<div><div id="finetune-occ-now" class="occupancy"></div><span>Now</span></div>
+					</div>
+					<figcaption>Flowers per species: brighter is more crowded, dark cells are empty</figcaption>
+				</figure>
+			</div>
+			<button id="btn-finetune-close">Close</button>
+		</dialog>
+		<dialog id="split">
+			<h3 id="split-title">Split this species</h3>
+			<p>Trains a small second map on the flowers of this species alone, to tell apart flowers the main map puts together. It needs about 3 flowers per sub-species and it does not change the main classifier.</p>
+			<label>Columns <input id="split-width" type="number" min="1" max="6" step="1" value="2"></label>
+			<label>Rows <input id="split-height" type="number" min="1" max="6" step="1" value="2"></label>
+			<label>Epochs <input id="split-epochs" type="number" min="1" step="1" value="60"></label>
+			<button id="btn-split" class="wasm-dependent">Split</button>
+			<button id="btn-split-cancel" hidden>Cancel</button>
+			<progress id="split-progress" class="engraved" max="1" value="0" hidden></progress>
+			<p id="split-status"></p>
+			<div id="split-charts" class="tune-charts" hidden>
+				<figure>
+					<svg id="split-qe-chart" class="qe-chart" viewBox="0 0 320 150" role="img" aria-label="Distance to the sub-species prototype after each epoch"></svg>
+					<figcaption>Mean distance to the sub-species prototype, per epoch (lower is a closer fit)</figcaption>
+				</figure>
+				<figure>
+					<div class="occupancy-pair">
+						<div><div id="split-occ-before" class="occupancy"></div><span>Start</span></div>
+						<div><div id="split-occ-now" class="occupancy"></div><span>Now</span></div>
+					</div>
+					<figcaption>Flowers per sub-species: brighter is more crowded, dark cells are empty</figcaption>
+				</figure>
+			</div>
+			<button id="btn-split-close">Close</button>
+		</dialog>
+		<p id="species-status"></p>
+		<p id="species-caption"></p>
+		<div id="species-layout">
+			<div id="species-map"></div>
+			<aside id="species-detail" hidden>
+				<canvas id="species-detail-canvas" width="16" height="16"></canvas>
+				<h3 id="species-detail-name"></h3>
+				<p id="species-detail-meta"></p>
+				<p>Most similar species</p>
+				<div id="species-neighbours"></div>
+				<div id="species-parent-actions">
+					<button id="btn-species-parent" title="Picks a random flower of this species (of the chosen sub-species, if one is chosen) as the next parent">Use as parent</button>
+					<p id="species-parents"></p>
+					<button id="btn-species-reproduce" class="wasm-dependent" title="Reproduce the two parents">Reproduce the parents</button>
+				</div>
+				<div id="species-split">
+					<button id="btn-species-split">Split this species</button>
+					<p id="subspecies-title" hidden>Sub-species</p>
+					<div id="subspecies-map" hidden></div>
+					<button id="btn-species-unsplit" hidden>Remove the split</button>
+				</div>
+			</aside>
+		</div>
+		<h2 id="header-species"></h2>
+		<div id="species-flowers" class="grid"></div>
+	</div>
+	<div id="footer">
+		<p style="margin-left: 20px; float: left; position: relative; bottom: 20px; padding: 40px 40px 0 0; color: lightgreen;">Copyright© 2023-2026 FlowerEvolver-WASM</p>
+		<a class="github" href="https://github.com/cristianglezm/FlowerEvolver-WASM">
+			<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAAAnCAMAAADHG73eAAACc1BMVEX////q7+zu7u7q7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zu7u7q7+zq7+zq7+zu7u7q7+zq7+zu7u7q7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zu7u7q7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zu7u7q7+zq7+zq7+zq7+zq7+zu7u7q7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zu7u7q7+zq7+zq7+zu7u7q7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zu7u7q7+zq7+zq7+zu7u7q7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zu7u7q7+zq7+zq7+zq7+zu7u7q7+zq7+zq7+zq7+zq7+zu7u7q7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zu7u7q7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zq7+zu7u4hqPVZAAAAz3RSTlMAAABmCET32Oy+0Of+EQG9EgPP7czgbAm8mSK77jM4oKrdW1hpEMUCyW0aBKId+MRqwPIH85QRF4lv4YO0y953+QanzfwUnf1EE2eKiFC7aJHTpbhKP7EFk2WeRty/DzH1fd2bVaTM9F8eYi9uDRaQew5xGMfo7ylJIUs238JzU0eOi1xB7hXlnIhrViX7K2R1uYRSMguPdMEuLIGhyDBgWrPDYdnKcLcbHJra5IW19qNV+tvVf2ZRgnLjN3deebDS0ZVX8CKAxraXCoyreDo44tqfAAADyUlEQVR4XuyRsQ0DIQxFLbagQGIKz+CKISjYhCLjXEN1Lf0fKR8SRZciDbkozT35I9nNk41IyIjywA0M7hOyRPEajoJ2tgBN5JeCDGKCCOxO+ZYpgI1bbRXFkVBQAgcJ2RY2mJW0ocfSe3oI2liFTnMke/WVg11jXhSwGDSe6CBI1Xc2BnUKaxBhvhJsbwI2Cf1MQXqdqHqNcKYBNrp5olWBPYvpCdVPgVVEaAZux08WYf7GxcW9tfr+aSqK4gCeExkipYDAKxECsRTaWmhZho1swgp7o0iQsIfsISAjaNx77701jrjiNm59/5L33Pvsu8+2YILfX25Pvkk/ec25r8ByTqipq+s1zlfDf4oSmCgZEmnMBy/Q2gOU0b8yRhqn2TDeFWncbQNU7xciu+YdAAdELmTOSzaXnlQAGmyi2dBAPmbZAF4iiad9oFDkUk7KAHK6bOUBJx9SrWKDG2mv2AChZgKE2wWCRD5GAO80HEIAslMyfTObKLCSVKsZ4ElKV1vAxSGQSoHB2opK56KEi3sA1DsQGAGIwDN5ucApEXMIuFSSR0gg5zoVaYKXCeg/IXAClGmMoQcCx3DWLAl4INBMhpi/gAkDAp0KoEjrfLgNoH0OgatCv2AyIWBgbTIF0vN36YRRnEMEnTAN3QiU1d9qCLzTMs4DulZS7NUogG1owhbRmlBA4HYQjS8FsrF4hAB+iIUYAljzhAPisU8lpOmpNoRkroItojs8l4FNCPBx5fY+kW6wEw+IjTKwE+cwwJWRopaA40sD/gj48UBrND2i9lmBM3TmgI8SoF+TP6VC/Hy+Vm/6N2DwyFHNZSr0WYEcHFMIMCYBPhJgkrao17pFYm6uSqXKWgQ4zW46SYkVmMXRHffM7azFzAHeNvegNC5uYCCu55JjYD3OkdjkWIHiWDKqpBdP6qJACtCULwFosQm2Ap0WnLczwI8HHN7kJYA25RPANZwTHQPNiwDX2a1RAgnY1MjADRET4GUHuEkf1v6rIvvPesNaGXiGcxU2d2UA7lHhftiDDMtDJdCDRbRzejrEcIA/Bbqxy6qHvJ9mGXg86qTWYrF5BQeEiooEyoD3MFtcnwXggI0UAHajXqThwQDMsDs9wvM4AF7GKgQ1/YohAsAGqYjggUkGvJY6GeAyBjwAEW/k6q3AflVRzzaGpl16o9Ek4pWjF4ol8x35Sei/dlSYBEwBD2BGmjL8DYawqvd0Xz/MJhXoWNGR4fb5y9dv0B+fVFDLAO13qRV+WAyTLR2wMDOjA31fYbwGisuiDJ7Bv0j5G2CJVMPR1PQpAAAAAElFTkSuQmCC">
+		</a>
+	</div>
+</body>
+</html>
