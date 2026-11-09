@@ -3,7 +3,7 @@
 GITUSER=$1
 EMAIL=$2
 
-git config user.name $GITUSER && git config user.email $EMAIL
+git config user.name "$GITUSER" && git config user.email "$EMAIL"
 git checkout --orphan gh-pages
 touch dist/.nojekyll
 git --work-tree dist add --all
