@@ -52,6 +52,13 @@ set -e
 # JSONBOX_REF, EVOAI_REF and fetch_dependency: the pinned versions of the two dependencies (.devops/dependencies.env)
 source "$(dirname "${BASH_SOURCE[0]}")/dependencies.sh"
 
+# Same for every mode, so any `npm run prep:*` leaves the version-sync pre-commit hook in place.
+# sync_hooks.sh copies it only when missing or changed, and does nothing outside a git checkout.
+install_git_hook() {
+    bash "$(dirname "${BASH_SOURCE[0]}")/sync_hooks.sh" "$(dirname "${BASH_SOURCE[0]}")/hooks/pre-commit"
+}
+install_git_hook
+
 MODE="${1:-wasm}"
 if [ $# -gt 0 ]; then
     shift

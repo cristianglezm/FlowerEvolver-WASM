@@ -17,7 +17,7 @@ Example
    #include <fe/SOMEvaluation.hpp>
 
    fe::Environment environment;               // defaults: humidity 0.5, 20 C, sea level
-   std::string generationsJson = /* {"Generation": [ {"Flower": {...}}, ... ]} */;
+   std::string generationsJson = /* {"Generation": [ {...}, ... ]} */;
    std::vector<std::string> genomes = /* the same flowers, one {"Flower": {...}} per entry */;
 
    // 1. extract once: one feature vector per flower (throws for a flower that cannot be extracted)
